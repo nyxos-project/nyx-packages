@@ -51,11 +51,11 @@
     "nyx-calculator": {
       "flake": false,
       "locked": {
-        "lastModified": 1793421252,
-        "narHash": "sha256-oMqBTWXxp8IoEPXnCTifX3hBYrxA44h4d+oKEb6WYM4=",
+        "lastModified": 1793693230,
+        "narHash": "sha256-PSFrisb6AfHyD3M1BtsXv3WOT2Vre2BmogoiI7ISGNg=",
         "owner": "design-nexus",
         "repo": "nyx-calculator",
-        "rev": "22037928e3286ffacec0ae0e2f5b0d9c6e4a59b3",
+        "rev": "75bf2ec762d0a14850e9dac8070467b83f9aa3d1",
         "type": "github"
       },
       "original": {
