@@ -19,11 +19,11 @@
     "nyx": {
       "flake": false,
       "locked": {
-        "lastModified": 1793694129,
-        "narHash": "sha256-d7uyV5ScopSHFS3mcR2M7MSA+f7VOPsuC5+lPadtv6o=",
+        "lastModified": 1793695198,
+        "narHash": "sha256-vRqp8iW9sLU54OUtyMEZtWRcx3edtOqFgDATSCNnrpE=",
         "owner": "design-nexus",
         "repo": "nyx",
-        "rev": "380e23ba1d9dcaaa9de42b9096666d9037e5e87c",
+        "rev": "2d4db3a7f7633787eacb76995781c9b8c6e2d4de",
         "type": "github"
       },
       "original": {
