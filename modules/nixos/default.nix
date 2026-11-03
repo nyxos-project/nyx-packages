@@ -30,6 +30,12 @@ let
     clipboard = "Nyx Clipboard history";
     home = "Nyx Home and its automation service";
     chat = "Nyx Chat";
+    activity = "Nyx Activity";
+    containers = "Nyx Containers";
+    torrents = "Nyx Torrents";
+    weather = "Nyx Weather";
+    notes = "Nyx Notes";
+    files = "Nyx Files";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository

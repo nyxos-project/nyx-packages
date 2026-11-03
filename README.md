@@ -30,6 +30,12 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-clipboard` | nyx-clipboard | Clipboard daemon, popup and Settings extension |
 | `packages.nyx-home` | nyx-home | Nyx Home, its automation service and CLI |
 | `packages.nyx-chat` | nyx-chat | Nyx Chat; no llama.cpp server (Chat installs PrismML's build itself) |
+| `packages.nyx-activity` | nyx-activity | Nyx Activity, with hwdata for GPU names |
+| `packages.nyx-containers` | nyx-containers | Nyx Containers (Docker and Incus come from the system) |
+| `packages.nyx-torrents` | nyx-torrents | Nyx Torrents on libtorrent 2.0 |
+| `packages.nyx-weather` | nyx-weather | Nyx Weather (no Omarchy bar widget) |
+| `packages.nyx-notes` | nyx-notes | Nyx Notes and its Glimpse plugin |
+| `packages.nyx-files` | nyx-files | Nyx Files, its RAR helper and the `FileManager1` D-Bus service; 82 desktop-only tests skipped |
 | `checks.nyx-core` | nyx-core | `cargo test --workspace` for the shared libraries |
 | `checks.nyx-design` | nyx-design | `cargo test --workspace` for the design system |
 | `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, and `nyx.icons.followTheme` (the tool plus its user units) |

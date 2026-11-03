@@ -79,8 +79,8 @@ rec {
   };
 
   # The repositories' systemd user units and D-Bus activation files, pointed at the
-  # package: they start programs from ~/.local/bin (or @BINDIR@) and activate through
-  # systemd with Exec=/usr/bin/false.
+  # package: they start programs from ~/.local/bin, @BINDIR@, @BIN@ or /usr/bin, and
+  # activate through systemd with Exec=/usr/bin/false.
   installServices =
     { userUnits, dbusServices }:
     lib.optionalString (userUnits != [ ] || dbusServices != [ ]) ''
@@ -95,7 +95,9 @@ rec {
         substituteInPlace "$file" \
           --replace-quiet '%h/.local/bin/' "$out/bin/" \
           --replace-quiet '@BINDIR@' "$out/bin" \
-          --replace-quiet 'Exec=/usr/bin/false' 'Exec=${coreutils}/bin/false'
+          --replace-quiet '@BIN@' "$out/bin" \
+          --replace-quiet 'Exec=/usr/bin/false' 'Exec=${coreutils}/bin/false' \
+          --replace-quiet 'Exec=/usr/bin/' "Exec=$out/bin/"
         if grep -qE '%h/\.local|/usr/' "$file"; then
           echo "$file still points outside the package" >&2
           exit 1

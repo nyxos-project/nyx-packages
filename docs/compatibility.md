@@ -1,5 +1,21 @@
 # Compatibility with nixpkgs 26.05
 
+## nyx-backup locks two nyx-core revisions
+
+nyx-backup depends on nyx-core at `1c309f2`, and the nyx-design revision it uses
+(`2302785`) depends on nyx-core at `52cba5e`. Its Cargo.lock then has two
+`nyx-core 0.1.0` packages from different Git revisions. Cargo builds that from the
+network, but neither `cargo vendor` nor Nix's vendoring can hold two packages with the
+same name and version, so it can't be packaged until nyx-backup and nyx-design agree
+on one nyx-core revision.
+
+## nyx-torrents needs libtorrent 2.1 for creating torrents
+
+nixpkgs packages libtorrent-rasterbar 2.0 only. nyx-torrents' C++ shim builds a new
+torrent with libtorrent 2.1's `list_files` and the `create_torrent` constructor that
+takes its result; with 2.0 it uses `add_files` into a `file_storage` instead
+(`LIBTORRENT_VERSION_NUM` decides).
+
 ## nyx-pim needs libical 4
 
 nyx-core's bindings (`crates/eds/*`) were generated on Arch against libical 4.0.6 and

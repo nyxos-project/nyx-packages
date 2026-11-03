@@ -100,6 +100,30 @@
       url = "github:design-nexus/nyx-chat";
       flake = false;
     };
+    nyx-activity = {
+      url = "github:design-nexus/nyx-activity";
+      flake = false;
+    };
+    nyx-containers = {
+      url = "github:design-nexus/nyx-containers";
+      flake = false;
+    };
+    nyx-torrents = {
+      url = "github:design-nexus/nyx-torrents";
+      flake = false;
+    };
+    nyx-weather = {
+      url = "github:design-nexus/nyx-weather";
+      flake = false;
+    };
+    nyx-notes = {
+      url = "github:design-nexus/nyx-notes";
+      flake = false;
+    };
+    nyx-files = {
+      url = "github:design-nexus/nyx-files";
+      flake = false;
+    };
   };
 
   outputs =

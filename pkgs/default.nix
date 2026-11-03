@@ -35,6 +35,12 @@ fromSource [
   "nyx-clipboard"
   "nyx-home"
   "nyx-chat"
+  "nyx-activity"
+  "nyx-containers"
+  "nyx-torrents"
+  "nyx-weather"
+  "nyx-notes"
+  "nyx-files"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
