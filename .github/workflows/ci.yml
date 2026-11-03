@@ -13,12 +13,19 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    # A hung test otherwise holds the runner for GitHub's six-hour default.
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
 
       - uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          # An HTTP/2 framing error from the binary cache once stalled a run for an
+          # hour; HTTP/1.1 and a short stall timeout make Nix retry instead.
+          extra_nix_config: |
+            http2 = false
+            stalled-download-timeout = 60
 
       # Org variable CACHIX_NAME and secret CACHIX_AUTH_TOKEN. Without the token
       # (pull requests from forks) the cache is read-only.

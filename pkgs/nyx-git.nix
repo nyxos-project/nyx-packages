@@ -17,6 +17,9 @@ nyx.buildApp {
     git
     git-lfs
   ];
+  # Parallel tests race on the per-repository flock: a git child forked by one test
+  # briefly holds another test's lock fd, which fails that test's next operation.
+  dontUseCargoParallelTests = true;
   # secret-tool keeps hosting tokens; xdg-terminal-exec opens a terminal in a repository.
   runtimeInputs = [
     git
