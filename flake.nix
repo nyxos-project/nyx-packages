@@ -56,6 +56,26 @@
       url = "github:design-nexus/nyx-office";
       flake = false;
     };
+    nyx-git = {
+      url = "github:design-nexus/nyx-git";
+      flake = false;
+    };
+    nyx-music = {
+      url = "github:design-nexus/nyx-music";
+      flake = false;
+    };
+    nyx-media-player = {
+      url = "github:design-nexus/nyx-media-player";
+      flake = false;
+    };
+    nyx-theater = {
+      url = "github:design-nexus/nyx-theater";
+      flake = false;
+    };
+    nyx-photos = {
+      url = "github:design-nexus/nyx-photos";
+      flake = false;
+    };
   };
 
   outputs =

@@ -24,6 +24,11 @@ fromSource [
   "nyx-pdf"
   "nyx-news"
   "nyx-office"
+  "nyx-git"
+  "nyx-music"
+  "nyx-media-player"
+  "nyx-theater"
+  "nyx-photos"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {

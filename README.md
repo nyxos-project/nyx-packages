@@ -19,6 +19,11 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-pdf` | nyx-pdf | Nyx PDF |
 | `packages.nyx-news` | nyx-news | Nyx News and its Glimpse plugin |
 | `packages.nyx-office` | nyx-office | Write, Sheets and Present (`nyx-write`, `nyx-sheets`, `nyx-present`) |
+| `packages.nyx-git` | nyx-git | Nyx Git |
+| `packages.nyx-music` | nyx-music | Nyx Music, with the GStreamer plugin sets |
+| `packages.nyx-media-player` | nyx-media-player | Nyx Media Player (libmpv) |
+| `packages.nyx-theater` | nyx-theater | Nyx Theater (libmpv) |
+| `packages.nyx-photos` | nyx-photos | Nyx Photos and `nyx-viewer`; "Set as background" is hidden until NyxOS has a wallpaper command |
 | `checks.nyx-core` | nyx-core | `cargo test --workspace` for the shared libraries |
 | `checks.nyx-design` | nyx-design | `cargo test --workspace` for the design system |
 | `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, and `nyx.icons.followTheme` (the tool plus its user units) |
