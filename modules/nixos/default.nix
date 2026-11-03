@@ -22,11 +22,9 @@ let
   };
 in
 {
-  options.nyx =
-    lib.mapAttrs (_: description: { enable = lib.mkEnableOption description; }) apps
-    // {
-      accounts.enable = lib.mkEnableOption "the Nyx Online Accounts service";
-    };
+  options.nyx = lib.mapAttrs (_: description: { enable = lib.mkEnableOption description; }) apps // {
+    accounts.enable = lib.mkEnableOption "the Nyx Online Accounts service";
+  };
 
   config = lib.mkMerge (
     lib.mapAttrsToList (
