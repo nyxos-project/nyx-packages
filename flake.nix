@@ -124,6 +124,22 @@
       url = "github:design-nexus/nyx-files";
       flake = false;
     };
+    nyx-contacts = {
+      url = "github:design-nexus/nyx-contacts";
+      flake = false;
+    };
+    nyx-calendar = {
+      url = "github:design-nexus/nyx-calendar";
+      flake = false;
+    };
+    nyx-reminders = {
+      url = "github:design-nexus/nyx-reminders";
+      flake = false;
+    };
+    nyx-backup = {
+      url = "github:design-nexus/nyx-backup";
+      flake = false;
+    };
   };
 
   outputs =

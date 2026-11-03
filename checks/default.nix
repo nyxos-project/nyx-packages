@@ -10,13 +10,16 @@
     pname = "nyx-core-tests";
     src = inputs.nyx-core;
     nativeBuildInputs = [ pkgs.pkg-config ];
-    buildInputs = nyx.edsInputs ++ [ pkgs.gtk4 ];
+    buildInputs = nyx.pimInputs ++ [ pkgs.gtk4 ];
     cargoTestFlags = [
       "--workspace"
       "--no-fail-fast"
     ]
     ++ map (crate: "--exclude=${crate}") nyx.blockedCoreCrates;
-    preCheck = nyx.privateBusPreCheck;
+    # libical reads time zones from TZDIR; the build sandbox has no /etc/zoneinfo.
+    preCheck = nyx.privateBusPreCheck + ''
+      export TZDIR=${pkgs.tzdata}/share/zoneinfo
+    '';
   };
 
   nyx-design = nyx.testWorkspace {

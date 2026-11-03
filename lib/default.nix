@@ -10,10 +10,9 @@
   coreutils,
   dbus,
   glib,
-  evolution-data-server,
-  libical,
   json-glib,
   libxml2,
+  callPackage,
   inputs,
 }:
 let
@@ -28,23 +27,26 @@ rec {
     rustc = rustToolchain;
   };
 
-  # Libraries behind nyx-core's Evolution Data Server bindings.
-  edsInputs = [
+  # libical 4 for nyx-pim (see pkgs/libical_4.nix).
+  libical_4 = callPackage ../pkgs/libical_4.nix { };
+
+  # Libraries behind nyx-pim, which Contacts, Calendar and Reminders use.
+  pimInputs = [
     glib
-    evolution-data-server
-    libical
     json-glib
     libxml2
+    libical_4
   ];
 
-  # nyx-core's PIM stack is generated against libical-glib 4 and EDS 3.62 (Arch);
-  # nixpkgs 26.05 has libical 3.0.20 and EDS 3.60.2. See docs/compatibility.md.
+  # nyx-core's Evolution Data Server crates need EDS 3.62 (Arch); nixpkgs 26.05 has
+  # 3.60, built against libical 3. Only the EDS migration uses them. See
+  # docs/compatibility.md.
   blockedCoreCrates = [
-    "nyx-pim"
     "nyx-eds"
     "nyx-pim-migrate"
-    "nyx-icalglib-sys"
     "nyx-edataserver-sys"
+    "nyx-ecal-sys"
+    "nyx-camel-sys"
   ];
 
   # Tests that talk to the session bus get a private one. The sandbox has neither

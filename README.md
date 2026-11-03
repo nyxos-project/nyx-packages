@@ -36,6 +36,11 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-weather` | nyx-weather | Nyx Weather (no Omarchy bar widget) |
 | `packages.nyx-notes` | nyx-notes | Nyx Notes and its Glimpse plugin |
 | `packages.nyx-files` | nyx-files | Nyx Files, its RAR helper and the `FileManager1` D-Bus service; 82 desktop-only tests skipped |
+| `packages.nyx-contacts` | nyx-contacts | Nyx Contacts |
+| `packages.nyx-calendar` | nyx-calendar | Nyx Calendar, its sync service and Glimpse plugin |
+| `packages.nyx-reminders` | nyx-reminders | Nyx Reminders, its sync service and Glimpse plugin |
+| `packages.nyx-backup` | nyx-backup | Nyx Backup, its background service, CLI and recovery tool |
+| `packages.libical_4` | libical | libical 4.0.7 for the Nyx PIM apps (nixpkgs has 3.0) |
 | `checks.nyx-core` | nyx-core | `cargo test --workspace` for the shared libraries |
 | `checks.nyx-design` | nyx-design | `cargo test --workspace` for the design system |
 | `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, and `nyx.icons.followTheme` (the tool plus its user units) |

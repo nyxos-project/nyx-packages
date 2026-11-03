@@ -41,12 +41,18 @@ fromSource [
   "nyx-weather"
   "nyx-notes"
   "nyx-files"
+  "nyx-contacts"
+  "nyx-calendar"
+  "nyx-reminders"
+  "nyx-backup"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
     inherit nyx;
     src = inputs.nyx-design;
   };
+
+  inherit (nyx) libical_4;
 
   nyx-icon-tools = pkgs.callPackage ./nyx-icon-tools.nix {
     inherit nyx;

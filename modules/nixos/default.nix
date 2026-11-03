@@ -36,6 +36,10 @@ let
     weather = "Nyx Weather";
     notes = "Nyx Notes";
     files = "Nyx Files";
+    contacts = "Nyx Contacts";
+    calendar = "Nyx Calendar and its sync service";
+    reminders = "Nyx Reminders and its sync service";
+    backup = "Nyx Backup and its background service";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
