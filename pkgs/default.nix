@@ -29,6 +29,12 @@ fromSource [
   "nyx-media-player"
   "nyx-theater"
   "nyx-photos"
+  "nyx-share"
+  "nyx-transfer"
+  "nyx-cloud"
+  "nyx-clipboard"
+  "nyx-home"
+  "nyx-chat"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {

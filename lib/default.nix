@@ -7,6 +7,7 @@
   wrapGAppsHook4,
   gtk4,
   runtimeShell,
+  coreutils,
   dbus,
   glib,
   evolution-data-server,
@@ -77,13 +78,42 @@ rec {
     allowBuiltinFetchGit = true;
   };
 
+  # The repositories' systemd user units and D-Bus activation files, pointed at the
+  # package: they start programs from ~/.local/bin (or @BINDIR@) and activate through
+  # systemd with Exec=/usr/bin/false.
+  installServices =
+    { userUnits, dbusServices }:
+    lib.optionalString (userUnits != [ ] || dbusServices != [ ]) ''
+      for unit in ${lib.escapeShellArgs userUnits}; do
+        install -Dm644 "$unit" -t $out/lib/systemd/user
+      done
+      for service in ${lib.escapeShellArgs dbusServices}; do
+        install -Dm644 "$service" -t $out/share/dbus-1/services
+      done
+      for file in $out/lib/systemd/user/* $out/share/dbus-1/services/*; do
+        [ -e "$file" ] || continue
+        substituteInPlace "$file" \
+          --replace-quiet '%h/.local/bin/' "$out/bin/" \
+          --replace-quiet '@BINDIR@' "$out/bin" \
+          --replace-quiet 'Exec=/usr/bin/false' 'Exec=${coreutils}/bin/false'
+        if grep -qE '%h/\.local|/usr/' "$file"; then
+          echo "$file still points outside the package" >&2
+          exit 1
+        fi
+      done
+    '';
+
   # A Rust workspace from a source input. Releases build in the "release" profile
-  # the repositories ship (thin LTO, stripped).
+  # the repositories ship (thin LTO, stripped). `userUnits` and `dbusServices` are
+  # repository paths of service files to install (see installServices).
   buildWorkspace =
     {
       pname,
       src,
       baseVersion ? "0.1.0",
+      userUnits ? [ ],
+      dbusServices ? [ ],
+      postInstall ? "",
       ...
     }@args:
     rustPlatform.buildRustPackage (
@@ -100,7 +130,12 @@ rec {
       // removeAttrs args [
         "baseVersion"
         "meta"
+        "userUnits"
+        "dbusServices"
       ]
+      // {
+        postInstall = postInstall + installServices { inherit userUnits dbusServices; };
+      }
     );
 
   # A GTK application. Installs the repository's io.github.design_nexus.nyx.* desktop

@@ -24,6 +24,12 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-media-player` | nyx-media-player | Nyx Media Player (libmpv) |
 | `packages.nyx-theater` | nyx-theater | Nyx Theater (libmpv) |
 | `packages.nyx-photos` | nyx-photos | Nyx Photos and `nyx-viewer`; "Set as background" is hidden until NyxOS has a wallpaper command |
+| `packages.nyx-share` | nyx-share | Share Sheet, CLI and D-Bus service; extensions unavailable (their sandbox expects `/usr`) |
+| `packages.nyx-transfer` | nyx-transfer | Nyx Transfer and its background service |
+| `packages.nyx-cloud` | nyx-cloud | Cloud storage service (rclone) |
+| `packages.nyx-clipboard` | nyx-clipboard | Clipboard daemon, popup and Settings extension |
+| `packages.nyx-home` | nyx-home | Nyx Home, its automation service and CLI |
+| `packages.nyx-chat` | nyx-chat | Nyx Chat; no llama.cpp server (Chat installs PrismML's build itself) |
 | `checks.nyx-core` | nyx-core | `cargo test --workspace` for the shared libraries |
 | `checks.nyx-design` | nyx-design | `cargo test --workspace` for the design system |
 | `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, and `nyx.icons.followTheme` (the tool plus its user units) |
@@ -69,6 +75,12 @@ nix flake check github:nyxos-project/nyx-packages
 - `lib.buildApp` is the common GTK application recipe: it wraps the programs for
   GTK, puts `runtimeInputs` on their `PATH`, and installs the repository's
   `io.github.design_nexus.nyx.*` desktop entries and icons.
+- `userUnits` and `dbusServices` install a repository's systemd user units and D-Bus
+  activation files with store paths. The module registers them, and starts the units
+  a package lists in `passthru.autostart`, as the repository's `[Install]` does.
+- `/etc/nyx/trusted-bin` lists the `bin` folder of every enabled package. Services
+  that trust callers by program (Clipboard, Accounts) read it through nyx-core's
+  `nyx-peer`, since each app has its own store folder.
 
 ## Versions and channels
 

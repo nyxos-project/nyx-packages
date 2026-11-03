@@ -24,6 +24,27 @@ let
     media-player = "Nyx Media Player";
     theater = "Nyx Theater";
     photos = "Nyx Photos and the photo viewer";
+    share = "Nyx Share (Share Sheet and service)";
+    transfer = "Nyx Transfer and its background service";
+    cloud = "the Nyx Cloud storage service";
+    clipboard = "Nyx Clipboard history";
+    home = "Nyx Home and its automation service";
+    chat = "Nyx Chat";
+  };
+
+  # An app's user units and D-Bus activation files, plus the units its repository
+  # starts with the session (passthru.autostart: unit name -> target).
+  enabledPackages =
+    map (name: nyxPkgs."nyx-${name}") (lib.filter (name: cfg.${name}.enable) (lib.attrNames apps))
+    ++ lib.optional cfg.accounts.enable nyxPkgs.nyx-accounts;
+
+  services = package: {
+    systemd.packages = [ package ];
+    systemd.user.services = lib.mapAttrs (_: target: {
+      overrideStrategy = "asDropin";
+      wantedBy = [ target ];
+    }) (package.passthru.autostart or { });
+    services.dbus.packages = [ package ];
   };
 in
 {
@@ -41,11 +62,20 @@ in
   config = lib.mkMerge (
     lib.mapAttrsToList (
       name: _:
-      lib.mkIf cfg.${name}.enable {
-        environment.systemPackages = [ nyxPkgs."nyx-${name}" ];
-      }
+      lib.mkIf cfg.${name}.enable (
+        {
+          environment.systemPackages = [ nyxPkgs."nyx-${name}" ];
+        }
+        // services nyxPkgs."nyx-${name}"
+      )
     ) apps
     ++ [
+      # Services that trust callers by program (Clipboard, Accounts) read the folders
+      # of installed Nyx apps from here; each app has its own store folder (nyx-peer).
+      (lib.mkIf (enabledPackages != [ ]) {
+        environment.etc."nyx/trusted-bin".text = lib.concatMapStrings (p: "${p}/bin\n") enabledPackages;
+      })
+
       (lib.mkIf cfg.icons.enable {
         environment.systemPackages = [ nyxPkgs.nyx-icons ];
       })

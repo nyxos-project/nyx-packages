@@ -76,6 +76,30 @@
       url = "github:design-nexus/nyx-photos";
       flake = false;
     };
+    nyx-share = {
+      url = "github:design-nexus/nyx-share";
+      flake = false;
+    };
+    nyx-transfer = {
+      url = "github:design-nexus/nyx-transfer";
+      flake = false;
+    };
+    nyx-cloud = {
+      url = "github:design-nexus/nyx-cloud";
+      flake = false;
+    };
+    nyx-clipboard = {
+      url = "github:design-nexus/nyx-clipboard";
+      flake = false;
+    };
+    nyx-home = {
+      url = "github:design-nexus/nyx-home";
+      flake = false;
+    };
+    nyx-chat = {
+      url = "github:design-nexus/nyx-chat";
+      flake = false;
+    };
   };
 
   outputs =
