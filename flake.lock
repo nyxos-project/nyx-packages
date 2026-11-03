@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "nyx": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793694129,
+        "narHash": "sha256-d7uyV5ScopSHFS3mcR2M7MSA+f7VOPsuC5+lPadtv6o=",
+        "owner": "design-nexus",
+        "repo": "nyx",
+        "rev": "380e23ba1d9dcaaa9de42b9096666d9037e5e87c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx",
+        "type": "github"
+      }
+    },
     "nyx-accounts": {
       "flake": false,
       "locked": {
@@ -179,6 +195,7 @@
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
+        "nyx": "nyx",
         "nyx-accounts": "nyx-accounts",
         "nyx-archive": "nyx-archive",
         "nyx-calculator": "nyx-calculator",

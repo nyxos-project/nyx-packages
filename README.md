@@ -10,6 +10,7 @@ builds it reproducibly and runs its tests.
 | Output | Source | Contents |
 | --- | --- | --- |
 | `packages.nyx-icons` | nyx-design | Nyx application icons (hicolor, scalable) |
+| `packages.nyx-icon-tools` | nyx, nyx-design | `nyx-icons`: recolours Nyx icons for the Nyx theme |
 | `packages.nyx-accounts` | nyx-accounts | `nyx-accountsd` session service (D-Bus activated) and `nyx-accountsctl` |
 | `packages.nyx-fonts` | nyx-fonts | Nyx Fonts |
 | `packages.nyx-notepad` | nyx-notepad | Nyx Notepad |
@@ -20,7 +21,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-office` | nyx-office | Write, Sheets and Present (`nyx-write`, `nyx-sheets`, `nyx-present`) |
 | `checks.nyx-core` | nyx-core | `cargo test --workspace` for the shared libraries |
 | `checks.nyx-design` | nyx-design | `cargo test --workspace` for the design system |
-| `nixosModules.default` | | `nyx.<app>.enable` for each app above, and `nyx.accounts.enable` |
+| `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, and `nyx.icons.followTheme` (the tool plus its user units) |
 | `overlays.default` | | `pkgs.nyx.<package>` |
 | `lib` | | Toolchain and build helpers for Nyx Rust workspaces |
 

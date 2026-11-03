@@ -30,4 +30,10 @@ fromSource [
     inherit nyx;
     src = inputs.nyx-design;
   };
+
+  nyx-icon-tools = pkgs.callPackage ./nyx-icon-tools.nix {
+    inherit nyx;
+    src = inputs.nyx;
+    design = inputs.nyx-design;
+  };
 }

@@ -11,6 +11,11 @@
 
     # Application sources. `nix flake update <name>` moves one to its latest commit;
     # flake.lock records the exact revision each release of nyx-packages builds.
+    # The suite repository: the nyx CLI and its icon tools.
+    nyx = {
+      url = "github:design-nexus/nyx";
+      flake = false;
+    };
     nyx-core = {
       url = "github:design-nexus/nyx-core";
       flake = false;
