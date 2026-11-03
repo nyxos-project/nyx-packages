@@ -355,11 +355,11 @@
     "nyx-transfer": {
       "flake": false,
       "locked": {
-        "lastModified": 1793504542,
-        "narHash": "sha256-HMmS9iNDlYHndfV27AQn+hAGnmp44FRa+Hijzfdz7fE=",
+        "lastModified": 1793729551,
+        "narHash": "sha256-n4g8XgN7vstzwnItOuxuqvAMNpZSLYnosAMELyHx5ug=",
         "owner": "design-nexus",
         "repo": "nyx-transfer",
-        "rev": "2d1471822edcdde5b74d99b4483869d0135ca31b",
+        "rev": "0f06bf363aa6eb84d51d45cae87a4b1539fc03e0",
         "type": "github"
       },
       "original": {
