@@ -148,6 +148,10 @@
       url = "github:design-nexus/nyx-mail";
       flake = false;
     };
+    nyx-capture = {
+      url = "github:design-nexus/nyx-capture";
+      flake = false;
+    };
   };
 
   outputs =

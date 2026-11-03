@@ -128,6 +128,22 @@
         "type": "github"
       }
     },
+    "nyx-capture": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793733319,
+        "narHash": "sha256-ae/RPl73S1flbXhOwF0W/dZglNfIpENjhWmeww87uIY=",
+        "owner": "design-nexus",
+        "repo": "nyx-capture",
+        "rev": "1b5623cb0f72e621f8201ad479a7b0e3206a71ed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-capture",
+        "type": "github"
+      }
+    },
     "nyx-chat": {
       "flake": false,
       "locked": {
@@ -570,6 +586,7 @@
         "nyx-backup": "nyx-backup",
         "nyx-calculator": "nyx-calculator",
         "nyx-calendar": "nyx-calendar",
+        "nyx-capture": "nyx-capture",
         "nyx-chat": "nyx-chat",
         "nyx-clipboard": "nyx-clipboard",
         "nyx-cloud": "nyx-cloud",

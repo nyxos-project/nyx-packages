@@ -42,6 +42,7 @@ let
     backup = "Nyx Backup and its background service";
     maps = "Nyx Maps";
     mail = "Nyx Mail and its sync service";
+    capture = "Nyx Capture";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
