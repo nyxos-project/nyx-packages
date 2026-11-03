@@ -140,6 +140,14 @@
       url = "github:design-nexus/nyx-backup";
       flake = false;
     };
+    nyx-maps = {
+      url = "github:design-nexus/nyx-maps";
+      flake = false;
+    };
+    nyx-mail = {
+      url = "github:design-nexus/nyx-mail";
+      flake = false;
+    };
   };
 
   outputs =

@@ -45,6 +45,8 @@ fromSource [
   "nyx-calendar"
   "nyx-reminders"
   "nyx-backup"
+  "nyx-maps"
+  "nyx-mail"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
@@ -52,7 +54,7 @@ fromSource [
     src = inputs.nyx-design;
   };
 
-  inherit (nyx) libical_4;
+  inherit (nyx) libical_4 libshumate_1_7;
 
   nyx-icon-tools = pkgs.callPackage ./nyx-icon-tools.nix {
     inherit nyx;

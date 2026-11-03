@@ -40,6 +40,8 @@ let
     calendar = "Nyx Calendar and its sync service";
     reminders = "Nyx Reminders and its sync service";
     backup = "Nyx Backup and its background service";
+    maps = "Nyx Maps";
+    mail = "Nyx Mail and its sync service";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
@@ -131,6 +133,11 @@ in
         system.userActivationScripts.nyx-icons = ''
           ${config.systemd.package}/bin/systemctl --user start --no-block nyx-icons.service || true
         '';
+      })
+
+      # Maps finds "my location" through GeoClue.
+      (lib.mkIf cfg.maps.enable {
+        services.geoclue2.enable = lib.mkDefault true;
       })
 
       (lib.mkIf cfg.accounts.enable {

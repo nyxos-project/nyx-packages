@@ -40,7 +40,10 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-calendar` | nyx-calendar | Nyx Calendar, its sync service and Glimpse plugin |
 | `packages.nyx-reminders` | nyx-reminders | Nyx Reminders, its sync service and Glimpse plugin |
 | `packages.nyx-backup` | nyx-backup | Nyx Backup, its background service, CLI and recovery tool |
+| `packages.nyx-mail` | nyx-mail | Nyx Mail (WebKitGTK 6), its sync service and Glimpse plugin |
+| `packages.nyx-maps` | nyx-maps | Nyx Maps (enabling it turns on GeoClue) |
 | `packages.libical_4` | libical | libical 4.0.7 for the Nyx PIM apps (nixpkgs has 3.0) |
+| `packages.libshumate_1_7` | libshumate | libshumate 1.7.0 for Nyx Maps (nixpkgs has 1.6) |
 | `checks.nyx-core` | nyx-core | `cargo test --workspace` for the shared libraries |
 | `checks.nyx-design` | nyx-design | `cargo test --workspace` for the design system |
 | `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, and `nyx.icons.followTheme` (the tool plus its user units) |

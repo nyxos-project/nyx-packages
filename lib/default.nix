@@ -27,8 +27,9 @@ rec {
     rustc = rustToolchain;
   };
 
-  # libical 4 for nyx-pim (see pkgs/libical_4.nix).
+  # Newer libraries than nixpkgs 26.05 has, for the apps that need them.
   libical_4 = callPackage ../pkgs/libical_4.nix { };
+  libshumate_1_7 = callPackage ../pkgs/libshumate_1_7.nix { };
 
   # Libraries behind nyx-pim, which Contacts, Calendar and Reminders use.
   pimInputs = [
