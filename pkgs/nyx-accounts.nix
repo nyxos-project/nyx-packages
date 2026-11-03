@@ -22,6 +22,9 @@ nyx.buildWorkspace {
   ];
 
   preCheck = nyx.privateBusPreCheck;
+  # The OAuth callback tests assert a listener's port is closed afterwards; in parallel,
+  # another test can be handed the same ephemeral port.
+  dontUseCargoParallelTests = true;
 
   postInstall = ''
     mkdir -p $out/share/dbus-1/services
