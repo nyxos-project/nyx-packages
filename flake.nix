@@ -27,6 +27,30 @@
       url = "github:design-nexus/nyx-fonts";
       flake = false;
     };
+    nyx-notepad = {
+      url = "github:design-nexus/nyx-notepad";
+      flake = false;
+    };
+    nyx-calculator = {
+      url = "github:design-nexus/nyx-calculator";
+      flake = false;
+    };
+    nyx-archive = {
+      url = "github:design-nexus/nyx-archive";
+      flake = false;
+    };
+    nyx-pdf = {
+      url = "github:design-nexus/nyx-pdf";
+      flake = false;
+    };
+    nyx-news = {
+      url = "github:design-nexus/nyx-news";
+      flake = false;
+    };
+    nyx-office = {
+      url = "github:design-nexus/nyx-office";
+      flake = false;
+    };
   };
 
   outputs =

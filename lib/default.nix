@@ -3,6 +3,9 @@
   lib,
   rust-bin,
   makeRustPlatform,
+  pkg-config,
+  wrapGAppsHook4,
+  gtk4,
   runtimeShell,
   dbus,
   glib,
@@ -98,6 +101,42 @@ rec {
         "baseVersion"
         "meta"
       ]
+    );
+
+  # A GTK application. Installs the repository's io.github.design_nexus.nyx.* desktop
+  # entries and scalable icons, and puts `runtimeInputs` on the programs' PATH.
+  buildApp =
+    {
+      runtimeInputs ? [ ],
+      nativeBuildInputs ? [ ],
+      buildInputs ? [ ],
+      preFixup ? "",
+      postInstall ? "",
+      ...
+    }@args:
+    buildWorkspace (
+      removeAttrs args [ "runtimeInputs" ]
+      // {
+        nativeBuildInputs = [
+          pkg-config
+          wrapGAppsHook4
+        ]
+        ++ nativeBuildInputs;
+        buildInputs = [ gtk4 ] ++ buildInputs;
+        preFixup =
+          lib.optionalString (runtimeInputs != [ ]) ''
+            gappsWrapperArgs+=(--prefix PATH : ${lib.makeBinPath runtimeInputs})
+          ''
+          + preFixup;
+        # One install per file: some repositories carry the same icon in two places.
+        postInstall = ''
+          find . -path ./target -prune -o -name 'io.github.design_nexus.nyx.*.desktop' \
+            -exec install -Dm644 -t $out/share/applications {} \;
+          find . -path ./target -prune -o -name 'io.github.design_nexus.nyx.*.svg' \
+            -exec install -Dm644 -t $out/share/icons/hicolor/scalable/apps {} \;
+        ''
+        + postInstall;
+      }
     );
 
   # `cargo test --workspace`, as the repositories' own CI runs it.

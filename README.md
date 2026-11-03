@@ -12,9 +12,15 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-icons` | nyx-design | Nyx application icons (hicolor, scalable) |
 | `packages.nyx-accounts` | nyx-accounts | `nyx-accountsd` session service (D-Bus activated) and `nyx-accountsctl` |
 | `packages.nyx-fonts` | nyx-fonts | Nyx Fonts |
+| `packages.nyx-notepad` | nyx-notepad | Nyx Notepad |
+| `packages.nyx-calculator` | nyx-calculator | Nyx Calculator |
+| `packages.nyx-archive` | nyx-archive | Nyx Archive, with 7-Zip |
+| `packages.nyx-pdf` | nyx-pdf | Nyx PDF |
+| `packages.nyx-news` | nyx-news | Nyx News and its Glimpse plugin |
+| `packages.nyx-office` | nyx-office | Write, Sheets and Present (`nyx-write`, `nyx-sheets`, `nyx-present`) |
 | `checks.nyx-core` | nyx-core | `cargo test --workspace` for the shared libraries |
 | `checks.nyx-design` | nyx-design | `cargo test --workspace` for the design system |
-| `nixosModules.default` | | `nyx.icons.enable`, `nyx.accounts.enable`, `nyx.fonts.enable` |
+| `nixosModules.default` | | `nyx.<app>.enable` for each app above, and `nyx.accounts.enable` |
 | `overlays.default` | | `pkgs.nyx.<package>` |
 | `lib` | | Toolchain and build helpers for Nyx Rust workspaces |
 
@@ -54,6 +60,9 @@ nix flake check github:nyxos-project/nyx-packages
 - Nyx crates fetched as Git dependencies come from the revisions in each
   `Cargo.lock`, fetched at evaluation time (`allowBuiltinFetchGit`).
 - Tests that need a session bus get a private one (`lib.privateBusPreCheck`).
+- `lib.buildApp` is the common GTK application recipe: it wraps the programs for
+  GTK, puts `runtimeInputs` on their `PATH`, and installs the repository's
+  `io.github.design_nexus.nyx.*` desktop entries and icons.
 
 ## Versions and channels
 
