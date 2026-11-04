@@ -34,3 +34,15 @@ nixpkgs packages libtorrent-rasterbar 2.0 only. nyx-torrents' C++ shim builds a 
 torrent with libtorrent 2.1's `list_files` and the `create_torrent` constructor that
 takes its result; with 2.0 it uses `add_files` into a `file_storage` instead
 (`LIBTORRENT_VERSION_NUM` decides).
+
+## nyx-pulse needs TDLib 1.8.67 and NTgCalls 3.0.5
+
+Pulse uses TDLib 1.8.67's typed input objects, which keep media metadata out of
+`InputFile`; nixpkgs 26.05 has 1.8.63. nyx-packages builds 1.8.67 from the commit that
+set that version (`packages.tdlib_1_8_67`), one compile job at a time because some of its
+sources take several GB each. Drop it once nixpkgs ships 1.8.67 or later.
+
+NTgCalls, the call engine, is the 3.0.5 release build Pulse pins upstream
+(`packages.ntgcalls`). Building it means building WebRTC; the release links only glibc,
+zlib and libstdc++. Its local WebRTC loopback test is skipped in the build sandbox, which
+has only a loopback interface; it passes outside the sandbox.

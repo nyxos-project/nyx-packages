@@ -49,6 +49,7 @@ fromSource [
   "nyx-mail"
   "nyx-capture"
   "nyx-passwords"
+  "nyx-pulse"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
@@ -56,7 +57,12 @@ fromSource [
     src = inputs.nyx-design;
   };
 
-  inherit (nyx) libical_4 libshumate_1_7;
+  inherit (nyx)
+    libical_4
+    libshumate_1_7
+    tdlib_1_8_67
+    ntgcalls
+    ;
 
   nyx-icon-tools = pkgs.callPackage ./nyx-icon-tools.nix {
     inherit nyx;

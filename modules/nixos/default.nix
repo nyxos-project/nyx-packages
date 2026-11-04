@@ -44,6 +44,7 @@ let
     mail = "Nyx Mail and its sync service";
     capture = "Nyx Capture";
     passwords = "Nyx Passwords and its vault service";
+    pulse = "Nyx Pulse";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
@@ -148,6 +149,13 @@ in
       # Maps finds "my location" through GeoClue.
       (lib.mkIf cfg.maps.enable {
         services.geoclue2.enable = lib.mkDefault true;
+      })
+
+      # Pulse shares live locations through GeoClue and keeps its database key in the
+      # Secret Service.
+      (lib.mkIf cfg.pulse.enable {
+        services.geoclue2.enable = lib.mkDefault true;
+        services.gnome.gnome-keyring.enable = lib.mkDefault true;
       })
 
       (lib.mkIf cfg.accounts.enable {

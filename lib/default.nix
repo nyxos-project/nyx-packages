@@ -30,6 +30,8 @@ rec {
   # Newer libraries than nixpkgs 26.05 has, for the apps that need them.
   libical_4 = callPackage ../pkgs/libical_4.nix { };
   libshumate_1_7 = callPackage ../pkgs/libshumate_1_7.nix { };
+  tdlib_1_8_67 = callPackage ../pkgs/tdlib_1_8_67.nix { };
+  ntgcalls = callPackage ../pkgs/ntgcalls.nix { };
 
   # Libraries behind nyx-pim, which Contacts, Calendar and Reminders use.
   pimInputs = [

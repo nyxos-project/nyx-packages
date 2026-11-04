@@ -156,6 +156,10 @@
       url = "github:design-nexus/nyx-passwords";
       flake = false;
     };
+    nyx-pulse = {
+      url = "github:design-nexus/nyx-pulse";
+      flake = false;
+    };
   };
 
   outputs =
