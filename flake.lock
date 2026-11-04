@@ -208,6 +208,22 @@
         "type": "github"
       }
     },
+    "nyx-brand": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793762166,
+        "narHash": "sha256-V41Pg/YO3XjKYI3PVSWWzVvVBGPHxs42rVuD61cMfGw=",
+        "owner": "design-nexus",
+        "repo": "nyx-design",
+        "rev": "ff5895f73d6f486c5470217bc288b9718ea75d15",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-design",
+        "type": "github"
+      }
+    },
     "nyx-calculator": {
       "flake": false,
       "locked": {
@@ -464,6 +480,22 @@
         "type": "github"
       }
     },
+    "nyx-greeter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793819800,
+        "narHash": "sha256-qu4M3gNqkOkPosjoyeHuaSQk6+68BpqxD6I31awM0aI=",
+        "owner": "nyxos-project",
+        "repo": "nyx-greeter",
+        "rev": "9433447672ecfaca9b8a796863b4b6a1ae7d6436",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nyxos-project",
+        "repo": "nyx-greeter",
+        "type": "github"
+      }
+    },
     "nyx-home": {
       "flake": false,
       "locked": {
@@ -672,6 +704,22 @@
         "type": "github"
       }
     },
+    "nyx-plymouth": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793754018,
+        "narHash": "sha256-zTar1BPoBSlC7HglRUg1EIp1SrxlCFgt7S5p+S0KaVA=",
+        "owner": "nyxos-project",
+        "repo": "nyx-plymouth",
+        "rev": "a0e7c9febc229df3e8c21296503de98283611823",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nyxos-project",
+        "repo": "nyx-plymouth",
+        "type": "github"
+      }
+    },
     "nyx-pulse": {
       "flake": false,
       "locked": {
@@ -771,11 +819,11 @@
     "nyx-system": {
       "flake": false,
       "locked": {
-        "lastModified": 1793817305,
-        "narHash": "sha256-+OzigDfNUckFFWmDa91SDqKmOAWM6ghOAwGRPLqOLfI=",
+        "lastModified": 1793820095,
+        "narHash": "sha256-VUWetzH+1bH0Ett5qRrjvmHy2eL+wEG7vDujPQzu8Mo=",
         "owner": "nyxos-project",
         "repo": "nyx-system",
-        "rev": "afa09fe764fc6aa932cc9e40dd366b765e673553",
+        "rev": "a282b81c87c388578f36c42f764ce4583ae233b7",
         "type": "github"
       },
       "original": {
@@ -893,6 +941,7 @@
         "nyx-backup": "nyx-backup",
         "nyx-bar": "nyx-bar",
         "nyx-biometrics": "nyx-biometrics",
+        "nyx-brand": "nyx-brand",
         "nyx-calculator": "nyx-calculator",
         "nyx-calendar": "nyx-calendar",
         "nyx-capture": "nyx-capture",
@@ -909,6 +958,7 @@
         "nyx-fonts": "nyx-fonts",
         "nyx-git": "nyx-git",
         "nyx-glimpse": "nyx-glimpse",
+        "nyx-greeter": "nyx-greeter",
         "nyx-home": "nyx-home",
         "nyx-mail": "nyx-mail",
         "nyx-maps": "nyx-maps",
@@ -922,6 +972,7 @@
         "nyx-passwords": "nyx-passwords",
         "nyx-pdf": "nyx-pdf",
         "nyx-photos": "nyx-photos",
+        "nyx-plymouth": "nyx-plymouth",
         "nyx-pulse": "nyx-pulse",
         "nyx-reminders": "nyx-reminders",
         "nyx-settings": "nyx-settings",

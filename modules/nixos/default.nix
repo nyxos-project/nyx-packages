@@ -71,6 +71,8 @@ let
     systemd.user.services = lib.mapAttrs (_: target: {
       overrideStrategy = "asDropin";
       wantedBy = [ target ];
+      # People's sessions only, not the greeter's or another system account's.
+      unitConfig.ConditionUser = "!@system";
       path = [
         "/run/wrappers"
         "/etc/profiles/per-user/%u"
@@ -161,6 +163,7 @@ in
         systemd.user.paths.nyx-icons = {
           description = "Recolour Nyx icons when the Nyx theme changes or an app installs its icon";
           wantedBy = [ "default.target" ];
+          unitConfig.ConditionUser = "!@system";
           # Folders, not theme.toml itself: apps replace it by rename, which a file
           # watch misses.
           pathConfig = {
@@ -214,6 +217,7 @@ in
         systemd.user.services.nyx-assistant-setup = {
           description = "Set up Nyx Assistant's settings and abilities";
           wantedBy = [ "default.target" ];
+          unitConfig.ConditionUser = "!@system";
           before = [ "nyx-assistantd.service" ];
           serviceConfig = {
             Type = "oneshot";
@@ -266,6 +270,7 @@ in
           partOf = [ "graphical-session.target" ];
           after = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
+          unitConfig.ConditionUser = "!@system";
           serviceConfig = {
             # The theme service's choice (the user's own, or the theme's default), else this.
             ExecStart = pkgs.writeShellScript "nyx-wallpaper" ''
@@ -324,6 +329,7 @@ in
           partOf = [ "graphical-session.target" ];
           after = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
+          unitConfig.ConditionUser = "!@system";
           path = [
             config.programs.hyprland.package
             pkgs.dconf

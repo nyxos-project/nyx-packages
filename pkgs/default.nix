@@ -68,6 +68,18 @@ fromSource [
 
   hyprland = pkgs.callPackage ./hyprland.nix { };
 
+  nyx-greeter = pkgs.callPackage ./nyx-greeter.nix {
+    inherit nyx;
+    src = inputs.nyx-greeter;
+    design = inputs.nyx-brand;
+    hyprland = pkgs.callPackage ./hyprland.nix { };
+  };
+
+  nyx-plymouth = pkgs.callPackage ./nyx-plymouth.nix {
+    src = inputs.nyx-plymouth;
+    design = inputs.nyx-brand;
+  };
+
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
     inherit nyx;
     src = inputs.nyx-design;
