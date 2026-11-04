@@ -122,12 +122,15 @@ console), `sudo` and `polkit` (`polkit-1`). On NixOS, `nyx-authctl pam apply`,
 
 ## nyx-settings
 
-Settings' root helper is at `/run/current-system/sw/lib/nyx-settings/nyx-settings-helper`,
-the path its polkit action names; Settings finds it there and doesn't offer to install
-it. NyxOS's `hyprland.lua` loads `~/.config/hypr/settings.lua` (Settings' managed values)
-last, with the `require("hypr.settings")` line Settings looks for. Sections that run
-Omarchy's scripts (`omarchy-*`), pacman, Limine or Plymouth have nothing to run on NyxOS
-yet.
+Settings is built for NyxOS (`--features nyxos`): NyxOS's twelve categories, and every
+system change through the Nyx System Manager (time and language, services and groups,
+software, updates and generations, boot and sign-in screens, the firewall, the lid and
+buttons, freeing space, people's accounts and passwords, drives and shares at startup)
+or, for printers, cups-pk-helper. Its root helper, Omarchy's way, isn't installed.
+NyxOS's `hyprland.lua` loads `~/.config/hypr/settings.lua` (Settings' managed values)
+last, with the `require("hypr.settings")` line Settings looks for. Pages that run
+Omarchy's scripts (`omarchy-*`), pacman or Limine have nothing to run on NyxOS and stay
+out of its layout or show nothing.
 
 ## nyx-store
 

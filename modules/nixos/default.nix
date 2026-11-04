@@ -246,9 +246,8 @@ in
         systemd.user.services.nyx-notifyd.environment.NYX_NOTIFYD_MODE = "nyx";
       })
 
-      # pkexec runs Settings' helper from the system profile, the path its action names.
+      # Settings asks polkit through the System Manager and cups-pk-helper.
       (lib.mkIf cfg.settings.enable {
-        environment.pathsToLink = [ "/lib/nyx-settings" ];
         security.polkit.enable = true;
       })
 
