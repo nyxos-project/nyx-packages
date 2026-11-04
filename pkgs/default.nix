@@ -61,9 +61,12 @@ fromSource [
   "nyx-store"
   "nyx-system"
   "nyx-switcher"
+  "nyx-welcome"
 ]
 // {
   nyx-wallpapers = pkgs.callPackage ./nyx-wallpapers.nix { src = inputs.nyx-wallpapers; };
+
+  hyprland = pkgs.callPackage ./hyprland.nix { };
 
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
     inherit nyx;

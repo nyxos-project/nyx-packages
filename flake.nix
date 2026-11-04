@@ -220,6 +220,10 @@
       url = "github:design-nexus/nyx-switcher";
       flake = false;
     };
+    nyx-welcome = {
+      url = "github:nyxos-project/nyx-welcome";
+      flake = false;
+    };
   };
 
   outputs =
@@ -241,7 +245,7 @@
     {
       # The NyxOS software catalog, for checks against a NixOS configuration.
       lib = nyx // {
-        catalog = builtins.fromTOML (builtins.readFile "${inputs.nyx-system}/data/catalog.toml");
+        catalog = builtins.fromTOML (builtins.readFile "${inputs.nyx-system}/crates/nyx-catalog/catalog.toml");
       };
 
       packages.${system} = packages // {

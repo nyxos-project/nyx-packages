@@ -54,6 +54,7 @@ let
     settings = "Nyx Settings and its root helper";
     store = "Nyx Store, with Flathub and nixpkgs";
     switcher = "Nyx Switcher, its window and app switching and the overview";
+    welcome = "Nyx Welcome, the setup after installation";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository

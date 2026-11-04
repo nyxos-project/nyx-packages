@@ -16,7 +16,7 @@ nyx.buildWorkspace {
   postInstall = ''
     install -Dm644 data/io.github.nyxos_project.system.policy -t $out/share/polkit-1/actions
     install -Dm644 data/io.github.nyxos_project.System.conf -t $out/share/dbus-1/system.d
-    install -Dm644 data/catalog.toml -t $out/share/nyx
+    install -Dm644 crates/nyx-catalog/catalog.toml -t $out/share/nyx
     mkdir -p $out/share/dbus-1/system-services
     cat > $out/share/dbus-1/system-services/io.github.nyxos_project.System.service <<EOF
     [D-BUS Service]
