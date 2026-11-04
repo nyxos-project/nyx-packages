@@ -755,11 +755,11 @@
     "nyx-settings": {
       "flake": false,
       "locked": {
-        "lastModified": 1793823976,
-        "narHash": "sha256-h2XIiH4XsaF9yiMwKLdrLvPQyJ+sf4mL4Y4ILueCbKA=",
+        "lastModified": 1793824423,
+        "narHash": "sha256-cajPFyfBmLV2s+E8oTOi6rysrU74Vz82GjY1At+XW3s=",
         "owner": "design-nexus",
         "repo": "nyx-settings",
-        "rev": "bb0f5abb81194cc90a8d105cb34a2abe7dde21f8",
+        "rev": "81b8857d942b67b592b8e2d63297e625cb94c58f",
         "type": "github"
       },
       "original": {
