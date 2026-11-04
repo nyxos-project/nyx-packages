@@ -62,6 +62,7 @@ fromSource [
   "nyx-system"
   "nyx-switcher"
   "nyx-welcome"
+  "nyx-installer"
 ]
 // {
   nyx-wallpapers = pkgs.callPackage ./nyx-wallpapers.nix { src = inputs.nyx-wallpapers; };

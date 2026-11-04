@@ -237,6 +237,10 @@
       url = "github:nyxos-project/nyx-welcome";
       flake = false;
     };
+    nyx-installer = {
+      url = "github:nyxos-project/nyx-installer";
+      flake = false;
+    };
   };
 
   outputs =

@@ -512,6 +512,22 @@
         "type": "github"
       }
     },
+    "nyx-installer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793836211,
+        "narHash": "sha256-TPJ19M+Shqx5xrfajnIOEvr6vf2e9Cwr+NTU1Cw8ct8=",
+        "owner": "nyxos-project",
+        "repo": "nyx-installer",
+        "rev": "99f28982706dda2e6769982558d55fe3b69875e9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nyxos-project",
+        "repo": "nyx-installer",
+        "type": "github"
+      }
+    },
     "nyx-mail": {
       "flake": false,
       "locked": {
@@ -960,6 +976,7 @@
         "nyx-glimpse": "nyx-glimpse",
         "nyx-greeter": "nyx-greeter",
         "nyx-home": "nyx-home",
+        "nyx-installer": "nyx-installer",
         "nyx-mail": "nyx-mail",
         "nyx-maps": "nyx-maps",
         "nyx-media-player": "nyx-media-player",
