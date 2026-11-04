@@ -305,6 +305,8 @@ in
             config.system.build.nixos-rebuild
             config.nix.package
             pkgs.git
+            # chpasswd, for passwords (they never go into the configuration).
+            pkgs.shadow
           ];
           serviceConfig = {
             Type = "dbus";
