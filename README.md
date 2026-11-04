@@ -48,7 +48,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-glimpse` | nyx-glimpse | Nyx Glimpse, its indexer and Settings, and the semantic search helper (llama.cpp b11461); models download at runtime |
 | `packages.nyx-notification-center` | nyx-notification-center | Nyx Notification Center and nyx-notifyd, the session's notification server on NyxOS |
 | `packages.nyx-dock` | nyx-dock | Nyx Dock |
-| `packages.nyx-control-center` | nyx-control-center | Nyx Control Center; the tiles that run Omarchy's scripts have nothing to run yet |
+| `packages.nyx-control-center` | nyx-control-center | Nyx Control Center; without Omarchy it uses nyx-notifyd, hyprsunset, bluetoothctl and brightnessctl, and Omarchy-only extras hide |
 | `packages.nyx-bar` | nyx-bar | Nyx Bar, `nyx-plugin` and the first-party bar plugins |
 | `packages.nyx-biometrics` | nixosModules `nyx.biometrics` | Nyx Biometrics: the sign-in broker, the TPM key service, `nyx-authctl` and the root helper; PAM wiring for face, fingerprint and security keys from `nyx.biometrics.surfaces` |
 | `packages.irlume`, `packages.gaze` | `nyx.biometrics.face` | Irlume (infrared cameras) and Gaze (webcams) from their own flakes, at v0.15.0 and v0.4.2 |

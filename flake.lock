@@ -339,11 +339,11 @@
     "nyx-control-center": {
       "flake": false,
       "locked": {
-        "lastModified": 1793761106,
-        "narHash": "sha256-Ro7nFJQHutxhg3bagAaCLeT4mhyhSUUSsJcqHpEgApE=",
+        "lastModified": 1793770182,
+        "narHash": "sha256-oxJOFspigwP2zYAGPhHgUdlhDvGAfsw3Jh6NOntlMA4=",
         "owner": "design-nexus",
         "repo": "nyx-control-center",
-        "rev": "0222a99a061c8a2bbaa73cfe1465ec160c83396e",
+        "rev": "c2a39d520981d801eb428f20691298157ea10455",
         "type": "github"
       },
       "original": {
@@ -784,6 +784,22 @@
         "type": "github"
       }
     },
+    "nyx-wallpapers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793753568,
+        "narHash": "sha256-qJ40k7z+lPNOaL2K7D+vxZoLR2DYtLs8hGcsr76AIyU=",
+        "owner": "nyxos-project",
+        "repo": "nyx-wallpapers",
+        "rev": "6213a8198bdcea3e855656324ff585da1400e26f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nyxos-project",
+        "repo": "nyx-wallpapers",
+        "type": "github"
+      }
+    },
     "nyx-weather": {
       "flake": false,
       "locked": {
@@ -849,6 +865,7 @@
         "nyx-theater": "nyx-theater",
         "nyx-torrents": "nyx-torrents",
         "nyx-transfer": "nyx-transfer",
+        "nyx-wallpapers": "nyx-wallpapers",
         "nyx-weather": "nyx-weather",
         "rust-overlay": "rust-overlay"
       }

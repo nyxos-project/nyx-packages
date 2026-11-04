@@ -79,9 +79,12 @@ Other differences from the Arch install:
   includes a file from the old monorepo's Settings and isn't run.
 - nyx-notifyd runs in Nyx mode (`NYX_NOTIFYD_MODE=nyx`): with no Omarchy shell, it is
   the session's notification server and the Notification Center shows the pop-ups.
-- Control Center tiles that run Omarchy's scripts (Bluetooth pairing, per-monitor
-  brightness and scaling, night light, idle, DNS, captive portal, screenshots, the
-  Omarchy menu) have nothing to run on NyxOS yet.
+- Control Center, where Omarchy isn't installed, uses nyx-notifyd for Do Not Disturb,
+  an idle inhibitor for keep awake, hyprsunset for night light, bluetoothctl for
+  pairing, Hyprland's screen list with brightnessctl for the laptop panel, and its own
+  lock / log out / restart / shut down menu. DNS presets, the Wi-Fi band, speed test,
+  Wi-Fi QR code, Tailscale send, scale, text size and the laptop-screen switch only
+  Omarchy's commands do, so they hide.
 - Apps with a Glimpse plugin install it in `share/nyx-APP/glimpse`, as their install
   scripts do, linked at `/run/current-system/sw/share/nyx-APP/glimpse`; add one with
   `nyx-glimpse plugins install-local`.
