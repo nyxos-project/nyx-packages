@@ -52,7 +52,7 @@ let
     control-center = "Nyx Control Center";
     bar = "Nyx Bar and its plugins";
     settings = "Nyx Settings and its root helper";
-    store = "Nyx Store, with Flathub and nixpkgs";
+    store = "Nyx Store, with the NyxOS catalog, nixpkgs and Flathub";
     switcher = "Nyx Switcher, its window and app switching and the overview";
     welcome = "Nyx Welcome, the setup after installation";
   };

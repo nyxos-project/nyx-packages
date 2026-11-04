@@ -131,10 +131,15 @@ yet.
 
 ## nyx-store
 
-On NixOS, Store installs apps from Flathub (`flatpak --user`) and nixpkgs
-(`nix profile add nixpkgs#ATTR`) into the user's own profile, behind the same review as
-the pacman helper's plans; the helper isn't installed, and Repositories, AUR and
-BlackArch are left out. The catalog is Flathub's AppStream data, fetched per user, with
-the editorial picks in nixpkgs sharing its descriptions and artwork. Store's `alpm`
-crate still links libalpm, which has to be 16 (pacman 7.1, `packages.pacman_7_1`);
-nixpkgs 26.05 has pacman 7.0. The NixOS module turns on Flatpak and an XDG portal.
+On NixOS, Store has three sources: the NyxOS software catalog (nyx-system's
+`nyx-catalog`, shared with Nyx Welcome) and nixpkgs, installed for everyone through the
+Nyx System Manager (`nyx-system apply`, one rebuild switched to only when it builds), and
+Flathub (`flatpak --user`). Its review lists what has to be agreed to (unfree licenses,
+services, groups) and Apply waits for it. Updates are the system's (`nyx-system update`)
+and Flathub's; a system change can be undone a generation (`nyx-system rollback`).
+Packages an older Store put in the user's `nix profile` still show, update and remove.
+The pacman helper isn't installed, and Repositories, AUR and BlackArch are left out.
+Flathub's AppStream data supplies descriptions and artwork, for the catalog and nixpkgs
+too. Store's `alpm` crate still links libalpm, which has to be 16 (pacman 7.1,
+`packages.pacman_7_1`); nixpkgs 26.05 has pacman 7.0. The NixOS module turns on Flatpak
+and an XDG portal.
