@@ -252,6 +252,12 @@ in
         security.polkit.enable = true;
       })
 
+      # Settings adds and removes printers through cups-pk-helper, CUPS's polkit D-Bus service.
+      (lib.mkIf (cfg.settings.enable && config.services.printing.enable) {
+        services.dbus.packages = [ pkgs.cups-pk-helper ];
+        environment.systemPackages = [ pkgs.cups-pk-helper ];
+      })
+
       # Until the theme service picks wallpapers, the theme's default is shown.
       (lib.mkIf cfg.wallpapers.enable {
         environment.systemPackages = [ nyxPkgs.nyx-wallpapers ];
