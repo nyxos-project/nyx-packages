@@ -704,6 +704,22 @@
         "type": "github"
       }
     },
+    "nyx-settings": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793769455,
+        "narHash": "sha256-XbQR78LoXiNhu9PYIwuyEhEIhd8ktG7lvsbFuY2lycs=",
+        "owner": "design-nexus",
+        "repo": "nyx-settings",
+        "rev": "25b5db48a75557f2005f0c8e85370b035667f300",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-settings",
+        "type": "github"
+      }
+    },
     "nyx-share": {
       "flake": false,
       "locked": {
@@ -828,6 +844,7 @@
         "nyx-photos": "nyx-photos",
         "nyx-pulse": "nyx-pulse",
         "nyx-reminders": "nyx-reminders",
+        "nyx-settings": "nyx-settings",
         "nyx-share": "nyx-share",
         "nyx-theater": "nyx-theater",
         "nyx-torrents": "nyx-torrents",

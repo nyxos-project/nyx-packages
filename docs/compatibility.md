@@ -112,3 +112,12 @@ console), `sudo` and `polkit` (`polkit-1`). On NixOS, `nyx-authctl pam apply`,
 - At login the Nyx rules come before the early `pam_unix` NixOS adds for the keyring, so
   a face or key is tried before the password is asked for. A face or key sign-in gives
   the keyring no password, so it stays locked until something unlocks it.
+
+## nyx-settings
+
+Settings' root helper is at `/run/current-system/sw/lib/nyx-settings/nyx-settings-helper`,
+the path its polkit action names; Settings finds it there and doesn't offer to install
+it. NyxOS's `hyprland.lua` loads `~/.config/hypr/settings.lua` (Settings' managed values)
+last, with the `require("hypr.settings")` line Settings looks for. Sections that run
+Omarchy's scripts (`omarchy-*`), pacman, Limine or Plymouth have nothing to run on NyxOS
+yet.

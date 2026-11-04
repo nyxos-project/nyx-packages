@@ -57,6 +57,7 @@ fromSource [
   "nyx-control-center"
   "nyx-bar"
   "nyx-biometrics"
+  "nyx-settings"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {

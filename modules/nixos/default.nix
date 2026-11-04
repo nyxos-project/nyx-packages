@@ -51,6 +51,7 @@ let
     dock = "Nyx Dock";
     control-center = "Nyx Control Center";
     bar = "Nyx Bar and its plugins";
+    settings = "Nyx Settings and its root helper";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
@@ -216,6 +217,12 @@ in
       # Center shows the pop-ups (Nyx mode); there is no Omarchy shell to hand them to.
       (lib.mkIf cfg.notification-center.enable {
         systemd.user.services.nyx-notifyd.environment.NYX_NOTIFYD_MODE = "nyx";
+      })
+
+      # pkexec runs Settings' helper from the system profile, the path its action names.
+      (lib.mkIf cfg.settings.enable {
+        environment.pathsToLink = [ "/lib/nyx-settings" ];
+        security.polkit.enable = true;
       })
 
       (lib.mkIf cfg.accounts.enable {

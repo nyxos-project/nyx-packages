@@ -200,6 +200,10 @@
       url = "github:design-nexus/nyx-biometrics";
       flake = false;
     };
+    nyx-settings = {
+      url = "github:design-nexus/nyx-settings";
+      flake = false;
+    };
   };
 
   outputs =
