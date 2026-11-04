@@ -42,6 +42,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-backup` | nyx-backup | Nyx Backup, its background service, CLI and recovery tool |
 | `packages.nyx-mail` | nyx-mail | Nyx Mail (WebKitGTK 6), its sync service and Glimpse plugin |
 | `packages.nyx-capture` | nyx-capture | Nyx Capture with nixpkgs' ONNX Runtime; no scrolling capture (needs Omarchy's omasnap) |
+| `packages.nyx-passwords` | nyx-passwords | Nyx Passwords, its vault service and browser bridge; no polkit sign-in or TPM broker until Nyx Biometrics is packaged |
 | `packages.nyx-maps` | nyx-maps | Nyx Maps (enabling it turns on GeoClue) |
 | `packages.libical_4` | libical | libical 4.0.7 for the Nyx PIM apps (nixpkgs has 3.0) |
 | `packages.libshumate_1_7` | libshumate | libshumate 1.7.0 for Nyx Maps (nixpkgs has 1.6) |

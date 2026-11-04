@@ -43,6 +43,7 @@ let
     maps = "Nyx Maps";
     mail = "Nyx Mail and its sync service";
     capture = "Nyx Capture";
+    passwords = "Nyx Passwords and its vault service";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
@@ -134,6 +135,14 @@ in
         system.userActivationScripts.nyx-icons = ''
           ${config.systemd.package}/bin/systemctl --user start --no-block nyx-icons.service || true
         '';
+      })
+
+      # The browsers find the Passwords bridge through these manifests.
+      (lib.mkIf cfg.passwords.enable {
+        programs.firefox.nativeMessagingHosts.packages = [ nyxPkgs.nyx-passwords ];
+        environment.etc."chromium/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json".source =
+          "${nyxPkgs.nyx-passwords}/etc/chromium/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json";
+        services.gnome.gnome-keyring.enable = lib.mkDefault true;
       })
 
       # Maps finds "my location" through GeoClue.

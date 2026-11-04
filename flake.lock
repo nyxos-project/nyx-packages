@@ -448,6 +448,22 @@
         "type": "github"
       }
     },
+    "nyx-passwords": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793750501,
+        "narHash": "sha256-aiA0HlV1VL7utngGykdX0CUObEl5DsWvuZhB4wdOdfs=",
+        "owner": "design-nexus",
+        "repo": "nyx-passwords",
+        "rev": "3eefb911f37f93bd0fb48e5b9a7c648cfe4f9b01",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-passwords",
+        "type": "github"
+      }
+    },
     "nyx-pdf": {
       "flake": false,
       "locked": {
@@ -606,6 +622,7 @@
         "nyx-notepad": "nyx-notepad",
         "nyx-notes": "nyx-notes",
         "nyx-office": "nyx-office",
+        "nyx-passwords": "nyx-passwords",
         "nyx-pdf": "nyx-pdf",
         "nyx-photos": "nyx-photos",
         "nyx-reminders": "nyx-reminders",

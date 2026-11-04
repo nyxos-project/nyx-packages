@@ -152,6 +152,10 @@
       url = "github:design-nexus/nyx-capture";
       flake = false;
     };
+    nyx-passwords = {
+      url = "github:design-nexus/nyx-passwords";
+      flake = false;
+    };
   };
 
   outputs =

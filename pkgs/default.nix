@@ -48,6 +48,7 @@ fromSource [
   "nyx-maps"
   "nyx-mail"
   "nyx-capture"
+  "nyx-passwords"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
