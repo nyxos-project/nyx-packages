@@ -50,6 +50,8 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-dock` | nyx-dock | Nyx Dock |
 | `packages.nyx-control-center` | nyx-control-center | Nyx Control Center; the tiles that run Omarchy's scripts have nothing to run yet |
 | `packages.nyx-bar` | nyx-bar | Nyx Bar, `nyx-plugin` and the first-party bar plugins |
+| `packages.nyx-biometrics` | nixosModules `nyx.biometrics` | Nyx Biometrics: the sign-in broker, the TPM key service, `nyx-authctl` and the root helper; PAM wiring for face, fingerprint and security keys from `nyx.biometrics.surfaces` |
+| `packages.irlume`, `packages.gaze` | `nyx.biometrics.face` | Irlume (infrared cameras) and Gaze (webcams) from their own flakes, at v0.15.0 and v0.4.2 |
 | `packages.nyx-maps` | nyx-maps | Nyx Maps (enabling it turns on GeoClue) |
 | `packages.libical_4` | libical | libical 4.0.7 for the Nyx PIM apps (nixpkgs has 3.0) |
 | `packages.libshumate_1_7` | libshumate | libshumate 1.7.0 for Nyx Maps (nixpkgs has 1.6) |

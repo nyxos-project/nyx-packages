@@ -9,6 +9,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Face sign-in for Nyx Biometrics, with their own packages and NixOS modules, at
+    # their release tags.
+    irlume = {
+      url = "github:archledger/irlume/v0.15.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
+    };
+    gaze = {
+      url = "github:GunduLabs/gaze/v0.4.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Application sources. `nix flake update <name>` moves one to its latest commit;
     # flake.lock records the exact revision each release of nyx-packages builds.
     # The suite repository: the nyx CLI and its icon tools.
@@ -182,6 +194,10 @@
     };
     nyx-bar = {
       url = "github:design-nexus/nyx-bar";
+      flake = false;
+    };
+    nyx-biometrics = {
+      url = "github:design-nexus/nyx-biometrics";
       flake = false;
     };
   };

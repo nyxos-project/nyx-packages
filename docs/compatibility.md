@@ -85,3 +85,30 @@ Other differences from the Arch install:
 - Apps with a Glimpse plugin install it in `share/nyx-APP/glimpse`, as their install
   scripts do, linked at `/run/current-system/sw/share/nyx-APP/glimpse`; add one with
   `nyx-glimpse plugins install-local`.
+
+## Nyx Biometrics: PAM from the NixOS configuration
+
+On Arch, `nyx-auth-helper` writes the sign-in stacks into `/etc/pam.d` (with a snapshot
+and a two-minute rollback). NixOS builds `/etc/pam.d` from its configuration, so the
+module does the same from `nyx.biometrics.surfaces`: per method, in order, the Nyx gate
+(`pam_exec nyx-auth-gate built-in|local`, which skips the next line for remote sessions,
+sessions not on an active local seat, and, for face and fingerprint, a closed lid), then
+the method as `sufficient`, ahead of `pam_unix`. Surfaces are `login` (greetd and the
+console), `sudo` and `polkit` (`polkit-1`). On NixOS, `nyx-authctl pam apply`,
+`helper install` and the helper's PAM and login-screen verbs say so and change nothing.
+
+- Irlume and Gaze come from their own flakes and NixOS modules (the daemons, models,
+  udev and polkit); their own PAM lines stay off and the Nyx rules take their place.
+  Gaze is built with the Nyx Rust toolchain, as its locked crates need Rust 1.96.
+- The broker, the key service and the apps' broker check (`nyx-auth-proto`) know Nyx
+  programs by `/etc/nyx/trusted-bin` and Nix's `.NAME-wrapped`; system programs
+  (`pkexec`, `pkcheck`, `systemd-creds`, fprintd's tools) are found in `/run/wrappers/bin`
+  and `/run/current-system/sw` when `/usr` doesn't have them.
+- The root helper is at `/run/current-system/sw/lib/nyx-biometrics/nyx-auth-helper`,
+  the path its polkit actions name. It registers security keys in
+  `/etc/nyx-biometrics/u2f_keys`, which `pam_u2f` reads.
+- Not on NyxOS yet: the Quickshell sign-in overlays and the SDDM theme (NyxOS has
+  neither Omarchy's shell nor SDDM), and the lock-screen surface (no lock screen yet).
+- At login the Nyx rules come before the early `pam_unix` NixOS adds for the keyring, so
+  a face or key is tried before the password is asked for. A face or key sign-in gives
+  the keyring no password, so it stays locked until something unlocks it.

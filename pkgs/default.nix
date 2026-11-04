@@ -56,6 +56,7 @@ fromSource [
   "nyx-dock"
   "nyx-control-center"
   "nyx-bar"
+  "nyx-biometrics"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
@@ -70,6 +71,12 @@ fromSource [
     ntgcalls
     sherpa-onnx_1_13_8
     ;
+
+  # Face sign-in for Nyx Biometrics, from their own flakes.
+  irlume = inputs.irlume.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  # Gaze's recipe with the Nyx Rust toolchain: its locked crates need Rust 1.96, and
+  # nixpkgs 26.05 has 1.95.
+  gaze = pkgs.callPackage "${inputs.gaze}/packaging/nix/gaze.nix" { inherit (nyx) rustPlatform; };
 
   nyx-icon-tools = pkgs.callPackage ./nyx-icon-tools.nix {
     inherit nyx;

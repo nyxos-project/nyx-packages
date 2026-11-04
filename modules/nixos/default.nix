@@ -77,6 +77,8 @@ let
   };
 in
 {
+  imports = [ (import ./biometrics.nix self) ];
+
   options.nyx = lib.mapAttrs (_: description: { enable = lib.mkEnableOption description; }) apps // {
     icons = {
       enable = lib.mkEnableOption "the Nyx application icons";
