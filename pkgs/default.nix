@@ -58,6 +58,7 @@ fromSource [
   "nyx-bar"
   "nyx-biometrics"
   "nyx-settings"
+  "nyx-store"
 ]
 // {
   nyx-wallpapers = pkgs.callPackage ./nyx-wallpapers.nix { src = inputs.nyx-wallpapers; };
@@ -73,6 +74,7 @@ fromSource [
     tdlib_1_8_67
     ntgcalls
     sherpa-onnx_1_13_8
+    pacman_7_1
     ;
 
   # Face sign-in for Nyx Biometrics, from their own flakes.

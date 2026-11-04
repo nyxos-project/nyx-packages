@@ -52,6 +52,7 @@ let
     control-center = "Nyx Control Center";
     bar = "Nyx Bar and its plugins";
     settings = "Nyx Settings and its root helper";
+    store = "Nyx Store, with Flathub and nixpkgs";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
@@ -249,6 +250,12 @@ in
             Restart = "on-failure";
           };
         };
+      })
+
+      # Store installs Flathub apps with the user's flatpak.
+      (lib.mkIf cfg.store.enable {
+        services.flatpak.enable = true;
+        xdg.portal.enable = lib.mkDefault true;
       })
 
       (lib.mkIf cfg.accounts.enable {

@@ -53,6 +53,8 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-biometrics` | nixosModules `nyx.biometrics` | Nyx Biometrics: the sign-in broker, the TPM key service, `nyx-authctl` and the root helper; PAM wiring for face, fingerprint and security keys from `nyx.biometrics.surfaces` |
 | `packages.irlume`, `packages.gaze` | `nyx.biometrics.face` | Irlume (infrared cameras) and Gaze (webcams) from their own flakes, at v0.15.0 and v0.4.2 |
 | `packages.nyx-settings` | nyx-settings | Nyx Settings and its root helper; sections that run Omarchy's scripts or pacman have nothing to run yet |
+| `packages.nyx-store` | nyx-store | Nyx Store with Flathub (flatpak --user) and nixpkgs (nix profile), for each user, no root helper |
+| `packages.nyx-wallpapers` | `nyx.wallpapers` | The Nyx themes' wallpapers; the theme's default is shown until the theme service picks |
 | `packages.nyx-maps` | nyx-maps | Nyx Maps (enabling it turns on GeoClue) |
 | `packages.libical_4` | libical | libical 4.0.7 for the Nyx PIM apps (nixpkgs has 3.0) |
 | `packages.libshumate_1_7` | libshumate | libshumate 1.7.0 for Nyx Maps (nixpkgs has 1.6) |

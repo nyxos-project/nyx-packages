@@ -124,3 +124,13 @@ it. NyxOS's `hyprland.lua` loads `~/.config/hypr/settings.lua` (Settings' manage
 last, with the `require("hypr.settings")` line Settings looks for. Sections that run
 Omarchy's scripts (`omarchy-*`), pacman, Limine or Plymouth have nothing to run on NyxOS
 yet.
+
+## nyx-store
+
+On NixOS, Store installs apps from Flathub (`flatpak --user`) and nixpkgs
+(`nix profile add nixpkgs#ATTR`) into the user's own profile, behind the same review as
+the pacman helper's plans; the helper isn't installed, and Repositories, AUR and
+BlackArch are left out. The catalog is Flathub's AppStream data, fetched per user, with
+the editorial picks in nixpkgs sharing its descriptions and artwork. Store's `alpm`
+crate still links libalpm, which has to be 16 (pacman 7.1, `packages.pacman_7_1`);
+nixpkgs 26.05 has pacman 7.0. The NixOS module turns on Flatpak and an XDG portal.

@@ -204,6 +204,10 @@
       url = "github:design-nexus/nyx-settings";
       flake = false;
     };
+    nyx-store = {
+      url = "github:design-nexus/nyx-store";
+      flake = false;
+    };
     nyx-wallpapers = {
       url = "github:nyxos-project/nyx-wallpapers";
       flake = false;
