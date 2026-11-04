@@ -53,6 +53,7 @@ let
     bar = "Nyx Bar and its plugins";
     settings = "Nyx Settings and its root helper";
     store = "Nyx Store, with Flathub and nixpkgs";
+    switcher = "Nyx Switcher, its window and app switching and the overview";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
@@ -319,6 +320,12 @@ in
             Restart = "on-failure";
           };
         };
+      })
+
+      # Switcher writes its shortcuts (~/.config/hypr/nyx-switcher.lua) as it starts; they
+      # take over Alt+Tab and Super+Tab.
+      (lib.mkIf cfg.switcher.enable {
+        systemd.user.services.nyx-switcher.serviceConfig.ExecStartPre = "${nyxPkgs.nyx-switcher}/bin/nyx-switcher --integrate --force";
       })
 
       # Store installs Flathub apps with the user's flatpak.

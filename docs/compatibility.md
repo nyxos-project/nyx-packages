@@ -85,6 +85,10 @@ Other differences from the Arch install:
   lock / log out / restart / shut down menu. DNS presets, the Wi-Fi band, speed test,
   Wi-Fi QR code, Tailscale send, scale, text size and the laptop-screen switch only
   Omarchy's commands do, so they hide.
+- Switcher, where `~/.config/hypr/hyprland.lua` is a link (Home Manager's), writes its
+  shortcuts to `~/.config/hypr/nyx-switcher.lua` with `hl.bind` instead of editing it;
+  the NixOS module runs `nyx-switcher --integrate --force` as the service starts, so it
+  takes Alt+Tab and Super+Tab.
 - Apps with a Glimpse plugin install it in `share/nyx-APP/glimpse`, as their install
   scripts do, linked at `/run/current-system/sw/share/nyx-APP/glimpse`; add one with
   `nyx-glimpse plugins install-local`.

@@ -216,6 +216,10 @@
       url = "github:nyxos-project/nyx-system";
       flake = false;
     };
+    nyx-switcher = {
+      url = "github:design-nexus/nyx-switcher";
+      flake = false;
+    };
   };
 
   outputs =
