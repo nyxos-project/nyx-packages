@@ -707,11 +707,11 @@
     "nyx-settings": {
       "flake": false,
       "locked": {
-        "lastModified": 1793810254,
-        "narHash": "sha256-MUScZe5wPp5/46a0wfRuIszywF89EBzRUE96FE48v/4=",
+        "lastModified": 1793811496,
+        "narHash": "sha256-ZYnNNC2DHojoaUU707fC1KBAolgvdYG2Di8bbOrt4oU=",
         "owner": "design-nexus",
         "repo": "nyx-settings",
-        "rev": "830621a8a7d2410aea69a20689afba9233f86d56",
+        "rev": "cb5423112eb5ea731c01e075ecf84f2b35e21d0e",
         "type": "github"
       },
       "original": {

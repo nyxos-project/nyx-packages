@@ -1,6 +1,6 @@
-# Nyx Settings and its root helper for account, service and mount changes. Sections
-# that run Omarchy's scripts or pacman (updates, boot, the Omarchy menu) have nothing to
-# run on NyxOS yet.
+# Nyx Settings, built for NyxOS: its sidebar, and system pages through the Nyx System
+# Manager. Its root helper still makes account, firewall, mount, printer and power
+# changes until those move to the System Manager.
 {
   nyx,
   src,
@@ -13,6 +13,7 @@ nyx.buildApp {
   pname = "nyx-settings";
   inherit src;
   buildInputs = nyx.pimInputs;
+  buildFeatures = [ "nyxos" ];
   # The tests the repository's CI runs.
   cargoTestFlags = [
     "-p"
