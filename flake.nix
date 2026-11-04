@@ -212,6 +212,10 @@
       url = "github:nyxos-project/nyx-wallpapers";
       flake = false;
     };
+    nyx-system = {
+      url = "github:nyxos-project/nyx-system";
+      flake = false;
+    };
   };
 
   outputs =

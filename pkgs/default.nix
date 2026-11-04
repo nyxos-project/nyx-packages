@@ -59,6 +59,7 @@ fromSource [
   "nyx-biometrics"
   "nyx-settings"
   "nyx-store"
+  "nyx-system"
 ]
 // {
   nyx-wallpapers = pkgs.callPackage ./nyx-wallpapers.nix { src = inputs.nyx-wallpapers; };

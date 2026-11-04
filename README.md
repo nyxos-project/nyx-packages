@@ -54,6 +54,7 @@ builds it reproducibly and runs its tests.
 | `packages.irlume`, `packages.gaze` | `nyx.biometrics.face` | Irlume (infrared cameras) and Gaze (webcams) from their own flakes, at v0.15.0 and v0.4.2 |
 | `packages.nyx-settings` | nyx-settings | Nyx Settings and its root helper; sections that run Omarchy's scripts or pacman have nothing to run yet |
 | `packages.nyx-store` | nyx-store | Nyx Store with Flathub (flatpak --user) and nixpkgs (nix profile), for each user, no root helper |
+| `packages.nyx-system` | `nyx.system`, `nyx.themes` | The Nyx System Manager (root D-Bus service, started on demand), `nyx-system`, and the `nyx-themed` theme service |
 | `packages.nyx-wallpapers` | `nyx.wallpapers` | The Nyx themes' wallpapers; the theme's default is shown until the theme service picks |
 | `packages.nyx-maps` | nyx-maps | Nyx Maps (enabling it turns on GeoClue) |
 | `packages.libical_4` | libical | libical 4.0.7 for the Nyx PIM apps (nixpkgs has 3.0) |

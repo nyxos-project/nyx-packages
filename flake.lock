@@ -752,6 +752,22 @@
         "type": "github"
       }
     },
+    "nyx-system": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793773610,
+        "narHash": "sha256-ZdBK4r7AkQgJ3aaIEphxah8j9BpVD30nKEZuBWtXKg8=",
+        "owner": "nyxos-project",
+        "repo": "nyx-system",
+        "rev": "54706381c3f20739d1e4f95481fc127e6cdeefea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nyxos-project",
+        "repo": "nyx-system",
+        "type": "github"
+      }
+    },
     "nyx-theater": {
       "flake": false,
       "locked": {
@@ -879,6 +895,7 @@
         "nyx-settings": "nyx-settings",
         "nyx-share": "nyx-share",
         "nyx-store": "nyx-store",
+        "nyx-system": "nyx-system",
         "nyx-theater": "nyx-theater",
         "nyx-torrents": "nyx-torrents",
         "nyx-transfer": "nyx-transfer",

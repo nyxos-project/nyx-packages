@@ -90,6 +90,22 @@ in
       '';
     };
     accounts.enable = lib.mkEnableOption "the Nyx Online Accounts service";
+    system = {
+      enable = lib.mkEnableOption ''
+        the Nyx System Manager: validated, polkit-authorized changes to this system's
+        NixOS configuration (settings, packages, services), updates and rollback
+      '';
+      flake = lib.mkOption {
+        type = lib.types.str;
+        default = "/etc/nyxos/flake";
+        description = "The system's flake, which reads the overrides layer as its `nyxos-overrides` input.";
+      };
+      host = lib.mkOption {
+        type = lib.types.str;
+        description = "This machine's attribute in the flake's nixosConfigurations.";
+      };
+    };
+    themes.enable = lib.mkEnableOption "nyx-themed, which carries each user's Nyx theme to Hyprland, Foot, GTK and the wallpaper";
     wallpapers = {
       enable = lib.mkEnableOption "the Nyx wallpapers, with the theme's default shown on every output";
       theme = lib.mkOption {
@@ -244,9 +260,62 @@ in
           after = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
           serviceConfig = {
-            ExecStart = "${pkgs.swaybg}/bin/swaybg --mode fill --image ${
-              nyxPkgs.nyx-wallpapers.defaults.${cfg.wallpapers.theme}
-            }";
+            # The theme service's choice (the user's own, or the theme's default), else this.
+            ExecStart = pkgs.writeShellScript "nyx-wallpaper" ''
+              image=${nyxPkgs.nyx-wallpapers.defaults.${cfg.wallpapers.theme}}
+              state=''${XDG_STATE_HOME:-$HOME/.local/state}/nyx/wallpaper
+              if [ -r "$state" ]; then
+                read -r chosen < "$state" || true
+                [ -r "$chosen" ] && image=$chosen
+              fi
+              exec ${pkgs.swaybg}/bin/swaybg --mode fill --image "$image"
+            '';
+            Restart = "on-failure";
+          };
+        };
+      })
+
+      # The System Manager starts on its first call (D-Bus activation) and exits when idle.
+      (lib.mkIf cfg.system.enable {
+        environment.systemPackages = [ nyxPkgs.nyx-system ];
+        services.dbus.packages = [ nyxPkgs.nyx-system ];
+        security.polkit.enable = true;
+        environment.etc."nyxos/system.toml".text = ''
+          flake = "${cfg.system.flake}"
+          host = "${cfg.system.host}"
+        '';
+        systemd.tmpfiles.rules = [ "d /etc/nyxos/overrides 0755 root root -" ];
+        systemd.services.nyx-system-manager = {
+          description = "Nyx System Manager";
+          path = [
+            config.system.build.nixos-rebuild
+            config.nix.package
+            pkgs.git
+          ];
+          serviceConfig = {
+            Type = "dbus";
+            BusName = "io.github.nyxos_project.System";
+            ExecStart = "${nyxPkgs.nyx-system}/bin/nyx-system-manager";
+            StateDirectory = "nyx-system";
+          };
+        };
+      })
+
+      (lib.mkIf cfg.themes.enable {
+        environment.systemPackages = [ nyxPkgs.nyx-system ];
+        programs.dconf.enable = true;
+        systemd.user.services.nyx-themed = {
+          description = "Nyx theme service";
+          partOf = [ "graphical-session.target" ];
+          after = [ "graphical-session.target" ];
+          wantedBy = [ "graphical-session.target" ];
+          path = [
+            config.programs.hyprland.package
+            pkgs.dconf
+            config.systemd.package
+          ];
+          serviceConfig = {
+            ExecStart = "${nyxPkgs.nyx-system}/bin/nyx-themed";
             Restart = "on-failure";
           };
         };
