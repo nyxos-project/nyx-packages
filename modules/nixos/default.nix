@@ -89,6 +89,14 @@ in
       '';
     };
     accounts.enable = lib.mkEnableOption "the Nyx Online Accounts service";
+    wallpapers = {
+      enable = lib.mkEnableOption "the Nyx wallpapers, with the theme's default shown on every output";
+      theme = lib.mkOption {
+        type = lib.types.str;
+        default = "nyx-dark";
+        description = "The theme whose default wallpaper is shown (a table in wallpapers.toml).";
+      };
+    };
   };
 
   config = lib.mkMerge (
@@ -223,6 +231,24 @@ in
       (lib.mkIf cfg.settings.enable {
         environment.pathsToLink = [ "/lib/nyx-settings" ];
         security.polkit.enable = true;
+      })
+
+      # Until the theme service picks wallpapers, the theme's default is shown.
+      (lib.mkIf cfg.wallpapers.enable {
+        environment.systemPackages = [ nyxPkgs.nyx-wallpapers ];
+        environment.pathsToLink = [ "/share/backgrounds" ];
+        systemd.user.services.nyx-wallpaper = {
+          description = "Nyx wallpaper";
+          partOf = [ "graphical-session.target" ];
+          after = [ "graphical-session.target" ];
+          wantedBy = [ "graphical-session.target" ];
+          serviceConfig = {
+            ExecStart = "${pkgs.swaybg}/bin/swaybg --mode fill --image ${
+              nyxPkgs.nyx-wallpapers.defaults.${cfg.wallpapers.theme}
+            }";
+            Restart = "on-failure";
+          };
+        };
       })
 
       (lib.mkIf cfg.accounts.enable {

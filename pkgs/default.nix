@@ -60,6 +60,8 @@ fromSource [
   "nyx-settings"
 ]
 // {
+  nyx-wallpapers = pkgs.callPackage ./nyx-wallpapers.nix { src = inputs.nyx-wallpapers; };
+
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
     inherit nyx;
     src = inputs.nyx-design;
