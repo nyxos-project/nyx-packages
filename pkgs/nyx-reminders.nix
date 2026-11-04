@@ -7,6 +7,7 @@
 nyx.buildApp {
   pname = "nyx-reminders";
   inherit src;
+  glimpsePlugin = true;
   buildInputs = nyx.pimInputs;
   # libical reads time zones from TZDIR; the build sandbox has no /etc/zoneinfo.
   preCheck = ''

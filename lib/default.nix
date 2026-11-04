@@ -148,9 +148,12 @@ rec {
 
   # A GTK application. Installs the repository's io.github.design_nexus.nyx.* desktop
   # entries and scalable icons, and puts `runtimeInputs` on the programs' PATH.
+  # `glimpsePlugin` installs the repository's Glimpse plugin (a plugin.toml whose exec is
+  # "./BINARY") with its binary in share/PNAME/glimpse, where the install script puts it.
   buildApp =
     {
       runtimeInputs ? [ ],
+      glimpsePlugin ? false,
       nativeBuildInputs ? [ ],
       buildInputs ? [ ],
       preFixup ? "",
@@ -158,7 +161,10 @@ rec {
       ...
     }@args:
     buildWorkspace (
-      removeAttrs args [ "runtimeInputs" ]
+      removeAttrs args [
+        "runtimeInputs"
+        "glimpsePlugin"
+      ]
       // {
         nativeBuildInputs = [
           pkg-config
@@ -166,6 +172,7 @@ rec {
         ]
         ++ nativeBuildInputs;
         buildInputs = [ gtk4 ] ++ buildInputs;
+        passthru = (args.passthru or { }) // lib.optionalAttrs glimpsePlugin { inherit glimpsePlugin; };
         preFixup =
           lib.optionalString (runtimeInputs != [ ]) ''
             gappsWrapperArgs+=(--prefix PATH : ${lib.makeBinPath runtimeInputs})
@@ -177,6 +184,12 @@ rec {
             -exec install -Dm644 -t $out/share/applications {} \;
           find . -path ./target -prune -o -name 'io.github.design_nexus.nyx.*.svg' \
             -exec install -Dm644 -t $out/share/icons/hicolor/scalable/apps {} \;
+        ''
+        + lib.optionalString glimpsePlugin ''
+          manifest=$(find . -path ./target -prune -o -path '*glimpse/plugin.toml' -print | head -n 1)
+          exe=$(sed -n 's|^exec = \["\./\([^"]*\)".*|\1|p' "$manifest")
+          install -Dm644 "$manifest" $out/share/${args.pname}/glimpse/plugin.toml
+          install -Dm755 $out/bin/$exe -t $out/share/${args.pname}/glimpse
         ''
         + postInstall;
       }

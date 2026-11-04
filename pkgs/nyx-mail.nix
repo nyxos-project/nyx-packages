@@ -8,6 +8,7 @@
 nyx.buildApp {
   pname = "nyx-mail";
   inherit src;
+  glimpsePlugin = true;
   # glib-networking gives WebKit TLS for remote content.
   buildInputs = [
     webkitgtk_6_0

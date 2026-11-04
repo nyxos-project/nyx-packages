@@ -164,6 +164,26 @@
       url = "github:design-nexus/nyx-assistant";
       flake = false;
     };
+    nyx-glimpse = {
+      url = "github:design-nexus/nyx-glimpse";
+      flake = false;
+    };
+    nyx-notification-center = {
+      url = "github:design-nexus/nyx-notification-center";
+      flake = false;
+    };
+    nyx-dock = {
+      url = "github:design-nexus/nyx-dock";
+      flake = false;
+    };
+    nyx-control-center = {
+      url = "github:design-nexus/nyx-control-center";
+      flake = false;
+    };
+    nyx-bar = {
+      url = "github:design-nexus/nyx-bar";
+      flake = false;
+    };
   };
 
   outputs =

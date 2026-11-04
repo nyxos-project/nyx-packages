@@ -46,6 +46,11 @@ let
     passwords = "Nyx Passwords and its vault service";
     pulse = "Nyx Pulse";
     assistant = "Nyx Assistant, its HUD, Canvas and speech services";
+    glimpse = "Nyx Glimpse, the launcher and local search";
+    notification-center = "Nyx Notification Center and its notification service";
+    dock = "Nyx Dock";
+    control-center = "Nyx Control Center";
+    bar = "Nyx Bar and its plugins";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
@@ -56,9 +61,17 @@ let
 
   services = package: {
     systemd.packages = [ package ];
+    # A NixOS drop-in also sets PATH, to a minimal one by default; these services
+    # start apps and system tools, so they get the setuid wrappers and the user's and
+    # system's profiles, as a login shell has.
     systemd.user.services = lib.mapAttrs (_: target: {
       overrideStrategy = "asDropin";
       wantedBy = [ target ];
+      path = [
+        "/run/wrappers"
+        "/etc/profiles/per-user/%u"
+        "/run/current-system/sw"
+      ];
     }) (package.passthru.autostart or { });
     services.dbus.packages = [ package ];
   };
@@ -90,6 +103,10 @@ in
       # of installed Nyx apps from here; each app has its own store folder (nyx-peer).
       (lib.mkIf (enabledPackages != [ ]) {
         environment.etc."nyx/trusted-bin".text = lib.concatMapStrings (p: "${p}/bin\n") enabledPackages;
+        # Apps' Glimpse plugins, at /run/current-system/sw/share/nyx-APP/glimpse.
+        environment.pathsToLink = map (p: "/share/${p.pname}/glimpse") (
+          lib.filter (p: p.passthru.glimpsePlugin or false) enabledPackages
+        );
       })
 
       (lib.mkIf cfg.icons.enable {
@@ -182,6 +199,21 @@ in
           overrideStrategy = "asDropin";
           wantedBy = [ "nyx-assistantd.service" ];
         };
+      })
+
+      # Glimpse runs its semantic search helper from ~/.local/share/nyx-glimpse/runtime,
+      # which it would otherwise build there.
+      (lib.mkIf cfg.glimpse.enable {
+        systemd.user.tmpfiles.rules = [
+          "d %h/.local/share/nyx-glimpse 0700 - - -"
+          "L+ %h/.local/share/nyx-glimpse/runtime - - - - ${nyxPkgs.nyx-glimpse.runtime}"
+        ];
+      })
+
+      # nyx-notifyd answers as the session's notification server and the Notification
+      # Center shows the pop-ups (Nyx mode); there is no Omarchy shell to hand them to.
+      (lib.mkIf cfg.notification-center.enable {
+        systemd.user.services.nyx-notifyd.environment.NYX_NOTIFYD_MODE = "nyx";
       })
 
       (lib.mkIf cfg.accounts.enable {

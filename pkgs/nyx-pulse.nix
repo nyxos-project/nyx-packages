@@ -50,6 +50,7 @@ in
 nyx.buildApp {
   pname = "nyx-pulse";
   inherit src;
+  glimpsePlugin = true;
   # bindgen generates the NTgCalls bindings.
   nativeBuildInputs = [ nyx.rustPlatform.bindgenHook ];
   # libmpv and EGL for nyx-design's nyx-playback; GStreamer and its PipeWire source

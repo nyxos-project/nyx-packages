@@ -21,6 +21,7 @@
 nyx.buildApp {
   pname = "nyx-capture";
   inherit src;
+  glimpsePlugin = true;
   buildInputs = [
     onnxruntime
     gtk4-layer-shell

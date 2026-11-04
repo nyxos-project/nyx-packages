@@ -112,6 +112,22 @@
         "type": "github"
       }
     },
+    "nyx-bar": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793762213,
+        "narHash": "sha256-A3I7qIk6BdLv7ycnoePciOVra/mTpRA2SIE6VCTIhR4=",
+        "owner": "design-nexus",
+        "repo": "nyx-bar",
+        "rev": "759cdc0f920ef44aa7c04a1cc1fdd8039601b5d3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-bar",
+        "type": "github"
+      }
+    },
     "nyx-calculator": {
       "flake": false,
       "locked": {
@@ -240,6 +256,22 @@
         "type": "github"
       }
     },
+    "nyx-control-center": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793761106,
+        "narHash": "sha256-Ro7nFJQHutxhg3bagAaCLeT4mhyhSUUSsJcqHpEgApE=",
+        "owner": "design-nexus",
+        "repo": "nyx-control-center",
+        "rev": "0222a99a061c8a2bbaa73cfe1465ec160c83396e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-control-center",
+        "type": "github"
+      }
+    },
     "nyx-core": {
       "flake": false,
       "locked": {
@@ -269,6 +301,22 @@
       "original": {
         "owner": "design-nexus",
         "repo": "nyx-design",
+        "type": "github"
+      }
+    },
+    "nyx-dock": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793744307,
+        "narHash": "sha256-ceAR0/BwN04I5LG7RleNlld4YEl2DW9YwAPkhKRJzoY=",
+        "owner": "design-nexus",
+        "repo": "nyx-dock",
+        "rev": "af98f58db6d623716233cd3e56d46498d3570713",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-dock",
         "type": "github"
       }
     },
@@ -317,6 +365,22 @@
       "original": {
         "owner": "design-nexus",
         "repo": "nyx-git",
+        "type": "github"
+      }
+    },
+    "nyx-glimpse": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793760766,
+        "narHash": "sha256-W2k3I+KWUUpD2You8mjHtY2P+mJqlmD59fuf4EH7gNo=",
+        "owner": "design-nexus",
+        "repo": "nyx-glimpse",
+        "rev": "17d2fad765fcf4724fdb8115e5a5e7ad740e1133",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-glimpse",
         "type": "github"
       }
     },
@@ -445,6 +509,22 @@
       "original": {
         "owner": "design-nexus",
         "repo": "nyx-notes",
+        "type": "github"
+      }
+    },
+    "nyx-notification-center": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793683735,
+        "narHash": "sha256-5FVlQkO7JDsGGF7zPNncftUqDjw58e+XrzovU9t42Gs=",
+        "owner": "design-nexus",
+        "repo": "nyx-notification-center",
+        "rev": "2e8b9fdfbaeab75e38a56a37fe9b668d72f4c905",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-notification-center",
         "type": "github"
       }
     },
@@ -633,6 +713,7 @@
         "nyx-archive": "nyx-archive",
         "nyx-assistant": "nyx-assistant",
         "nyx-backup": "nyx-backup",
+        "nyx-bar": "nyx-bar",
         "nyx-calculator": "nyx-calculator",
         "nyx-calendar": "nyx-calendar",
         "nyx-capture": "nyx-capture",
@@ -641,11 +722,14 @@
         "nyx-cloud": "nyx-cloud",
         "nyx-contacts": "nyx-contacts",
         "nyx-containers": "nyx-containers",
+        "nyx-control-center": "nyx-control-center",
         "nyx-core": "nyx-core",
         "nyx-design": "nyx-design",
+        "nyx-dock": "nyx-dock",
         "nyx-files": "nyx-files",
         "nyx-fonts": "nyx-fonts",
         "nyx-git": "nyx-git",
+        "nyx-glimpse": "nyx-glimpse",
         "nyx-home": "nyx-home",
         "nyx-mail": "nyx-mail",
         "nyx-maps": "nyx-maps",
@@ -654,6 +738,7 @@
         "nyx-news": "nyx-news",
         "nyx-notepad": "nyx-notepad",
         "nyx-notes": "nyx-notes",
+        "nyx-notification-center": "nyx-notification-center",
         "nyx-office": "nyx-office",
         "nyx-passwords": "nyx-passwords",
         "nyx-pdf": "nyx-pdf",

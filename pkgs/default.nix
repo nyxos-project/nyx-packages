@@ -51,6 +51,11 @@ fromSource [
   "nyx-passwords"
   "nyx-pulse"
   "nyx-assistant"
+  "nyx-glimpse"
+  "nyx-notification-center"
+  "nyx-dock"
+  "nyx-control-center"
+  "nyx-bar"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {

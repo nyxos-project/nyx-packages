@@ -68,3 +68,20 @@ Other differences from the Arch install:
 - The admin tools' root helper installs packages with pacman, so it isn't installed.
 - `config::tests::scans_local_models_finds_ggufs` is skipped: it expects LM Studio models
   on the build machine.
+
+## The desktop shell
+
+- Glimpse's semantic search helper (`glimpse-embed`) is built here against the
+  llama.cpp revision Glimpse pins (b11461) and linked to
+  `~/.local/share/nyx-glimpse/runtime`, where `nyx-glimpse models setup` would build it.
+  Glimpse's own shortcut setting edits `hyprland.lua` with Omarchy's helpers; on NyxOS
+  Super+Space comes from the NyxOS Hyprland config instead. Its `tests/core.rs` still
+  includes a file from the old monorepo's Settings and isn't run.
+- nyx-notifyd runs in Nyx mode (`NYX_NOTIFYD_MODE=nyx`): with no Omarchy shell, it is
+  the session's notification server and the Notification Center shows the pop-ups.
+- Control Center tiles that run Omarchy's scripts (Bluetooth pairing, per-monitor
+  brightness and scaling, night light, idle, DNS, captive portal, screenshots, the
+  Omarchy menu) have nothing to run on NyxOS yet.
+- Apps with a Glimpse plugin install it in `share/nyx-APP/glimpse`, as their install
+  scripts do, linked at `/run/current-system/sw/share/nyx-APP/glimpse`; add one with
+  `nyx-glimpse plugins install-local`.

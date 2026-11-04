@@ -3,6 +3,7 @@
 nyx.buildApp {
   pname = "nyx-news";
   inherit src;
+  glimpsePlugin = true;
   meta = {
     description = "Local news reader for RSS, Atom and JSON feeds";
     homepage = "https://github.com/design-nexus/nyx-news";
