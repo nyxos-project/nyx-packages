@@ -819,11 +819,11 @@
     "nyx-system": {
       "flake": false,
       "locked": {
-        "lastModified": 1793827533,
-        "narHash": "sha256-UCk8tyguMeIQFTuDL5GxHhxlij47Xhati3w3Fpir10o=",
+        "lastModified": 1793829033,
+        "narHash": "sha256-gV2X/6AmVIZwqHq7flvmz98Y8TM/++iIqjAcRoshZDo=",
         "owner": "nyxos-project",
         "repo": "nyx-system",
-        "rev": "b576356057a828b10ce810adef59e7a4a5d4961a",
+        "rev": "98b2b7cc02a7858671f53f9897478c276b0695f4",
         "type": "github"
       },
       "original": {
