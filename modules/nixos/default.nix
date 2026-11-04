@@ -45,6 +45,7 @@ let
     capture = "Nyx Capture";
     passwords = "Nyx Passwords and its vault service";
     pulse = "Nyx Pulse";
+    assistant = "Nyx Assistant, its HUD, Canvas and speech services";
   };
 
   # An app's user units and D-Bus activation files, plus the units its repository
@@ -156,6 +157,31 @@ in
       (lib.mkIf cfg.pulse.enable {
         services.geoclue2.enable = lib.mkDefault true;
         services.gnome.gnome-keyring.enable = lib.mkDefault true;
+      })
+
+      # At login the Assistant's settings, abilities and browser and search assets are set
+      # up in the user's folders, as its install script does. The daemon starts once the
+      # user enables it (`systemctl --user enable --now nyx-assistantd`), after a model is
+      # downloaded; the Canvas starts with it, as the install script arranges.
+      (lib.mkIf cfg.assistant.enable {
+        systemd.user.services.nyx-assistant-setup = {
+          description = "Set up Nyx Assistant's settings and abilities";
+          wantedBy = [ "default.target" ];
+          before = [ "nyx-assistantd.service" ];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${nyxPkgs.nyx-assistant}/libexec/nyx-assistant-setup";
+          };
+        };
+        systemd.user.services.nyx-assistantd = {
+          overrideStrategy = "asDropin";
+          wants = [ "nyx-assistant-setup.service" ];
+          after = [ "nyx-assistant-setup.service" ];
+        };
+        systemd.user.services.nyx-assistant-visual = {
+          overrideStrategy = "asDropin";
+          wantedBy = [ "nyx-assistantd.service" ];
+        };
       })
 
       (lib.mkIf cfg.accounts.enable {

@@ -32,6 +32,7 @@ rec {
   libshumate_1_7 = callPackage ../pkgs/libshumate_1_7.nix { };
   tdlib_1_8_67 = callPackage ../pkgs/tdlib_1_8_67.nix { };
   ntgcalls = callPackage ../pkgs/ntgcalls.nix { };
+  sherpa-onnx_1_13_8 = callPackage ../pkgs/sherpa-onnx_1_13_8.nix { };
 
   # Libraries behind nyx-pim, which Contacts, Calendar and Reminders use.
   pimInputs = [

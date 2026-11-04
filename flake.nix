@@ -160,6 +160,10 @@
       url = "github:design-nexus/nyx-pulse";
       flake = false;
     };
+    nyx-assistant = {
+      url = "github:design-nexus/nyx-assistant";
+      flake = false;
+    };
   };
 
   outputs =

@@ -44,6 +44,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-capture` | nyx-capture | Nyx Capture with nixpkgs' ONNX Runtime; no scrolling capture (needs Omarchy's omasnap) |
 | `packages.nyx-passwords` | nyx-passwords | Nyx Passwords, its vault service and browser bridge; no polkit sign-in or TPM broker until Nyx Biometrics is packaged |
 | `packages.nyx-pulse` | nyx-pulse | Nyx Pulse with TDLib 1.8.67 (built from source) and the NTgCalls 3.0.5 release build, and its Glimpse plugin |
+| `packages.nyx-assistant` | nyx-assistant | Nyx Assistant: daemon, CLI, TUI, speech and plugin workers, Canvas, Quickshell HUD, abilities, browser automation (Playwright with nixpkgs Chromium) and DuckDuckGo search; CPU inference, models download at runtime, no admin root helper (it drives pacman) |
 | `packages.nyx-maps` | nyx-maps | Nyx Maps (enabling it turns on GeoClue) |
 | `packages.libical_4` | libical | libical 4.0.7 for the Nyx PIM apps (nixpkgs has 3.0) |
 | `packages.libshumate_1_7` | libshumate | libshumate 1.7.0 for Nyx Maps (nixpkgs has 1.6) |

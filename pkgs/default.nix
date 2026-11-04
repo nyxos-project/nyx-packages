@@ -50,6 +50,7 @@ fromSource [
   "nyx-capture"
   "nyx-passwords"
   "nyx-pulse"
+  "nyx-assistant"
 ]
 // {
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
@@ -62,6 +63,7 @@ fromSource [
     libshumate_1_7
     tdlib_1_8_67
     ntgcalls
+    sherpa-onnx_1_13_8
     ;
 
   nyx-icon-tools = pkgs.callPackage ./nyx-icon-tools.nix {
