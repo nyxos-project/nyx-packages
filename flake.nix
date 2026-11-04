@@ -239,7 +239,10 @@
       packages = import ./pkgs { inherit pkgs nyx inputs; };
     in
     {
-      lib = nyx;
+      # The NyxOS software catalog, for checks against a NixOS configuration.
+      lib = nyx // {
+        catalog = builtins.fromTOML (builtins.readFile "${inputs.nyx-system}/data/catalog.toml");
+      };
 
       packages.${system} = packages // {
         default = pkgs.symlinkJoin {

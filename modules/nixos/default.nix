@@ -286,8 +286,14 @@ in
           host = "${cfg.system.host}"
         '';
         systemd.tmpfiles.rules = [ "d /etc/nyxos/overrides 0755 root root -" ];
+        # The catalog, and the Nyx apps this system has, for Welcome, the Store and nyx-system.
+        environment.pathsToLink = [ "/share/nyx" ];
+        environment.etc."nyx/apps".text = lib.concatLines (lib.filter (name: cfg.${name}.enable) (lib.attrNames apps));
         systemd.services.nyx-system-manager = {
           description = "Nyx System Manager";
+          # It runs the switch itself: stopping it mid-switch would cut the switch's
+          # output and fail it halfway. A new version starts after it goes idle.
+          restartIfChanged = false;
           path = [
             config.system.build.nixos-rebuild
             config.nix.package

@@ -1,5 +1,5 @@
 # NyxOS's system services: the System Manager (a root D-Bus service started on demand),
-# its nyx-system command, and nyx-themed, the user's theme service.
+# its nyx-system command, nyx-themed (the user's theme service) and the software catalog.
 {
   nyx,
   src,
@@ -16,6 +16,7 @@ nyx.buildWorkspace {
   postInstall = ''
     install -Dm644 data/io.github.nyxos_project.system.policy -t $out/share/polkit-1/actions
     install -Dm644 data/io.github.nyxos_project.System.conf -t $out/share/dbus-1/system.d
+    install -Dm644 data/catalog.toml -t $out/share/nyx
     mkdir -p $out/share/dbus-1/system-services
     cat > $out/share/dbus-1/system-services/io.github.nyxos_project.System.service <<EOF
     [D-BUS Service]
