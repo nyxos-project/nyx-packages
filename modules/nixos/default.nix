@@ -110,6 +110,10 @@ in
       };
     };
     themes.enable = lib.mkEnableOption "nyx-themed, which carries each user's Nyx theme to Hyprland, Foot, GTK and the wallpaper";
+    locker.enable = lib.mkEnableOption ''
+      Nyx Locker, the lock screen on the Wayland session-lock protocol: the password,
+      and the methods in `nyx.biometrics.surfaces.lock`, each its own PAM service at once
+    '';
     wallpapers = {
       enable = lib.mkEnableOption "the Nyx wallpapers, with the theme's default shown on every output";
       theme = lib.mkOption {
@@ -319,6 +323,22 @@ in
             StateDirectory = "nyx-system";
           };
         };
+      })
+
+      (lib.mkIf cfg.locker.enable {
+        environment.systemPackages = [ nyxPkgs.nyx-locker ];
+        # The password on its own: the other methods are their own services.
+        security.pam.services.nyx-lock-password = {
+          fprintAuth = false;
+          u2fAuth = false;
+        };
+        environment.etc."nyx-locker/config.toml".text = ''
+          methods = [${
+            lib.concatMapStringsSep ", " (m: ''"${m}"'') (
+              lib.optionals cfg.biometrics.enable (cfg.biometrics.surfaces.lock or [ ])
+            )
+          }]
+        '';
       })
 
       (lib.mkIf cfg.themes.enable {

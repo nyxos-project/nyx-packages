@@ -13,6 +13,15 @@ nyx.buildApp {
   pname = "nyx-greeter";
   inherit src;
   cargoBuildFlags = [ "-p" "nyx-greeter" ];
+  # The greeter's own tests (the locker in the same repository has its own package).
+  cargoTestFlags = [
+    "-p"
+    "nyx-greeter"
+    "-p"
+    "nyx-greeter-core"
+    "-p"
+    "nyx-greetd"
+  ];
   buildInputs = [ gtk4-layer-shell ];
   nativeBuildInputs = [ librsvg ];
   runtimeInputs = [ hyprland ];

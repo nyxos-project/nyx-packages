@@ -24,7 +24,43 @@ let
     ];
     sudo = [ "sudo" ];
     polkit = [ "polkit-1" ];
+    # Nyx Locker runs each method as its own service at once (lockServices).
+    lock = [ ];
   };
+
+  # The lock screen's per-method services: the gate and the method, nothing else.
+  lockService = {
+    face = "nyx-lock-face";
+    fingerprint = "nyx-lock-fingerprint";
+    security-key = "nyx-lock-key";
+  };
+  lockServices = lib.listToAttrs (
+    map (name: {
+      name = lockService.${name};
+      value = {
+        unixAuth = false;
+        fprintAuth = false;
+        u2fAuth = false;
+        rules.auth = {
+          nyx-gate = {
+            order = 100;
+            control = "[success=1 default=ignore]";
+            modulePath = "${config.security.pam.package}/lib/security/pam_exec.so";
+            args = [
+              "quiet"
+              gate
+              (method "lock" name).kind
+            ];
+          };
+          "nyx-${name}" = {
+            order = 101;
+            control = "sufficient";
+            inherit (method "lock" name) modulePath args;
+          };
+        };
+      };
+    }) (cfg.surfaces.lock or [ ])
+  );
 
   faceModule =
     if cfg.face == "irlume" then
@@ -166,8 +202,9 @@ in
       };
       description = ''
         Methods tried before the password, in order, on each surface: `login` (the
-        greeter and the console), `sudo` and `polkit` (administrator prompts). The
-        password always works.
+        greeter and the console), `sudo` and `polkit` (administrator prompts); and
+        `lock`, the methods Nyx Locker runs beside the password. The password always
+        works.
       '';
     };
   };
@@ -232,6 +269,7 @@ in
     environment.pathsToLink = [ "/lib/nyx-biometrics" ];
 
     services.fprintd.enable = lib.mkIf cfg.fingerprint.enable true;
+    security.pam.services = lockServices;
     services.irlume = {
       enable = cfg.face == "irlume";
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.irlume;
