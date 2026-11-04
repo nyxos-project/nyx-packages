@@ -315,6 +315,8 @@ in
             pkgs.git
             # chpasswd, for passwords (they never go into the configuration).
             pkgs.shadow
+            # Snapshots before and after a change, where NyxOS has them on.
+            pkgs.snapper
           ];
           serviceConfig = {
             Type = "dbus";
