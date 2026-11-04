@@ -771,11 +771,11 @@
     "nyx-system": {
       "flake": false,
       "locked": {
-        "lastModified": 1793805442,
-        "narHash": "sha256-01EurUQ3P24NEpX12IOLvm5WW4CDRXLQV9PuUeLqEUU=",
+        "lastModified": 1793805898,
+        "narHash": "sha256-F5nGYu3zIDwlg8p663cGn2IfhRWZkRdcbLomeoC/ByY=",
         "owner": "nyxos-project",
         "repo": "nyx-system",
-        "rev": "18203d33bd89ba18d1553d2257b17791f2f98f19",
+        "rev": "baeafa9cf30c7225d8450662f22c521a88525ae6",
         "type": "github"
       },
       "original": {
