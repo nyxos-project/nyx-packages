@@ -38,7 +38,23 @@ nyx.buildApp {
     slurp
     ffmpeg
     wf-recorder
-    tesseract
+    # OCR in the languages NyxOS installs in (all of tesseract's are 1 GB).
+    (tesseract.override {
+      enableLanguages = [
+        "osd"
+        "eng"
+        "deu"
+        "fra"
+        "spa"
+        "ita"
+        "por"
+        "nld"
+        "swe"
+        "pol"
+        "jpn"
+        "chi_sim"
+      ];
+    })
     v4l-utils
     mpv
     wl-clipboard
