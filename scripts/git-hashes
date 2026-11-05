@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Print lib/git-hashes.json: the hash of every git dependency the packages' Cargo.lock
+# files name, so builds never fetch at evaluation time (and work offline, from a store
+# that has them). Run after updating inputs, from the repository:
+#   scripts/git-hashes > lib/git-hashes.json
+set -euo pipefail
+if ! command -v python3 >/dev/null || ! command -v nix-prefetch-git >/dev/null; then
+  exec nix shell nixpkgs#python3 nixpkgs#nix-prefetch-git -c "$0" "$@"
+fi
+cd "$(dirname "$0")/.."
+here=$(pwd)
+old=lib/git-hashes.json
+[ -f "$old" ] || echo '{}' > "$old"
+
+sources=$(nix eval --json --impure --expr "
+  let
+    f = builtins.getFlake \"path:$here\";
+    lib = f.inputs.nixpkgs.lib;
+    srcs = lib.filterAttrs (n: v: builtins.pathExists \"\${v}/Cargo.lock\") (removeAttrs f.inputs [ \"self\" \"nixpkgs\" ]);
+    git = src: map (p: p.source) (lib.filter (p: lib.hasPrefix \"git+\" (p.source or \"\")) (builtins.fromTOML (builtins.readFile \"\${src}/Cargo.lock\")).package);
+  in lib.unique (lib.concatMap git (lib.attrValues srcs))")
+
+python3 - "$sources" "$old" <<'EOF'
+import json, subprocess, sys
+sources, old = json.loads(sys.argv[1]), json.load(open(sys.argv[2]))
+out = {}
+for s in sorted(sources):
+    if s in old:
+        out[s] = old[s]
+        continue
+    url = s[len("git+"):].split("?")[0].split("#")[0]
+    rev = s.split("#")[1]
+    r = subprocess.run(
+        ["nix-prefetch-git", "--quiet", "--url", url, "--rev", rev, "--fetch-submodules"],
+        capture_output=True, text=True, check=True,
+    )
+    out[s] = json.loads(r.stdout)["hash"]
+    print(f"{url} {rev[:7]} {out[s]}", file=sys.stderr)
+print(json.dumps(out, indent=2, sort_keys=True))
+EOF

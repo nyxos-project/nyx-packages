@@ -80,10 +80,24 @@ rec {
 
   # Nyx crates come from Git at revisions pinned in each Cargo.lock. Those revisions
   # are fixed, so fetching them at evaluation time is reproducible without hashes.
-  cargoLock = src: {
-    lockFile = "${src}/Cargo.lock";
-    allowBuiltinFetchGit = true;
-  };
+  # Git dependencies are fetched by hash (lib/git-hashes.json, from scripts/git-hashes),
+  # never while evaluating: a store that has them builds without the network.
+  cargoLock =
+    src:
+    let
+      lockFile = "${src}/Cargo.lock";
+      hashes = lib.importJSON ./git-hashes.json;
+      git = lib.filter (p: lib.hasPrefix "git+" (p.source or "")) (builtins.fromTOML (builtins.readFile lockFile)).package;
+    in
+    {
+      inherit lockFile;
+      outputHashes = lib.listToAttrs (
+        map (p: {
+          name = "${p.name}-${p.version}";
+          value = hashes.${p.source} or (throw "nyx-packages: no hash for ${p.source}; run scripts/git-hashes");
+        }) git
+      );
+    };
 
   # The repositories' systemd user units and D-Bus activation files, pointed at the
   # package: they start programs from ~/.local/bin, @BINDIR@, @BIN@ or /usr/bin, and
