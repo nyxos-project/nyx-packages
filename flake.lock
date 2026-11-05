@@ -515,11 +515,11 @@
     "nyx-installer": {
       "flake": false,
       "locked": {
-        "lastModified": 1793851570,
-        "narHash": "sha256-0hAfAwk8TyHnHgZV4iYZt2RoNUb0VxdU1CwrBBTGyPU=",
+        "lastModified": 1793852583,
+        "narHash": "sha256-+zIj5FAI2NOJnUBbmqf1/7SlAUxVj8uGtimdb69+rPA=",
         "owner": "nyxos-project",
         "repo": "nyx-installer",
-        "rev": "20ff23c373d6e7c49b2de0d23fcaf8aab3858bbd",
+        "rev": "ebb77975a370228c9ff77bd240dc01b75b593eeb",
         "type": "github"
       },
       "original": {
