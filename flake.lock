@@ -387,11 +387,11 @@
     "nyx-design": {
       "flake": false,
       "locked": {
-        "lastModified": 1793740052,
-        "narHash": "sha256-reWdYa2IcFYxewUeE7F9kmedfgsdoElzbJ0i1KWxO2k=",
+        "lastModified": 1793928281,
+        "narHash": "sha256-OfkkcccBvQSBSRY2mmUxNiAtPOsRYB4y4qgt/ve2Q1Y=",
         "owner": "design-nexus",
         "repo": "nyx-design",
-        "rev": "d2398b346b6bc414cc031b0a08a1b2a9a0f6ee2e",
+        "rev": "b49ab72631cd6da8dc1bc241078200fcb7a83703",
         "type": "github"
       },
       "original": {
@@ -483,11 +483,11 @@
     "nyx-greeter": {
       "flake": false,
       "locked": {
-        "lastModified": 1793825457,
-        "narHash": "sha256-/rGcJxxj5Ww2+EEYmO0We8AToNG6eHq+3KVwOqB4WzM=",
+        "lastModified": 1793928944,
+        "narHash": "sha256-fxO8xVgoLv7p7HdiVVEMLuO3YP5vif6xpsrXZSjHFBc=",
         "owner": "nyxos-project",
         "repo": "nyx-greeter",
-        "rev": "ee0bf555e88da691dbd460e068c9192099c7e12c",
+        "rev": "8075c77e165b18ac5d69dab02e5ad893810a50ed",
         "type": "github"
       },
       "original": {
@@ -515,11 +515,11 @@
     "nyx-installer": {
       "flake": false,
       "locked": {
-        "lastModified": 1793852583,
-        "narHash": "sha256-+zIj5FAI2NOJnUBbmqf1/7SlAUxVj8uGtimdb69+rPA=",
+        "lastModified": 1793929121,
+        "narHash": "sha256-WAZYgbtQk6kjnLzQQt+YMw+sG90a1ZIka1mKJrzMofs=",
         "owner": "nyxos-project",
         "repo": "nyx-installer",
-        "rev": "ebb77975a370228c9ff77bd240dc01b75b593eeb",
+        "rev": "09167f6b07b0eef93711e6501d55afc4219352d8",
         "type": "github"
       },
       "original": {
@@ -771,11 +771,11 @@
     "nyx-settings": {
       "flake": false,
       "locked": {
-        "lastModified": 1793831787,
-        "narHash": "sha256-bldxuXsTQLk/W8s+1F92J0b0kZsrLSvMc+32CyCTbK0=",
+        "lastModified": 1793929123,
+        "narHash": "sha256-vBsTQ/TFrLyv7uuQJQaUAf/uo3Nh4BL3PpGhNSM2ks8=",
         "owner": "design-nexus",
         "repo": "nyx-settings",
-        "rev": "febf79ec838fd6f8b485bd97d902f49b32c3108a",
+        "rev": "76b4e16f0ab0ff7119a0219c62a20a9beea9b635",
         "type": "github"
       },
       "original": {
@@ -803,11 +803,11 @@
     "nyx-store": {
       "flake": false,
       "locked": {
-        "lastModified": 1793808461,
-        "narHash": "sha256-0ij/HhenAJKF35fw6/Iz6vyA9HivSSsF4SmfdiBWs4s=",
+        "lastModified": 1793928445,
+        "narHash": "sha256-DEvL0CZxf/G38B9lx35j4BfIrRftiY6CDFracskzfi0=",
         "owner": "design-nexus",
         "repo": "nyx-store",
-        "rev": "57234201e70b4edb37c24bfe41273a3879332220",
+        "rev": "16a2c905d4315591bc3ad818adfe61f6ca197b95",
         "type": "github"
       },
       "original": {
@@ -835,11 +835,11 @@
     "nyx-system": {
       "flake": false,
       "locked": {
-        "lastModified": 1793830888,
-        "narHash": "sha256-U3crfA/5GrfFwWRTJyof1JYjavfx8rsx6Vf0S0OOpz8=",
+        "lastModified": 1793928106,
+        "narHash": "sha256-uWkPnuZr2uBx/Dz9wu3GshcoHrKz+bho+C84PF0YoRE=",
         "owner": "nyxos-project",
         "repo": "nyx-system",
-        "rev": "8e723eebbb4d6316ccaa7f772bf6aebd78b8f5e1",
+        "rev": "f3a102109e549f3798173319d75b4b0fb058142c",
         "type": "github"
       },
       "original": {
@@ -931,11 +931,11 @@
     "nyx-welcome": {
       "flake": false,
       "locked": {
-        "lastModified": 1793808470,
-        "narHash": "sha256-1DR8/RWHoJvnjNlfHltvmDP1TxA4krD/R38a9BVdepw=",
+        "lastModified": 1793929120,
+        "narHash": "sha256-KmVOIOM5JaA5J0uEWnprtVaLrP5BWCOTts1f9Y8tadE=",
         "owner": "nyxos-project",
         "repo": "nyx-welcome",
-        "rev": "57758fe195a5d20c74b5f5658f6582b3ccd578c9",
+        "rev": "3d9667fc75faeef49adf7b08f1a41cafedaf3ed3",
         "type": "github"
       },
       "original": {

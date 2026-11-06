@@ -81,6 +81,11 @@ fromSource [
     src = inputs.nyx-greeter;
   };
 
+  nyx-prompt = pkgs.callPackage ./nyx-prompt.nix {
+    inherit nyx;
+    src = inputs.nyx-greeter;
+  };
+
   nyx-plymouth = pkgs.callPackage ./nyx-plymouth.nix {
     src = inputs.nyx-plymouth;
     design = inputs.nyx-brand;

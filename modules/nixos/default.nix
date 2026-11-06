@@ -114,6 +114,10 @@ in
       Nyx Locker, the lock screen on the Wayland session-lock protocol: the password,
       and the methods in `nyx.biometrics.surfaces.lock`, each its own PAM service at once
     '';
+    prompt.enable = lib.mkEnableOption ''
+      Nyx Administrator Prompt, the graphical session's polkit authentication agent (in
+      place of any other agent)
+    '';
     wallpapers = {
       enable = lib.mkEnableOption "the Nyx wallpapers, with the theme's default shown on every output";
       theme = lib.mkOption {
@@ -341,6 +345,21 @@ in
             )
           }]
         '';
+      })
+
+      (lib.mkIf cfg.prompt.enable {
+        security.polkit.enable = true;
+        systemd.user.services.nyx-prompt = {
+          description = "Nyx Administrator Prompt (polkit agent)";
+          wantedBy = [ "graphical-session.target" ];
+          partOf = [ "graphical-session.target" ];
+          after = [ "graphical-session.target" ];
+          serviceConfig = {
+            ExecStart = "${nyxPkgs.nyx-prompt}/bin/nyx-prompt";
+            Restart = "on-failure";
+            RestartSec = 2;
+          };
+        };
       })
 
       (lib.mkIf cfg.themes.enable {
