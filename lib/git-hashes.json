@@ -24,7 +24,7 @@
   "git+https://github.com/design-nexus/nyx-passwords.git?rev=271eac96e166f1adceecc3e3c6c0dfde027ca522#271eac96e166f1adceecc3e3c6c0dfde027ca522": "sha256-qvUsV0SbYRIlGSmMgV0nZLi+y9a4gI2zmRzQT65kZzY=",
   "git+https://github.com/design-nexus/nyx-share.git?rev=3923640afdcbfe09fa4c1faaf7d952db071f3812#3923640afdcbfe09fa4c1faaf7d952db071f3812": "sha256-0GMby5EYwjCsJD/vGEZH9Sta0hgsUXlcv3pkjd85kiE=",
   "git+https://github.com/design-nexus/nyx-share.git?rev=53a5cacbc46a4269ba40a0fb17c1ee07f12e5177#53a5cacbc46a4269ba40a0fb17c1ee07f12e5177": "sha256-tqIKtJiSi+8hT8FFmn7Vs53kSwMw6jU6XPImh6GWQBs=",
+  "git+https://github.com/nyxos-project/nyx-system.git?rev=87461e53c2fc5fb5e045204e2a492c32c86a3f26#87461e53c2fc5fb5e045204e2a492c32c86a3f26": "sha256-Z3JX5oCD2D7ATX6PGVC0pFK+UikS3NwNsUzUUL9PqIw=",
   "git+https://github.com/nyxos-project/nyx-system.git?rev=8e723ee#8e723eebbb4d6316ccaa7f772bf6aebd78b8f5e1": "sha256-U3crfA/5GrfFwWRTJyof1JYjavfx8rsx6Vf0S0OOpz8=",
-  "git+https://github.com/nyxos-project/nyx-system.git?rev=93aae604270f5e441fbf963ff1b0e258f5d59b4a#93aae604270f5e441fbf963ff1b0e258f5d59b4a": "sha256-q5V5apreyo3V0B05PKYdKbYEqq42NGUzdBMCszCuyTo=",
   "git+https://github.com/nyxos-project/nyx-system.git?rev=afa09fe764fc6aa932cc9e40dd366b765e673553#afa09fe764fc6aa932cc9e40dd366b765e673553": "sha256-+OzigDfNUckFFWmDa91SDqKmOAWM6ghOAwGRPLqOLfI="
 }
