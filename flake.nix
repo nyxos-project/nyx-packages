@@ -241,6 +241,10 @@
       url = "github:nyxos-project/nyx-installer";
       flake = false;
     };
+    umbra-icons = {
+      url = "github:design-nexus/umbra-icons";
+      flake = false;
+    };
   };
 
   outputs =

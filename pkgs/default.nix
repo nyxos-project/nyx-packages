@@ -81,6 +81,11 @@ fromSource [
     src = inputs.nyx-greeter;
   };
 
+  umbra-icons = pkgs.callPackage ./umbra-icons.nix {
+    inherit nyx;
+    src = inputs.umbra-icons;
+  };
+
   nyx-prompt = pkgs.callPackage ./nyx-prompt.nix {
     inherit nyx;
     src = inputs.nyx-greeter;
