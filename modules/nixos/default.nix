@@ -375,6 +375,8 @@ in
             config.programs.hyprland.package
             pkgs.dconf
             config.systemd.package
+            # Redraws Umbra in the theme's colours.
+            nyxPkgs.umbra-icons
           ];
           serviceConfig = {
             ExecStart = "${nyxPkgs.nyx-system}/bin/nyx-themed";
