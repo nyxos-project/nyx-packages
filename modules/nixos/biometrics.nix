@@ -30,8 +30,9 @@ let
 
   # The lock screen's per-method services: the gate and the method, nothing else. The
   # method's own result is the service's, so Nyx Locker can tell a finger it didn't
-  # recognise (auth_err) from no reader (authinfo_unavail); a skipped method leaves
-  # nothing decided, which PAM returns as perm_denied.
+  # recognise (auth_err) from no reader (authinfo_unavail). A method the gate skips
+  # lands on `false`, which pam_exec reports as system_err (unavailable), instead of
+  # NixOS's closing pam_deny (auth_err, "not recognised").
   lockService = {
     face = "nyx-lock-face";
     fingerprint = "nyx-lock-fingerprint";
@@ -59,6 +60,15 @@ let
             order = 101;
             control = "[success=done ignore=ignore default=die]";
             inherit (method "lock" name) modulePath args;
+          };
+          "nyx-${name}-skipped" = {
+            order = 102;
+            control = "requisite";
+            modulePath = "${config.security.pam.package}/lib/security/pam_exec.so";
+            args = [
+              "quiet"
+              "${pkgs.coreutils}/bin/false"
+            ];
           };
         };
       };

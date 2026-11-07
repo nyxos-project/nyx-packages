@@ -483,11 +483,11 @@
     "nyx-greeter": {
       "flake": false,
       "locked": {
-        "lastModified": 1794036212,
-        "narHash": "sha256-eTfCzplYfFe3DDD0vWeU/0OEjibA+AN/E9u/dzM0pB8=",
+        "lastModified": 1794038986,
+        "narHash": "sha256-m0CZb+1OiLd8Vyhq3i4MMT4B4YFLsbcXwWTOAQydvpU=",
         "owner": "nyxos-project",
         "repo": "nyx-greeter",
-        "rev": "75ce899a7488778bc051b38b9cdb675ddf3895b1",
+        "rev": "c030ce256dcb39a1485bef1c51cf3174e8df8627",
         "type": "github"
       },
       "original": {
