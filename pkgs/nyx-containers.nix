@@ -5,15 +5,18 @@
   src,
   vte-gtk4,
   gtksourceview5,
+  spice-gtk,
   libsecret,
   openssh,
 }:
 nyx.buildApp {
   pname = "nyx-containers";
   inherit src;
+  # spice-client-glib shows a VM's screen inside its tab.
   buildInputs = [
     vte-gtk4
     gtksourceview5
+    spice-gtk
   ];
   # secret-tool keeps registry credentials; ssh-keyscan checks remote Incus hosts.
   runtimeInputs = [
