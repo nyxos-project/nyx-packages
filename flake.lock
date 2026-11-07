@@ -803,11 +803,11 @@
     "nyx-store": {
       "flake": false,
       "locked": {
-        "lastModified": 1794041371,
-        "narHash": "sha256-adx5UD9MSNj5CWiMfPcZgNf9wuP06siV5rRqREdvuqo=",
+        "lastModified": 1794042650,
+        "narHash": "sha256-r92aTgnUNBndpY8SMtvrp76JZM++IcCXg8XHqGZxY2g=",
         "owner": "design-nexus",
         "repo": "nyx-store",
-        "rev": "41c256dd083adb433549767daca0d6cac3cd5672",
+        "rev": "5d92cbf4c3cef84c7b25e60efa4e8d85f4d067c3",
         "type": "github"
       },
       "original": {
