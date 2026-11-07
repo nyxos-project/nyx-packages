@@ -28,7 +28,10 @@ let
     lock = [ ];
   };
 
-  # The lock screen's per-method services: the gate and the method, nothing else.
+  # The lock screen's per-method services: the gate and the method, nothing else. The
+  # method's own result is the service's, so Nyx Locker can tell a finger it didn't
+  # recognise (auth_err) from no reader (authinfo_unavail); a skipped method leaves
+  # nothing decided, which PAM returns as perm_denied.
   lockService = {
     face = "nyx-lock-face";
     fingerprint = "nyx-lock-fingerprint";
@@ -54,7 +57,7 @@ let
           };
           "nyx-${name}" = {
             order = 101;
-            control = "sufficient";
+            control = "[success=done ignore=ignore default=die]";
             inherit (method "lock" name) modulePath args;
           };
         };
