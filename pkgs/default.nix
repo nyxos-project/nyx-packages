@@ -101,6 +101,11 @@ fromSource [
     src = inputs.nyx-design;
   };
 
+  nyx-theme = pkgs.callPackage ./nyx-theme.nix {
+    inherit nyx;
+    src = inputs.nyx-design;
+  };
+
   inherit (nyx)
     libical_4
     libshumate_1_7
