@@ -36,11 +36,6 @@
       url = "github:design-nexus/nyx-design";
       flake = false;
     };
-    # nyx-design with the brand marks, for the boot splash (apps stay on nyx-design).
-    nyx-brand = {
-      url = "github:design-nexus/nyx-design";
-      flake = false;
-    };
     nyx-plymouth = {
       url = "github:nyxos-project/nyx-plymouth";
       flake = false;
