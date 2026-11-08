@@ -14,6 +14,10 @@ let
         src = inputs.${name};
       }
     );
+  nyxTheme = pkgs.callPackage ./nyx-theme.nix {
+    inherit nyx;
+    src = inputs.nyx-design;
+  };
 in
 fromSource [
   "nyx-accounts"
@@ -91,9 +95,10 @@ fromSource [
     src = inputs.nyx-greeter;
   };
 
+  # The Nyx mark unless NyxOS overrides `logo` with the system logo.
   nyx-plymouth = pkgs.callPackage ./nyx-plymouth.nix {
     src = inputs.nyx-plymouth;
-    design = inputs.nyx-brand;
+    nyx-theme = nyxTheme;
   };
 
   nyx-icons = pkgs.callPackage ./nyx-icons.nix {
@@ -101,10 +106,7 @@ fromSource [
     src = inputs.nyx-design;
   };
 
-  nyx-theme = pkgs.callPackage ./nyx-theme.nix {
-    inherit nyx;
-    src = inputs.nyx-design;
-  };
+  nyx-theme = nyxTheme;
 
   inherit (nyx)
     libical_4
