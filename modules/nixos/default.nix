@@ -109,11 +109,7 @@ in
         description = "This machine's attribute in the flake's nixosConfigurations.";
       };
     };
-    themes.enable = lib.mkEnableOption ''
-      Nyx Theme Engine: nyx-themed (io.github.design_nexus.nyx.Theme on the session bus,
-      which announces theme changes and carries each user's theme to Hyprland, Foot,
-      GTK and the wallpaper), the nyx-theme command and the Nyx.Theme QML module
-    '';
+    themes.enable = lib.mkEnableOption "nyx-themed, which carries each user's Nyx theme to Hyprland, Foot, GTK and the wallpaper";
     locker.enable = lib.mkEnableOption ''
       Nyx Locker, the lock screen on the Wayland session-lock protocol: the password,
       and the methods in `nyx.biometrics.surfaces.lock`, each its own PAM service at once
@@ -395,17 +391,10 @@ in
       })
 
       (lib.mkIf cfg.themes.enable {
-        environment.systemPackages = [
-          nyxPkgs.nyx-system
-          nyxPkgs.nyx-theme
-        ];
-        # `import Nyx.Theme` in Quickshell components.
-        environment.sessionVariables.QML_IMPORT_PATH = [ "/run/current-system/sw/share/nyx/qml" ];
-        # io.github.design_nexus.nyx.Theme starts nyx-themed when a client calls it first.
-        services.dbus.packages = [ nyxPkgs.nyx-system ];
+        environment.systemPackages = [ nyxPkgs.nyx-system ];
         programs.dconf.enable = true;
         systemd.user.services.nyx-themed = {
-          description = "Nyx theme service (io.github.design_nexus.nyx.Theme)";
+          description = "Nyx theme service";
           partOf = [ "graphical-session.target" ];
           after = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
@@ -418,8 +407,6 @@ in
             nyxPkgs.umbra-icons
           ];
           serviceConfig = {
-            Type = "dbus";
-            BusName = "io.github.design_nexus.nyx.Theme";
             ExecStart = "${nyxPkgs.nyx-system}/bin/nyx-themed";
             Restart = "on-failure";
           };
