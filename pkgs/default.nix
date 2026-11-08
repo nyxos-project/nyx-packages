@@ -4,6 +4,11 @@
   inputs,
 }:
 let
+  # Prism's llama.cpp with Vulkan, Nyx AI Core's worker. The CUDA build
+  # (llama-prism-cuda.nix) is unfree, so the NixOS module builds it with the system's
+  # nixpkgs instead.
+  llama-prism = pkgs.callPackage ./llama-prism.nix { };
+
   # Packages named after their source input: pkgs/<name>.nix built from inputs.<name>.
   fromSource =
     names:
@@ -69,6 +74,13 @@ fromSource [
   "nyx-installer"
 ]
 // {
+  inherit llama-prism;
+  nyx-ai = pkgs.callPackage ./nyx-ai.nix {
+    inherit nyx;
+    src = inputs.nyx-ai;
+    llama = llama-prism;
+  };
+
   nyx-wallpapers = pkgs.callPackage ./nyx-wallpapers.nix { src = inputs.nyx-wallpapers; };
 
   hyprland = pkgs.callPackage ./hyprland.nix { };

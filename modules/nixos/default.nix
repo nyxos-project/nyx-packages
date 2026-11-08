@@ -57,11 +57,25 @@ let
     welcome = "Nyx Welcome, the setup after installation";
   };
 
+  # Nyx AI Core with the worker for this machine's acceleration. The CUDA build is
+  # unfree, so it comes from the system's nixpkgs (and its allowed-unfree list).
+  aiLlama = {
+    vulkan = nyxPkgs.llama-prism;
+    cpu = nyxPkgs.llama-prism.override { vulkanSupport = false; };
+    cuda = pkgs.callPackage ../../pkgs/llama-prism-cuda.nix { };
+  };
+  aiPackage =
+    if cfg.ai.acceleration == "vulkan" then
+      nyxPkgs.nyx-ai
+    else
+      nyxPkgs.nyx-ai.override { llama = aiLlama.${cfg.ai.acceleration}; };
+
   # An app's user units and D-Bus activation files, plus the units its repository
   # starts with the session (passthru.autostart: unit name -> target).
   enabledPackages =
     map (name: nyxPkgs."nyx-${name}") (lib.filter (name: cfg.${name}.enable) (lib.attrNames apps))
-    ++ lib.optional cfg.accounts.enable nyxPkgs.nyx-accounts;
+    ++ lib.optional cfg.accounts.enable nyxPkgs.nyx-accounts
+    ++ lib.optional cfg.ai.enable aiPackage;
 
   services = package: {
     systemd.packages = [ package ];
@@ -94,6 +108,37 @@ in
       '';
     };
     accounts.enable = lib.mkEnableOption "the Nyx Online Accounts service";
+    ai = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = cfg.chat.enable;
+        defaultText = lib.literalExpression "config.nyx.chat.enable";
+        description = ''
+          Nyx AI Core: the shared local model runtime (PrismML's llama.cpp) that Nyx apps
+          use, started on first use, with an OpenAI-compatible API for coding tools on
+          127.0.0.1:8080. On by default with Chat.
+        '';
+      };
+      acceleration = lib.mkOption {
+        type = lib.types.enum [
+          "vulkan"
+          "cuda"
+          "cpu"
+        ];
+        default = "vulkan";
+        description = ''
+          How the worker runs models: Vulkan (any GPU, and the processor), CUDA
+          (Prism's prebuilt build for NVIDIA's own driver; unfree, so the system must
+          allow `nyx.ai.unfree`) or the processor alone.
+        '';
+      };
+      unfree = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        readOnly = true;
+        default = lib.optionals (cfg.ai.acceleration == "cuda") aiLlama.cuda.passthru.unfree;
+        description = "Unfree packages the chosen acceleration needs.";
+      };
+    };
     system = {
       enable = lib.mkEnableOption ''
         the Nyx System Manager: validated, polkit-authorized changes to this system's
@@ -437,6 +482,27 @@ in
       (lib.mkIf cfg.store.enable {
         services.flatpak.enable = true;
         xdg.portal.enable = lib.mkDefault true;
+      })
+
+      # The socket starts nyx-aid on the first request, from an app or a coding tool.
+      (lib.mkIf cfg.ai.enable {
+        environment.systemPackages = [ aiPackage ];
+        systemd.packages = [ aiPackage ];
+        systemd.user.sockets.nyx-aid = {
+          overrideStrategy = "asDropin";
+          wantedBy = [ "sockets.target" ];
+          unitConfig.ConditionUser = "!@system";
+        };
+        # nvidia-smi and the like, for reading GPU memory.
+        systemd.user.services.nyx-aid = {
+          overrideStrategy = "asDropin";
+          path = [
+            "/run/wrappers"
+            "/etc/profiles/per-user/%u"
+            "/run/current-system/sw"
+          ];
+        };
+        hardware.graphics.enable = lib.mkDefault true;
       })
 
       (lib.mkIf cfg.accounts.enable {

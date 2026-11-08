@@ -2,6 +2,7 @@
   "git+https://github.com/archledger/pam_sm_rust?rev=5cd182d42076bd4fd0a8c4367f042c6d641a2457#5cd182d42076bd4fd0a8c4367f042c6d641a2457": "sha256-3U6h6GhNhc3jDOZ8HqTFJMe0MepcKek4tk9mAbJ/GvM=",
   "git+https://github.com/archledger/rust-tss-esapi?rev=7567f6048d2bcb42779e80c0dad90e7eacf6185c#7567f6048d2bcb42779e80c0dad90e7eacf6185c": "sha256-DMSoJtwvVIUK++Ych15C6EM0hMk15w5oEAkUQoWhJ+A=",
   "git+https://github.com/design-nexus/nyx-accounts.git?rev=afdc1482cb910746f942556090870d3ec083dd34#afdc1482cb910746f942556090870d3ec083dd34": "sha256-a12bk6bZZvUdwNgXWcKRDDoobF8upy3uuoiW7dA154Y=",
+  "git+https://github.com/design-nexus/nyx-ai.git?rev=d0f202b873a9609a09dfa764f2bf45ed0097e736#d0f202b873a9609a09dfa764f2bf45ed0097e736": "sha256-iPIL5iTC0TtepAyWn3ljXJwIF11hNcRn37zozMLdYPQ=",
   "git+https://github.com/design-nexus/nyx-biometrics.git?rev=5011c09b1482440247427a85db1f95b35b9b0e52#5011c09b1482440247427a85db1f95b35b9b0e52": "sha256-v9LsrI4Ncp7HW/4Riwf3+bxlWSYsTNb23BwnnegfJJo=",
   "git+https://github.com/design-nexus/nyx-cloud.git?rev=072cb06bf7a975e536b8fcdd2d19ec7a911e14d7#072cb06bf7a975e536b8fcdd2d19ec7a911e14d7": "sha256-sv3E9AfBjSSxEW4KPJFNJsRHF8v6mnrtBfiitK/CP64=",
   "git+https://github.com/design-nexus/nyx-cloud.git?rev=ba6385f60597a9ca6ebd5fb63836a1ea3dfa0f49#ba6385f60597a9ca6ebd5fb63836a1ea3dfa0f49": "sha256-ktkKCU4Ijo3s7jGLYY9uPeZiV0LqiY9QJunYAbcM/r8=",

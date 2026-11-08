@@ -29,7 +29,9 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-cloud` | nyx-cloud | Cloud storage service (rclone) |
 | `packages.nyx-clipboard` | nyx-clipboard | Clipboard daemon, popup and Settings extension |
 | `packages.nyx-home` | nyx-home | Nyx Home, its automation service and CLI |
-| `packages.nyx-chat` | nyx-chat | Nyx Chat; no llama.cpp server (Chat installs PrismML's build itself) |
+| `packages.nyx-chat` | nyx-chat | Nyx Chat; its local models run in Nyx AI Core |
+| `packages.nyx-ai` | nyx-ai | Nyx AI Core: `nyx-aid`, `nyx-ai`, and the user socket (also the OpenAI-compatible API on 127.0.0.1:8080) |
+| `packages.llama-prism` | PrismML llama.cpp | Nyx AI Core's worker, built from source with Vulkan; `nyx.ai.acceleration = "cuda"` uses Prism's prebuilt CUDA release instead (unfree) |
 | `packages.nyx-activity` | nyx-activity | Nyx Activity, with hwdata for GPU names |
 | `packages.nyx-containers` | nyx-containers | Nyx Containers (Docker and Incus come from the system) |
 | `packages.nyx-torrents` | nyx-torrents | Nyx Torrents on libtorrent 2.0 |
@@ -65,7 +67,7 @@ builds it reproducibly and runs its tests.
 | `packages.libshumate_1_7` | libshumate | libshumate 1.7.0 for Nyx Maps (nixpkgs has 1.6) |
 | `checks.nyx-core` | nyx-core | `cargo test --workspace` for the shared libraries |
 | `checks.nyx-design` | nyx-design | `cargo test --workspace` for the design system |
-| `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, and `nyx.icons.followTheme` (the tool plus its user units) |
+| `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, `nyx.ai` (on with Chat; `acceleration`), and `nyx.icons.followTheme` (the tool plus its user units) |
 | `overlays.default` | | `pkgs.nyx.<package>` |
 | `lib` | | Toolchain and build helpers for Nyx Rust workspaces |
 

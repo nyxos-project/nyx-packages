@@ -125,6 +125,10 @@
       url = "github:design-nexus/nyx-chat";
       flake = false;
     };
+    nyx-ai = {
+      url = "github:design-nexus/nyx-ai";
+      flake = false;
+    };
     nyx-activity = {
       url = "github:design-nexus/nyx-activity";
       flake = false;
