@@ -835,11 +835,11 @@
     "nyx-system": {
       "flake": false,
       "locked": {
-        "lastModified": 1794116243,
-        "narHash": "sha256-YStDUekRRLSbp142hto0+pkiExfk7aDYjq1wCT2Twcw=",
+        "lastModified": 1794117512,
+        "narHash": "sha256-PRzTRGJU/7FsrVkP+qgMDKReCOc4jZSAatXz8vtCh84=",
         "owner": "nyxos-project",
         "repo": "nyx-system",
-        "rev": "7d4c4b35e3610791a74c57cfe58b4c68d2fec03b",
+        "rev": "3689064353264ec441c60b918e3b66856d072e3c",
         "type": "github"
       },
       "original": {
