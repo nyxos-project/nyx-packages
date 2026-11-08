@@ -266,7 +266,9 @@
     {
       # The NyxOS software catalog, for checks against a NixOS configuration.
       lib = nyx // {
-        catalog = builtins.fromTOML (builtins.readFile "${inputs.nyx-system}/crates/nyx-catalog/catalog.toml");
+        catalog = builtins.fromTOML (
+          builtins.readFile "${inputs.nyx-system}/crates/nyx-catalog/catalog.toml"
+        );
       };
 
       packages.${system} = packages // {

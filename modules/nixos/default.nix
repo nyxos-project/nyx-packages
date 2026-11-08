@@ -307,7 +307,9 @@ in
         systemd.tmpfiles.rules = [ "d /etc/nyxos/overrides 0755 root root -" ];
         # The catalog, and the Nyx apps this system has, for Welcome, the Store and nyx-system.
         environment.pathsToLink = [ "/share/nyx" ];
-        environment.etc."nyx/apps".text = lib.concatLines (lib.filter (name: cfg.${name}.enable) (lib.attrNames apps));
+        environment.etc."nyx/apps".text = lib.concatLines (
+          lib.filter (name: cfg.${name}.enable) (lib.attrNames apps)
+        );
         systemd.services.nyx-system-manager = {
           description = "Nyx System Manager";
           # It runs the switch itself: stopping it mid-switch would cut the switch's
@@ -414,7 +416,8 @@ in
       # Switcher writes its shortcuts (~/.config/hypr/nyx-switcher.lua) as it starts; they
       # take over Alt+Tab and Super+Tab.
       (lib.mkIf cfg.switcher.enable {
-        systemd.user.services.nyx-switcher.serviceConfig.ExecStartPre = "${nyxPkgs.nyx-switcher}/bin/nyx-switcher --integrate --force";
+        systemd.user.services.nyx-switcher.serviceConfig.ExecStartPre =
+          "${nyxPkgs.nyx-switcher}/bin/nyx-switcher --integrate --force";
       })
 
       # Store installs Flathub apps with the user's flatpak.

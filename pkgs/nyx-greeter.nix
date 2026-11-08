@@ -12,7 +12,10 @@
 nyx.buildApp {
   pname = "nyx-greeter";
   inherit src;
-  cargoBuildFlags = [ "-p" "nyx-greeter" ];
+  cargoBuildFlags = [
+    "-p"
+    "nyx-greeter"
+  ];
   # The greeter's own tests (the locker in the same repository has its own package).
   cargoTestFlags = [
     "-p"

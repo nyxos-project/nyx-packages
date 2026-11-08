@@ -87,14 +87,17 @@ rec {
     let
       lockFile = "${src}/Cargo.lock";
       hashes = lib.importJSON ./git-hashes.json;
-      git = lib.filter (p: lib.hasPrefix "git+" (p.source or "")) (builtins.fromTOML (builtins.readFile lockFile)).package;
+      git =
+        lib.filter (p: lib.hasPrefix "git+" (p.source or ""))
+          (builtins.fromTOML (builtins.readFile lockFile)).package;
     in
     {
       inherit lockFile;
       outputHashes = lib.listToAttrs (
         map (p: {
           name = "${p.name}-${p.version}";
-          value = hashes.${p.source} or (throw "nyx-packages: no hash for ${p.source}; run scripts/git-hashes");
+          value =
+            hashes.${p.source} or (throw "nyx-packages: no hash for ${p.source}; run scripts/git-hashes");
         }) git
       );
     };
