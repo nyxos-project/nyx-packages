@@ -25,11 +25,17 @@
   nyx-design = nyx.testWorkspace {
     pname = "nyx-design-tests";
     src = inputs.nyx-design;
-    nativeBuildInputs = [ pkgs.pkg-config ];
+    # The theme installer's tests make git repositories.
+    nativeBuildInputs = [
+      pkgs.pkg-config
+      pkgs.git
+    ];
     buildInputs = with pkgs; [
       gtk4
       mpv-unwrapped
       libGL
+      # nyx-plugin-view draws plugin icons with librsvg.
+      librsvg
     ];
   };
 }
