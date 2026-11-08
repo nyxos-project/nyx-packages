@@ -13,11 +13,15 @@ concurrency:
 permissions:
   contents: read
 
+# Everything is evaluated in one job, then the checks (every package and the libraries'
+# tests) are built in parallel shards: built one after another they no longer fit a
+# job's time.
 jobs:
-  check:
+  evaluate:
     runs-on: ubuntu-latest
-    # A hung test otherwise holds the runner for GitHub's six-hour default.
-    timeout-minutes: 90
+    timeout-minutes: 30
+    outputs:
+      shards: ${{ steps.shards.outputs.shards }}
     steps:
       - uses: actions/checkout@v7
 
@@ -30,6 +34,41 @@ jobs:
             http2 = false
             stalled-download-timeout = 60
 
+      - name: Format
+        run: nix fmt -- --check $(git ls-files '*.nix')
+
+      - name: Evaluate every output
+        run: nix flake check --no-build -L
+
+      - id: shards
+        run: |
+          nix eval --json .#checks.x86_64-linux --apply builtins.attrNames |
+            jq -c '[range(6) as $i | [to_entries[] | select(.key % 6 == $i) | .value]] | map(select(length > 0))' |
+            sed 's/^/shards=/' >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: evaluate
+    runs-on: ubuntu-latest
+    # A hung build otherwise holds the runner for GitHub's six-hour default; a first
+    # build with nothing cached (CUDA, WebKit) takes a few hours.
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.evaluate.outputs.shards) }}
+    steps:
+      - name: Free disk space
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache
+
+      - uses: actions/checkout@v7
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            http2 = false
+            stalled-download-timeout = 60
+
       # Org variable CACHIX_NAME and secret CACHIX_AUTH_TOKEN. Without the token
       # (pull requests from forks) the cache is read-only.
       - uses: cachix/cachix-action@v17
@@ -37,8 +76,9 @@ jobs:
           name: ${{ vars.CACHIX_NAME }}
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Format
-        run: nix fmt -- --check $(git ls-files '*.nix')
-
-      - name: Build and test every package and library
-        run: nix flake check -L --keep-going
+      - name: Build ${{ join(matrix.shard, ', ') }}
+        env:
+          SHARD: ${{ toJSON(matrix.shard) }}
+        run: |
+          mapfile -t checks < <(jq -r '.[] | ".#checks.x86_64-linux.\(.)"' <<<"$SHARD")
+          nix build -L --no-link --keep-going "${checks[@]}"
