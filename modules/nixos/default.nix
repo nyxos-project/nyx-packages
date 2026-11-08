@@ -329,6 +329,32 @@ in
             StateDirectory = "nyx-system";
           };
         };
+        # The daily check for updates: a notification when something new is available,
+        # once per set of updates. It waits out metered connections unless the user allows
+        # them (nyx-system config set updates check-on-metered true) and does nothing when
+        # checks are off (updates check false).
+        systemd.user.services.nyx-update-check = {
+          description = "Check for NyxOS updates";
+          unitConfig.ConditionUser = "!@system";
+          # nix, flatpak and fwupdmgr, as the system has them.
+          path = [ "/run/current-system/sw" ];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${nyxPkgs.nyx-system}/bin/nyx-system update status --notify";
+            Nice = 10;
+            IOSchedulingClass = "idle";
+          };
+        };
+        systemd.user.timers.nyx-update-check = {
+          description = "Check for NyxOS updates daily";
+          wantedBy = [ "timers.target" ];
+          timerConfig = {
+            OnStartupSec = "15min";
+            OnUnitActiveSec = "1d";
+            RandomizedDelaySec = "1h";
+            Persistent = true;
+          };
+        };
       })
 
       (lib.mkIf cfg.locker.enable {
