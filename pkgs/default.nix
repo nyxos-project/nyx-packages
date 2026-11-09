@@ -71,6 +71,7 @@ fromSource [
   "nyx-system"
   "nyx-switcher"
   "nyx-shell"
+  "nyx-desktop-widgets"
   "nyx-welcome"
   "nyx-installer"
 ]

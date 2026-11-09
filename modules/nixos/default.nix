@@ -50,6 +50,7 @@ let
     notification-center = "Nyx Notification Center and its notification service";
     dock = "Nyx Dock";
     control-center = "Nyx Control Center";
+    desktop-widgets = "Nyx Desktop Widgets, plugin widgets on the desktop (drawn by Nyx Shell's nyx-shell-qs)";
     bar = "Nyx Bar and its plugins";
     settings = "Nyx Settings and its root helper";
     store = "Nyx Store, with the NyxOS catalog, nixpkgs and Flathub";

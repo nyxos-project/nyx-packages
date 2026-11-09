@@ -355,11 +355,11 @@
     "nyx-control-center": {
       "flake": false,
       "locked": {
-        "lastModified": 1794143009,
-        "narHash": "sha256-ON+CORTOsRDkz7NDDRPXfzR0EXrW9KsfDVvgxz3XbmE=",
+        "lastModified": 1794203288,
+        "narHash": "sha256-c7TrOsTZu24txCz+VJRjR2yV3kKolrzGioFbJ4gNPEE=",
         "owner": "design-nexus",
         "repo": "nyx-control-center",
-        "rev": "490df009a0a6118d4952cbb8579f1140c93d595e",
+        "rev": "0d0b804b7ae86f2887c18d279efe253666153683",
         "type": "github"
       },
       "original": {
@@ -387,16 +387,32 @@
     "nyx-design": {
       "flake": false,
       "locked": {
-        "lastModified": 1794194189,
-        "narHash": "sha256-KAsNFkdERDF1xmOEjTI0e9SeEgkep++Ojgv1MeX7GDY=",
+        "lastModified": 1794203016,
+        "narHash": "sha256-cANMw3DSABIZiVLqEodId3Dv7U7zdbkfYSkTx7qiAz8=",
         "owner": "design-nexus",
         "repo": "nyx-design",
-        "rev": "d737ffb8098ce84204ddd4622e89fe040dd58b92",
+        "rev": "013e706f88a4be9024291c9e1379681716f44544",
         "type": "github"
       },
       "original": {
         "owner": "design-nexus",
         "repo": "nyx-design",
+        "type": "github"
+      }
+    },
+    "nyx-desktop-widgets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794203018,
+        "narHash": "sha256-IjpN+ugZxAdtiEcWygEK8sb566Rytiq+wdYQpYRJJAs=",
+        "owner": "nyxos-project",
+        "repo": "nyx-desktop-widgets",
+        "rev": "f629780eed3962b4c0a8d8339d7f59a615bf7e8b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nyxos-project",
+        "repo": "nyx-desktop-widgets",
         "type": "github"
       }
     },
@@ -803,11 +819,11 @@
     "nyx-shell": {
       "flake": false,
       "locked": {
-        "lastModified": 1794194163,
-        "narHash": "sha256-rnv3u2G0zwwpR4EvJNKvt6JDh9qGpOqorjhTtKFjBfI=",
+        "lastModified": 1794203281,
+        "narHash": "sha256-pHtbvGBmDp6cv177d4tdCTzGlJ9pr5R3UV0m7B6OKqw=",
         "owner": "nyxos-project",
         "repo": "nyx-shell",
-        "rev": "c35892108db6e297478c2727e76c4fa03899b1b2",
+        "rev": "2fb68853140d1cb9dc6185be02716ce28005da92",
         "type": "github"
       },
       "original": {
@@ -985,6 +1001,7 @@
         "nyx-control-center": "nyx-control-center",
         "nyx-core": "nyx-core",
         "nyx-design": "nyx-design",
+        "nyx-desktop-widgets": "nyx-desktop-widgets",
         "nyx-dock": "nyx-dock",
         "nyx-files": "nyx-files",
         "nyx-fonts": "nyx-fonts",

@@ -236,6 +236,10 @@
       url = "github:nyxos-project/nyx-shell";
       flake = false;
     };
+    nyx-desktop-widgets = {
+      url = "github:nyxos-project/nyx-desktop-widgets";
+      flake = false;
+    };
     nyx-welcome = {
       url = "github:nyxos-project/nyx-welcome";
       flake = false;
