@@ -47,20 +47,23 @@ NTgCalls, the call engine, is the 3.0.5 release build Pulse pins upstream
 zlib and libstdc++. Its local WebRTC loopback test is skipped in the build sandbox, which
 has only a loopback interface; it passes outside the sandbox.
 
-## nyx-assistant needs sherpa-onnx 1.13.8, linked shared
+## nyx-voice needs sherpa-onnx 1.13.8, linked shared
 
-The Assistant's streaming speech worker uses sherpa-onnx 1.13.8, whose Rust bindings
+Nyx Voice's streaming speech worker (`nyx-voice-asr`, which the Assistant uses too) uses
+sherpa-onnx 1.13.8, whose Rust bindings
 match that version's C API; nixpkgs 26.05 has 1.12.38. nyx-packages builds 1.13.8 from
 source (`packages.sherpa-onnx_1_13_8`, nixpkgs' recipe without Python or the websocket
 server, with the bundled sources 1.13.8 pins). The crate links sherpa-onnx statically by
 default, which needs a static ONNX Runtime that nixpkgs doesn't build, so the package
 switches it to its `shared` feature and links nixpkgs' ONNX Runtime.
 
-Other differences from the Arch install:
+Other differences from the Arch install (the Assistant):
 
 - Browser automation drives nixpkgs' Chromium through `ASSISTANT_BROWSER_EXECUTABLE`
   instead of the Chromium build Playwright downloads.
-- voxtype comes from nixpkgs with ONNX Runtime, which gives it the Parakeet engine.
+- Speech is Nyx Voice's: the module turns on `nyx.voice` with the Assistant, so its
+  recognizer worker is on the PATH. VoxType isn't installed.
+- The language model runs in Nyx AI Core (`nyx.ai`); nothing builds llama.cpp here.
 - The daemon isn't started with the session: as with the install script, it is
   enabled once a model is downloaded (`systemctl --user enable --now nyx-assistantd`).
   `nyx-assistant-setup` prepares settings, abilities and the browser and search assets
@@ -71,10 +74,10 @@ Other differences from the Arch install:
 
 ## The desktop shell
 
-- Glimpse's semantic search helper (`glimpse-embed`) is built here against the
-  llama.cpp revision Glimpse pins (b11461) and linked to
-  `~/.local/share/nyx-glimpse/runtime`, where `nyx-glimpse models setup` would build it.
-  Glimpse's own shortcut setting edits `hyprland.lua` with Omarchy's helpers; on NyxOS
+- Glimpse's semantic search runs in Nyx AI Core (EmbeddingGemma 2, which `nyx-glimpse
+  models setup` makes available there); Glimpse builds no llama.cpp. With
+  `nyx.shell.enable`, its search backend starts with the session and its Quickshell
+  panel is a component of `nyx-shell-qs` (it needs `Nyx.Ui` from nyx-design). Glimpse's own shortcut setting edits `hyprland.lua` with Omarchy's helpers; on NyxOS
   Super+Space comes from the NyxOS Hyprland config instead. Its `tests/core.rs` still
   includes a file from the old monorepo's Settings and isn't run.
 - nyx-notifyd runs in Nyx mode (`NYX_NOTIFYD_MODE=nyx`): with no Omarchy shell, it is

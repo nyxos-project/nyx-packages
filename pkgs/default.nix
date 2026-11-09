@@ -61,6 +61,7 @@ fromSource [
   "nyx-pulse"
   "nyx-assistant"
   "nyx-glimpse"
+  "nyx-voice"
   "nyx-notification-center"
   "nyx-dock"
   "nyx-control-center"
