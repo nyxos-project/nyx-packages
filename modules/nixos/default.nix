@@ -47,6 +47,7 @@ let
     pulse = "Nyx Pulse";
     assistant = "Nyx Assistant, its HUD, Canvas and speech services";
     glimpse = "Nyx Glimpse, the launcher and local search";
+    voice = "Nyx Voice, local dictation, listening and speaking";
     notification-center = "Nyx Notification Center and its notification service";
     dock = "Nyx Dock";
     control-center = "Nyx Control Center";
@@ -205,9 +206,39 @@ in
       })
 
       # Nyx Shell Core's NyxOS defaults: the distribution layer of the `shell` domain.
+      # Apps' Quickshell components (Glimpse, the Assistant's Aura) are found by
+      # nyx-shell-qs in the system profile's share/nyx-shell/components.
       (lib.mkIf cfg.shell.enable {
         environment.etc."nyxos/defaults/shell.toml".source =
           "${nyxPkgs.nyx-shell}/share/nyx-shell/shell.toml";
+        environment.pathsToLink = [ "/share/nyx-shell/components" ];
+      })
+
+      # Glimpse's panel in the shell's Quickshell runtime: its search backend runs with
+      # the session (Super+Space goes to it; without it the GTK panel opens).
+      (lib.mkIf (cfg.shell.enable && cfg.glimpse.enable) {
+        systemd.user.services.nyx-glimpse-backend = {
+          overrideStrategy = "asDropin";
+          wantedBy = [ "graphical-session.target" ];
+          unitConfig.ConditionUser = "!@system";
+          path = [
+            "/run/wrappers"
+            "/etc/profiles/per-user/%u"
+            "/run/current-system/sw"
+          ];
+        };
+      })
+
+      # The Assistant's speech is Nyx Voice's: its recognizer worker comes with it.
+      (lib.mkIf cfg.assistant.enable { nyx.voice.enable = lib.mkDefault true; })
+
+      # The socket starts nyx-voiced on first use (dictation keys, apps).
+      (lib.mkIf cfg.voice.enable {
+        systemd.user.sockets.nyx-voiced = {
+          overrideStrategy = "asDropin";
+          wantedBy = [ "sockets.target" ];
+          unitConfig.ConditionUser = "!@system";
+        };
       })
 
       (lib.mkIf cfg.icons.followTheme {

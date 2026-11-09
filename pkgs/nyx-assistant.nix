@@ -1,7 +1,9 @@
-# Local voice assistant: the daemon and CLI, TUI, speech and plugin workers, the Canvas,
-# the Quickshell HUD, the bundled abilities, browser automation (Playwright with nixpkgs'
-# Chromium) and the DuckDuckGo search server. Inference runs on the CPU; models download
-# at runtime. The admin tools' root helper drives pacman, so NyxOS doesn't install it.
+# Local voice assistant: the daemon and CLI, TUI, plugin workers, the Canvas, the
+# Quickshell HUD and Aura, the bundled abilities, browser automation (Playwright with
+# nixpkgs' Chromium) and the DuckDuckGo search server. Its language model runs in Nyx AI
+# Core and its speech in Nyx Voice's engine (the recognizer worker comes with Nyx Voice;
+# the module installs it). The admin tools' root helper drives pacman, so NyxOS doesn't
+# install it.
 {
   lib,
   nyx,
@@ -10,7 +12,6 @@
   importNpmLock,
   fetchFromGitHub,
   writeShellScript,
-  cmake,
   onnxruntime,
   gtk4-layer-shell,
   pipewire,
@@ -43,7 +44,6 @@
   bluez,
   ripgrep,
   jq,
-  voxtype,
 }:
 let
   app = "${src}/apps/assistant";
@@ -103,7 +103,7 @@ let
     config=''${XDG_CONFIG_HOME:-$HOME/.config}/nyx-assistant
     data=''${XDG_DATA_HOME:-$HOME/.local/share}/nyx-assistant
     ${coreutils}/bin/mkdir -p "$config" "$data/search"
-    for name in config apps commands voxtype-parakeet; do
+    for name in config apps commands; do
       [ -e "$config/$name.toml" ] || ${coreutils}/bin/install -m 0644 "$out/share/nyx-assistant/config/$name.toml" "$config/$name.toml"
     done
     for link in browser search/duckduckgo; do
@@ -135,7 +135,6 @@ nyx.buildApp {
         "nyx-assistantd"
         "assistant-tui"
         "assistant-plugin-worker"
-        "assistant-asr"
         "assistant-visual"
       ];
   # The tests the repository's CI runs.
@@ -149,16 +148,10 @@ nyx.buildApp {
   # Expects LM Studio models on the machine running the tests.
   checkFlags = [ "--skip=config::tests::scans_local_models_finds_ggufs" ];
 
-  # llama.cpp builds with CMake inside its crate; bindgen makes the llama.cpp, sherpa-onnx
-  # and PipeWire bindings.
-  nativeBuildInputs = [
-    cmake
-    nyx.rustPlatform.bindgenHook
-  ];
-  dontUseCmakeConfigure = true;
+  # bindgen makes the PipeWire bindings.
+  nativeBuildInputs = [ nyx.rustPlatform.bindgenHook ];
   buildInputs = [
     onnxruntime
-    nyx.sherpa-onnx_1_13_8
     gtk4-layer-shell
     nyx.libshumate_1_7
     pipewire
@@ -170,17 +163,12 @@ nyx.buildApp {
     mpv-unwrapped
     libGL
   ];
-  # ort and sherpa-onnx link nixpkgs' ONNX Runtime and the sherpa-onnx build instead of
-  # downloading their own. nixpkgs has no static ONNX Runtime, so sherpa-onnx links shared.
+  # ort (Kokoro, Silero) links nixpkgs' ONNX Runtime instead of downloading its own.
   env = {
     ORT_LIB_LOCATION = "${lib.getLib onnxruntime}/lib";
     ORT_PREFER_DYNAMIC_LINK = "1";
-    SHERPA_ONNX_LIB_DIR = "${nyx.sherpa-onnx_1_13_8}/lib";
   };
   postPatch = ''
-    substituteInPlace apps/assistant/crates/assistant-asr/Cargo.toml --replace-fail \
-      'sherpa-onnx = "=1.13.8"' \
-      'sherpa-onnx = { version = "=1.13.8", default-features = false, features = ["shared"] }'
     for unit in apps/assistant/systemd/*.service; do
       substituteInPlace "$unit" \
         --replace-quiet '/usr/bin/qs' '${quickshell}/bin/qs' \
@@ -194,18 +182,14 @@ nyx.buildApp {
     "nyx-assistantd"
     "nyx-assistant-hud"
     "nyx-assistant-visual"
-    "nyx-assistant-stt"
     "nyx-assistant-failed"
-    "nyx-assistant-stt-failed"
   ];
   # Not started with the session: like the install script, the daemon waits until it is
   # enabled, as it needs a downloaded model.
   passthru = { inherit browser search; };
 
-  # voxtype with ONNX Runtime has the Parakeet engine the speech service uses.
   # pactl, wpctl and pw-link for audio; wtype types dictation; bwrap and xdg-dbus-proxy
-  # sandbox plugins and generated commands; tesseract and grim read the screen; voxtype
-  # is F9 dictation and the fallback speech recognizer.
+  # sandbox plugins and generated commands; tesseract and grim read the screen.
   runtimeInputs = [
     python3
     pulseaudio
@@ -227,7 +211,6 @@ nyx.buildApp {
     bluez
     ripgrep
     jq
-    (voxtype.override { onnxSupport = true; })
     quickshell
   ];
   preFixup = ''
@@ -238,8 +221,11 @@ nyx.buildApp {
     mkdir -p $share/search
     cp -r ${app}/abilities ${app}/plugin-sdk ${app}/quickshell ${app}/config $share/
     chmod -R u+w $share
-    substituteInPlace $share/quickshell/shell.qml \
+    substituteInPlace $share/quickshell/shell.qml $share/quickshell/Aura/Main.qml \
       --replace-fail '(Quickshell.env("HOME") || "") + "/.local/bin/nyx-assistant"' "\"$out/bin/nyx-assistant\""
+    # The Aura as a Nyx Shell component (drawn when [ui] aura_renderer = "quickshell").
+    mkdir -p $out/share/nyx-shell/components
+    ln -s $share/quickshell/Aura $out/share/nyx-shell/components/AssistantAura
     ln -s ${browser} $share/browser
     ln -s ${search} $share/search/duckduckgo
     ln -s ${lib.getExe nodejs} $out/bin/nyx-assistant-node
