@@ -131,11 +131,11 @@
     "nyx-ai": {
       "flake": false,
       "locked": {
-        "lastModified": 1794119687,
-        "narHash": "sha256-scNDHdhRZND87O271KGXZiPsXP1ag9oWTSo3UOKVi+k=",
+        "lastModified": 1794192913,
+        "narHash": "sha256-HUf88gyb1dhdKNqwtnz1vbMGn6pB4jltv+BipvbKSfM=",
         "owner": "design-nexus",
         "repo": "nyx-ai",
-        "rev": "96e6da1d5c5608253466bc6e4765395c2ebb639d",
+        "rev": "da5b6f64fb2af00db57af7f572f3bea378441f1c",
         "type": "github"
       },
       "original": {
