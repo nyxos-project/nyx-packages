@@ -54,6 +54,7 @@ let
     settings = "Nyx Settings and its root helper";
     store = "Nyx Store, with the NyxOS catalog, nixpkgs and Flathub";
     switcher = "Nyx Switcher, its window and app switching and the overview";
+    shell = "Nyx Shell Core (the shell's coordinator) and the Nyx.Shell Quickshell module";
     welcome = "Nyx Welcome, the setup after installation";
   };
 
@@ -200,6 +201,12 @@ in
 
       (lib.mkIf cfg.icons.enable {
         environment.systemPackages = [ nyxPkgs.nyx-icons ];
+      })
+
+      # Nyx Shell Core's NyxOS defaults: the distribution layer of the `shell` domain.
+      (lib.mkIf cfg.shell.enable {
+        environment.etc."nyxos/defaults/shell.toml".source =
+          "${nyxPkgs.nyx-shell}/share/nyx-shell/shell.toml";
       })
 
       (lib.mkIf cfg.icons.followTheme {

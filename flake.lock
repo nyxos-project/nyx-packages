@@ -800,6 +800,22 @@
         "type": "github"
       }
     },
+    "nyx-shell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794193044,
+        "narHash": "sha256-E78V8XzATqXPi5PGebQ+BJP66GQ93O0A1k1hHiwMfVo=",
+        "owner": "nyxos-project",
+        "repo": "nyx-shell",
+        "rev": "2901c769fd3aba03340284b7a7255fb34301f091",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nyxos-project",
+        "repo": "nyx-shell",
+        "type": "github"
+      }
+    },
     "nyx-store": {
       "flake": false,
       "locked": {
@@ -994,6 +1010,7 @@
         "nyx-reminders": "nyx-reminders",
         "nyx-settings": "nyx-settings",
         "nyx-share": "nyx-share",
+        "nyx-shell": "nyx-shell",
         "nyx-store": "nyx-store",
         "nyx-switcher": "nyx-switcher",
         "nyx-system": "nyx-system",

@@ -70,6 +70,7 @@ fromSource [
   "nyx-store"
   "nyx-system"
   "nyx-switcher"
+  "nyx-shell"
   "nyx-welcome"
   "nyx-installer"
 ]

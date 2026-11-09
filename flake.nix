@@ -232,6 +232,10 @@
       url = "github:design-nexus/nyx-switcher";
       flake = false;
     };
+    nyx-shell = {
+      url = "github:nyxos-project/nyx-shell";
+      flake = false;
+    };
     nyx-welcome = {
       url = "github:nyxos-project/nyx-welcome";
       flake = false;
