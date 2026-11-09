@@ -330,12 +330,11 @@ in
         };
       })
 
-      # Glimpse runs its semantic search helper from ~/.local/share/nyx-glimpse/runtime,
-      # which it would otherwise build there.
+      # Glimpse's semantic search runs in Nyx AI Core; the link to its old runtime goes.
       (lib.mkIf cfg.glimpse.enable {
         systemd.user.tmpfiles.rules = [
           "d %h/.local/share/nyx-glimpse 0700 - - -"
-          "L+ %h/.local/share/nyx-glimpse/runtime - - - - ${nyxPkgs.nyx-glimpse.runtime}"
+          "r %h/.local/share/nyx-glimpse/runtime - - - - -"
         ];
       })
 
