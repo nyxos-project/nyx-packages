@@ -78,6 +78,13 @@ nyx.buildApp {
   pname = "nyx-glimpse";
   inherit src;
   buildInputs = [ gtk4-layer-shell ];
+  # Its index skips folders named build (config::forbidden), and the sandbox builds in
+  # /build, so these tests find no files there; they pass outside it.
+  checkFlags = [
+    "--skip=aicore::tests::offers_a_read_only_file_search"
+    "--skip=backend::tests::fast_results_need_no_ai_and_no_display"
+    "--skip=semantic::tests::old_indexes_stay_and_a_new_model_rebuilds_beside_them"
+  ];
   # The library and program tests; tests/core.rs still includes a file from the old
   # monorepo's Settings.
   cargoTestFlags = [
