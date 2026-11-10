@@ -49,7 +49,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-passwords` | nyx-passwords | Nyx Passwords, its vault service and browser bridge; no polkit sign-in or TPM broker until Nyx Biometrics is packaged |
 | `packages.nyx-pulse` | nyx-pulse | Nyx Pulse with TDLib 1.8.67 (built from source) and the NTgCalls 3.0.5 release build, and its Glimpse plugin |
 | `packages.nyx-assistant` | nyx-assistant | Nyx Assistant: daemon, CLI, TUI, speech and plugin workers, Canvas, Quickshell HUD, abilities, browser automation (Playwright with nixpkgs Chromium) and DuckDuckGo search; CPU inference, models download at runtime, no admin root helper (it drives pacman) |
-| `packages.nyx-glimpse` | nyx-glimpse | Nyx Glimpse, its indexer and Settings, and the semantic search helper (llama.cpp b11461); models download at runtime |
+| `packages.nyx-glimpse` | nyx-glimpse | Nyx Glimpse, its indexer and Settings, and its Quickshell panel (a Nyx Shell component) with the backend that serves it; search by meaning through Nyx AI Core |
 | `packages.nyx-notification-center` | nyx-notification-center | Nyx Notification Center and nyx-notifyd, the session's notification server on NyxOS |
 | `packages.nyx-dock` | nyx-dock | Nyx Dock |
 | `packages.nyx-control-center` | nyx-control-center | Nyx Control Center; without Omarchy it uses nyx-notifyd, hyprsunset, bluetoothctl and brightnessctl, and Omarchy-only extras hide |

@@ -7,16 +7,19 @@
   nyx,
   src,
   quickshell,
+  qt6,
 }:
 nyx.buildApp {
   pname = "nyx-shell";
   inherit src;
   postPatch = ''
     # Nyx.Theme, Nyx.Ui and Nyx.PluginView come from the nyx-theme package, through the
-    # system profile (the unit's own path replaces the session's).
+    # system profile (the unit's own path replaces the session's). Glimpse's previews play
+    # audio and video with QtMultimedia, which nixpkgs' Quickshell doesn't carry.
     substituteInPlace data/nyx-shell-qs.service \
       --replace-fail 'Environment=QML_IMPORT_PATH=%h/.local/share/nyx-shell/qml' \
-        "Environment=QML_IMPORT_PATH=$out/share/nyx-shell/qml:/run/current-system/sw/share/nyx/qml" \
+        "Environment=QML_IMPORT_PATH=$out/share/nyx-shell/qml:/run/current-system/sw/share/nyx/qml:${qt6.qtmultimedia}/${qt6.qtbase.qtQmlPrefix}
+    Environment=QT_PLUGIN_PATH=${qt6.qtmultimedia}/${qt6.qtbase.qtPluginPrefix}" \
       --replace-fail '/usr/bin/qs' '${quickshell}/bin/qs' \
       --replace-fail '%h/.local/share/nyx-shell/qml' "$out/share/nyx-shell/qml"
     # NixOS runs Quickshell from its store folder; trust that executable as the UI runtime.

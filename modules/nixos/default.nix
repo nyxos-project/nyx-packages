@@ -238,10 +238,10 @@ in
     lib.mapAttrsToList (
       name: _:
       lib.mkIf cfg.${name}.enable (
-        {
-          environment.systemPackages = [ nyxPkgs."nyx-${name}" ];
-        }
-        // services nyxPkgs."nyx-${name}"
+        lib.mkMerge [
+          { environment.systemPackages = [ nyxPkgs."nyx-${name}" ]; }
+          (services nyxPkgs."nyx-${name}")
+        ]
       )
     ) apps
     ++ [
@@ -402,12 +402,16 @@ in
         };
       })
 
-      # Glimpse runs its semantic search helper from ~/.local/share/nyx-glimpse/runtime,
-      # which it would otherwise build there.
+      # Glimpse's panel is a Nyx Shell component, linked where nyx-shell-qs looks; linking
+      # share/nyx-shell system-wide would also load the shell's own nyx-osd and
+      # nyx-window-menu, which NyxOS doesn't run.
+      # It searches by meaning through Nyx AI Core now, so the link to its old helper in
+      # ~/.local/share/nyx-glimpse/runtime goes.
       (lib.mkIf cfg.glimpse.enable {
         systemd.user.tmpfiles.rules = [
-          "d %h/.local/share/nyx-glimpse 0700 - - -"
-          "L+ %h/.local/share/nyx-glimpse/runtime - - - - ${nyxPkgs.nyx-glimpse.runtime}"
+          "d %h/.local/share/nyx-shell/components 0755 - - -"
+          "L+ %h/.local/share/nyx-shell/components/nyx-glimpse - - - - ${nyxPkgs.nyx-glimpse}/share/nyx-shell/components/nyx-glimpse"
+          "r %h/.local/share/nyx-glimpse/runtime - - - - -"
         ];
       })
 
