@@ -280,6 +280,9 @@ in
       (lib.mkIf cfg.shell.enable {
         environment.etc."nyxos/defaults/shell.toml".source =
           "${nyxPkgs.nyx-shell}/share/nyx-shell/shell.toml";
+        # nyx-shell-qs finds the components (its OSD and window menu, the Control
+        # Center's panel, Desktop Widgets) in the system profile.
+        environment.pathsToLink = [ "/share/nyx-shell/components" ];
       })
 
       (lib.mkIf cfg.icons.followTheme {
