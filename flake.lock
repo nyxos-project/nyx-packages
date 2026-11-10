@@ -934,11 +934,11 @@
     "nyx-hyprland": {
       "flake": false,
       "locked": {
-        "lastModified": 1794317769,
-        "narHash": "sha256-1AkglRBZONQbnPopV6WZTskKgfyYBSYTIe3FOaP9fOo=",
+        "lastModified": 1794329945,
+        "narHash": "sha256-KGzIaBTygOHRbkLifyeXobiYOe4uHNF0Xpk+vnr3CaE=",
         "owner": "nyxos-project",
         "repo": "nyx-hyprland",
-        "rev": "1c49fc16b2290e0f3f496ddb0f856282445bcec9",
+        "rev": "cadba6d4d822e98d3cdfe7e2350dacbd8d932e27",
         "type": "github"
       },
       "original": {
