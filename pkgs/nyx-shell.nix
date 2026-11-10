@@ -36,6 +36,7 @@ nyx.buildApp {
     mkdir -p $out/share/nyx-shell/components
     cp -r qml $out/share/nyx-shell/
     cp -r qml/components/nyx-osd $out/share/nyx-shell/components/
+    cp -r qml/components/nyx-window-menu $out/share/nyx-shell/components/
     install -Dm644 data/shell.toml $out/share/nyx-shell/shell.toml
   '';
   meta = {
