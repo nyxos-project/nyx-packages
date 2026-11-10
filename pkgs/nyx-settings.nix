@@ -11,6 +11,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-settings";
+  # Its action manifest (nyx settings …, nyx devices …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-settings" ];
   inherit src;
   buildInputs = nyx.pimInputs;
   buildFeatures = [ "nyxos" ];
