@@ -21,6 +21,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Hyprland at the release nyx-hyprland's patch series is made for. nixpkgs' Hyprland
+    # and its libraries (hyprutils, aquamarine) are older than 0.57 needs, so this uses
+    # Hyprland's own flake, which pins the matching ones, on our nixpkgs so Mesa matches.
+    hyprland = {
+      url = "git+https://github.com/hyprwm/Hyprland?ref=refs/tags/v0.57.2&submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # The Nyx patch series for Hyprland (patches/<version>/), shared with the Arch build.
+    nyx-hyprland = {
+      url = "github:nyxos-project/nyx-hyprland";
+      flake = false;
+    };
+
     # Application sources. `nix flake update <name>` moves one to its latest commit;
     # flake.lock records the exact revision each release of nyx-packages builds.
     # The suite repository: the nyx CLI and its icon tools.

@@ -19,6 +19,10 @@ let
         src = inputs.${name};
       }
     );
+  nyxHyprland = pkgs.callPackage ./hyprland.nix {
+    hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    patchSeries = "${inputs.nyx-hyprland}/patches/0.57.2";
+  };
   nyxTheme = pkgs.callPackage ./nyx-theme.nix {
     inherit nyx;
     src = inputs.nyx-design;
@@ -87,12 +91,12 @@ fromSource [
 
   flux = pkgs.callPackage ./flux.nix { src = inputs.flux; };
 
-  hyprland = pkgs.callPackage ./hyprland.nix { };
+  hyprland = nyxHyprland;
 
   nyx-greeter = pkgs.callPackage ./nyx-greeter.nix {
     inherit nyx;
     src = inputs.nyx-greeter;
-    hyprland = pkgs.callPackage ./hyprland.nix { };
+    hyprland = nyxHyprland;
   };
 
   nyx-locker = pkgs.callPackage ./nyx-locker.nix {
