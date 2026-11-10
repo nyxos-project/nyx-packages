@@ -23,6 +23,9 @@ let
     hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     patchSeries = "${inputs.nyx-hyprland}/patches/0.57.2";
   };
+  # Nyx Agents needs libghostty-vt 1.0, built with Zig 0.17 (newer than nixpkgs has).
+  zig_0_17 = pkgs.callPackage ./zig_0_17.nix { };
+  libghostty-vt = pkgs.callPackage ./libghostty-vt.nix { zig = zig_0_17; };
   nyxTheme = pkgs.callPackage ./nyx-theme.nix {
     inherit nyx;
     src = inputs.nyx-design;
@@ -85,6 +88,12 @@ fromSource [
     inherit nyx;
     src = inputs.nyx-ai;
     llama = llama-prism;
+  };
+
+  inherit zig_0_17 libghostty-vt;
+  nyx-agents = pkgs.callPackage ./nyx-agents.nix {
+    inherit nyx libghostty-vt;
+    src = inputs.nyx-agents;
   };
 
   nyx-wallpapers = pkgs.callPackage ./nyx-wallpapers.nix { src = inputs.nyx-wallpapers; };

@@ -57,6 +57,7 @@ let
     switcher = "Nyx Switcher, its window and app switching and the overview";
     shell = "Nyx Shell Core (the shell's coordinator) and the Nyx.Shell Quickshell module";
     welcome = "Nyx Welcome, the setup after installation";
+    agents = "Nyx Agents, its session manager and the AI Hub for Nyx Bar and the Control Center";
   };
 
   # Nyx AI Core with the worker for this machine's acceleration. The CUDA build is
@@ -625,6 +626,24 @@ in
           ];
         };
         hardware.graphics.enable = lib.mkDefault true;
+      })
+
+      # The socket starts nyx-agentd on the first request (the app, the CLI, the AI Hub).
+      # Agents run under holders in their own sessions: restarting the manager keeps them.
+      (lib.mkIf cfg.agents.enable {
+        systemd.user.sockets.nyx-agentd = {
+          overrideStrategy = "asDropin";
+          wantedBy = [ "sockets.target" ];
+          unitConfig.ConditionUser = "!@system";
+        };
+        systemd.user.services.nyx-agentd = {
+          overrideStrategy = "asDropin";
+          path = [
+            "/run/wrappers"
+            "/etc/profiles/per-user/%u"
+            "/run/current-system/sw"
+          ];
+        };
       })
 
       (lib.mkIf cfg.accounts.enable {

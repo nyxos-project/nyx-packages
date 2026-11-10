@@ -30,6 +30,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-clipboard` | nyx-clipboard | Clipboard daemon, popup and Settings extension |
 | `packages.nyx-home` | nyx-home | Nyx Home, its automation service and CLI |
 | `packages.nyx-chat` | nyx-chat | Nyx Chat; its local models run in Nyx AI Core |
+| `packages.nyx-agents` | nyx-agents | Nyx Agents: `nyx-agentd` and its user socket, the app and CLI, its Glimpse plugin and Settings page, and the AI Hub plugin (trusted) for Nyx Bar and the Control Center; libghostty-vt 1.0 built with Zig 0.17 from ziglang.org's release |
 | `packages.nyx-ai` | nyx-ai | Nyx AI Core: `nyx-aid`, `nyx-ai`, and the user socket (also the OpenAI-compatible API on 127.0.0.1:8080) |
 | `packages.llama-prism` | PrismML llama.cpp | Nyx AI Core's worker, built from source with Vulkan; `nyx.ai.acceleration = "cuda"` uses Prism's prebuilt CUDA release instead (unfree) |
 | `packages.nyx-activity` | nyx-activity | Nyx Activity, with hwdata for GPU names |
