@@ -464,7 +464,7 @@ in
         # Nyx apps people install for themselves: their session services, and trusted
         # like the system's once NyxOS's cache built them (checked at each sign-in and
         # after each profile change).
-        environment.etc."systemd/user-generators/nyx-profile-units".source = profileUnits;
+        systemd.user.generators.nyx-profile-units = profileUnits;
         systemd.user.services.nyx-trust-apps = {
           description = "Trust the Nyx apps in your Nix profile";
           wantedBy = [ "default.target" ];
