@@ -249,11 +249,12 @@ in
       # of installed Nyx apps from /etc/nyx/trusted-bin; each app has its own store
       # folder (nyx-peer). It's this list and the Nyx apps people installed for
       # themselves that NyxOS's cache built (the System Manager's TrustApps), put
-      # together here and by the manager.
+      # together here and by the manager. nyx-actions (`nyx APP …`) is there too: Clipboard
+      # and Passwords answer it only as a program they trust.
       (lib.mkIf (enabledPackages != [ ]) {
-        environment.etc."nyx/trusted-bin.system".text = lib.concatMapStrings (
-          p: "${p}/bin\n"
-        ) enabledPackages;
+        environment.etc."nyx/trusted-bin.system".text = lib.concatMapStrings (p: "${p}/bin\n") (
+          enabledPackages ++ [ nyxPkgs.nyx-actions ]
+        );
         system.activationScripts.nyx-trusted-bin = {
           deps = [ "etc" ];
           text = ''
@@ -402,17 +403,11 @@ in
         };
       })
 
-      # Glimpse's panel is a Nyx Shell component, linked where nyx-shell-qs looks; linking
-      # share/nyx-shell system-wide would also load the shell's own nyx-osd and
-      # nyx-window-menu, which NyxOS doesn't run.
-      # It searches by meaning through Nyx AI Core now, so the link to its old helper in
-      # ~/.local/share/nyx-glimpse/runtime goes.
+      # Glimpse searches by meaning through Nyx AI Core now; the link to its old helper in
+      # ~/.local/share/nyx-glimpse/runtime goes. Its panel reaches nyx-shell-qs through
+      # share/nyx-shell/components in the system profile (nyx.shell).
       (lib.mkIf cfg.glimpse.enable {
-        systemd.user.tmpfiles.rules = [
-          "d %h/.local/share/nyx-shell/components 0755 - - -"
-          "L+ %h/.local/share/nyx-shell/components/nyx-glimpse - - - - ${nyxPkgs.nyx-glimpse}/share/nyx-shell/components/nyx-glimpse"
-          "r %h/.local/share/nyx-glimpse/runtime - - - - -"
-        ];
+        systemd.user.tmpfiles.rules = [ "r %h/.local/share/nyx-glimpse/runtime - - - - -" ];
       })
 
       # nyx-notifyd answers as the session's notification server and the Notification
