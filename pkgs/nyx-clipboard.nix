@@ -8,6 +8,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-clipboard";
+  # Its action manifest (nyx clipboard …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-clipboardd" ];
   inherit src;
   buildInputs = [
     gtk4-layer-shell

@@ -98,9 +98,15 @@ nyx.buildApp {
     git
     xdg-utils
   ];
+  # The Quickshell panel (drawn by Nyx Shell's nyx-shell-qs, panels and pinned panels
+  # included) and the backend that serves it, started with the session: `nyx-glimpse
+  # --toggle` goes there while it runs, to the GTK panel otherwise.
+  userUnits = [ "apps/glimpse/data/nyx-glimpse-backend.service" ];
   # The unit `nyx-glimpse service enable` would otherwise write to ~/.config with this
   # package's path in it.
   postInstall = ''
+    mkdir -p $out/share/nyx-shell/components
+    cp -r quickshell/Glimpse $out/share/nyx-shell/components/nyx-glimpse
     mkdir -p $out/lib/systemd/user
     cat > $out/lib/systemd/user/nyx-glimpsed.service <<EOF
     [Unit]
@@ -118,7 +124,10 @@ nyx.buildApp {
     WantedBy=default.target
     EOF
   '';
-  passthru = { inherit llama runtime; };
+  passthru = {
+    inherit llama runtime;
+    autostart."nyx-glimpse-backend" = "graphical-session.target";
+  };
   meta = {
     description = "Local universal search for apps, files, settings and plugins";
     homepage = "https://github.com/design-nexus/nyx-glimpse";

@@ -11,6 +11,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-containers";
+  # Its action manifest (nyx containers …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-containers" ];
   inherit src;
   # spice-client-glib shows a VM's screen inside its tab.
   buildInputs = [

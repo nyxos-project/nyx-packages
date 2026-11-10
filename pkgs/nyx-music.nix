@@ -7,6 +7,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-music";
+  # Its action manifest (nyx music …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-music" ];
   inherit src;
   # Playback goes through playbin, so the plugin sets decide which formats play;
   # wrapGAppsHook4 puts them on GST_PLUGIN_SYSTEM_PATH_1_0.

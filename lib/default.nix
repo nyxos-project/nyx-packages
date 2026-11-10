@@ -13,6 +13,7 @@
   json-glib,
   libxml2,
   callPackage,
+  jq,
   inputs,
 }:
 let
@@ -129,9 +130,34 @@ rec {
       done
     '';
 
+  # What the apps' `actions` programs offer `nyx APP …`, Glimpse and Nyx Assistant
+  # (nyx-actions' contract): each prints its manifest with --describe-actions, which goes
+  # to share/nyx/actions/APP-ID.json, and an app D-Bus starts for a call (activation
+  # "dbus", owning its own app ID) gets share/dbus-1/services/APP-ID.service running
+  # the program with --gapplication-service, as the repositories' install.sh write them.
+  installActions =
+    actions:
+    lib.optionalString (actions != [ ]) ''
+      for program in ${lib.escapeShellArgs actions}; do
+        manifest=$(mktemp)
+        # The sandbox's home isn't writable; an app's start-up may want one.
+        HOME=$TMPDIR XDG_CONFIG_HOME=$TMPDIR XDG_DATA_HOME=$TMPDIR XDG_STATE_HOME=$TMPDIR XDG_CACHE_HOME=$TMPDIR \
+          $out/bin/$program --describe-actions > "$manifest"
+        app=$(${jq}/bin/jq -er '.nyx.app' "$manifest")
+        install -Dm644 "$manifest" $out/share/nyx/actions/$app.json
+        if ${jq}/bin/jq -e '.nyx.activation == "dbus" and .nyx.bus_name == .nyx.app' "$manifest" >/dev/null; then
+          mkdir -p $out/share/dbus-1/services
+          printf '[D-BUS Service]\nName=%s\nExec=%s --gapplication-service\n' "$app" "$out/bin/$program" \
+            > $out/share/dbus-1/services/$app.service
+        fi
+        rm -f "$manifest"
+      done
+    '';
+
   # A Rust workspace from a source input. Releases build in the "release" profile
   # the repositories ship (thin LTO, stripped). `userUnits` and `dbusServices` are
-  # repository paths of service files to install (see installServices).
+  # repository paths of service files to install (see installServices); `actions` names
+  # programs whose action manifests to install (see installActions).
   buildWorkspace =
     {
       pname,
@@ -139,6 +165,7 @@ rec {
       baseVersion ? "0.1.0",
       userUnits ? [ ],
       dbusServices ? [ ],
+      actions ? [ ],
       postInstall ? "",
       ...
     }@args:
@@ -169,9 +196,10 @@ rec {
         "meta"
         "userUnits"
         "dbusServices"
+        "actions"
       ]
       // {
-        postInstall = postInstall + installServices { inherit userUnits dbusServices; } + autostartFile;
+        postInstall = postInstall + installServices { inherit userUnits dbusServices; } + installActions actions + autostartFile;
       }
     );
 

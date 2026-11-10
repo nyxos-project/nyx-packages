@@ -142,6 +142,10 @@ let
       ];
     }) (package.passthru.autostart or { });
     services.dbus.packages = [ package ];
+    # Its action manifests (share/nyx/actions) for `nyx APP …`, Glimpse and Nyx
+    # Assistant, and the nyx command's part that reads them.
+    environment.pathsToLink = [ "/share/nyx" ];
+    environment.systemPackages = [ nyxPkgs.nyx-actions ];
   };
 in
 {

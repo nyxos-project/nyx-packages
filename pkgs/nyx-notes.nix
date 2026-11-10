@@ -6,6 +6,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-notes";
+  # Its action manifest (nyx notes …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-notes" ];
   inherit src;
   glimpsePlugin = true;
   buildInputs = [ gtksourceview5 ];

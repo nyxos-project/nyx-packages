@@ -22,6 +22,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-files";
+  # Its action manifest (nyx files …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-files" ];
   inherit src;
   # glib-compile-resources for the GResource bundle build.rs makes.
   nativeBuildInputs = [ glib ];

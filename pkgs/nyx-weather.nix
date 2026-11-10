@@ -2,6 +2,8 @@
 { nyx, src }:
 nyx.buildApp {
   pname = "nyx-weather";
+  # Its action manifest (nyx weather …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-weather" ];
   inherit src;
   meta = {
     description = "Forecasts, hourly graphs, radar, air quality and severe-weather alerts";

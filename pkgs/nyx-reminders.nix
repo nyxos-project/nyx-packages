@@ -6,6 +6,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-reminders";
+  # Its action manifest (nyx reminders …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-reminders" ];
   inherit src;
   glimpsePlugin = true;
   buildInputs = nyx.pimInputs;

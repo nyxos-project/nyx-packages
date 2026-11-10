@@ -12,6 +12,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-home";
+  # Its action manifest (nyx home …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-homed" ];
   inherit src;
   # reqwest uses native TLS here; libmpv and EGL for nyx-design's nyx-playback.
   buildInputs = [

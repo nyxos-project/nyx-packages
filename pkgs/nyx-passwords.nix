@@ -11,6 +11,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-passwords";
+  # Its action manifest (nyx passwords …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-passwords" ];
   inherit src;
   # aws-lc-sys builds its C library with CMake.
   nativeBuildInputs = [ cmake ];

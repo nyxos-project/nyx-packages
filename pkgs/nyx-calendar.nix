@@ -6,6 +6,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-calendar";
+  # Its action manifest (nyx calendar …, Glimpse, the Assistant): lib installActions.
+  actions = [ "nyx-calendar" ];
   inherit src;
   glimpsePlugin = true;
   buildInputs = nyx.pimInputs;

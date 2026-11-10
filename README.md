@@ -10,6 +10,7 @@ builds it reproducibly and runs its tests.
 | Output | Source | Contents |
 | --- | --- | --- |
 | `packages.nyx-icons` | nyx-design | Nyx application icons (hicolor, scalable) |
+| `packages.nyx-actions` | nyx-core | `nyx-actions`: `nyx apps` and `nyx APP …` on the apps' action manifests (installed with any Nyx app) |
 | `packages.nyx-icon-tools` | nyx, nyx-design | `nyx-icons`: recolours Nyx icons for the Nyx theme |
 | `packages.nyx-accounts` | nyx-accounts | `nyx-accountsd` session service (D-Bus activated) and `nyx-accountsctl` |
 | `packages.nyx-fonts` | nyx-fonts | Nyx Fonts |
