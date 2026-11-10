@@ -18,8 +18,10 @@ let
     path = patchSeries;
     name = "hyprland-nyx-patches";
   };
+  # Listed from the input itself: Nix 2.35 can't read the copy above without building
+  # (CI's nix flake check --no-build).
   names = lib.sort lib.lessThan (
-    lib.filter (lib.hasSuffix ".patch") (lib.attrNames (builtins.readDir dir))
+    lib.filter (lib.hasSuffix ".patch") (lib.attrNames (builtins.readDir patchSeries))
   );
   # Hyprland's flake source leaves out hyprtester, so the series goes in without its
   # test changes, as one patch (a patch that only touched hyprtester would be empty).
@@ -39,4 +41,9 @@ let
 in
 (hyprland.override { wayland-protocols = wayland-protocols'; }).overrideAttrs (old: {
   patches = (old.patches or [ ]) ++ [ series ];
+  # Hyprland reads its tag from VERSION in its filtered source, which Nix 2.35 can't
+  # read without building (CI's nix flake check --no-build). The version says the same.
+  env = old.env // {
+    GIT_TAG = "v${lib.head (lib.splitString "+" old.version)}";
+  };
 })
