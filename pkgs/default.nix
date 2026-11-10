@@ -93,6 +93,11 @@ fromSource [
 
   hyprland = nyxHyprland;
 
+  nyx-decor = pkgs.callPackage ./nyx-decor.nix {
+    src = inputs.nyx-hyprland;
+    hyprland = nyxHyprland;
+  };
+
   nyx-greeter = pkgs.callPackage ./nyx-greeter.nix {
     inherit nyx;
     src = inputs.nyx-greeter;
