@@ -12,11 +12,17 @@
   wayland-protocols,
 }:
 let
-  names = lib.sort lib.lessThan (lib.filter (lib.hasSuffix ".patch") (lib.attrNames (builtins.readDir patchSeries)));
+  # Only the series folder, so commits elsewhere in nyx-hyprland (its plugins) don't
+  # rebuild Hyprland.
+  dir = builtins.path {
+    path = patchSeries;
+    name = "hyprland-nyx-patches";
+  };
+  names = lib.sort lib.lessThan (lib.filter (lib.hasSuffix ".patch") (lib.attrNames (builtins.readDir dir)));
   # Hyprland's flake source leaves out hyprtester, so the series goes in without its
   # test changes, as one patch (a patch that only touched hyprtester would be empty).
   series = runCommand "nyx-hyprland-series.patch" { nativeBuildInputs = [ patchutils ]; } ''
-    for p in ${lib.concatMapStringsSep " " (n: "${patchSeries}/${n}") names}; do
+    for p in ${lib.concatMapStringsSep " " (n: "${dir}/${n}") names}; do
       filterdiff -p1 -x 'hyprtester/*' "$p"
     done > $out
   '';
