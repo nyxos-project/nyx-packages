@@ -518,11 +518,11 @@
     "nyx-agents": {
       "flake": false,
       "locked": {
-        "lastModified": 1794317429,
-        "narHash": "sha256-aiAIvtPyz5U/Em9Gl314+REPwf67Ak2k2teuRRRcOXs=",
+        "lastModified": 1794334846,
+        "narHash": "sha256-RaPsVD4gIS3IKmwYPP+N2AAm4QIfaa2lE74VO18x+eU=",
         "owner": "design-nexus",
         "repo": "nyx-agents",
-        "rev": "65f9726206421712c1027dcec978954f1bab2b3f",
+        "rev": "684cc479e11cb36e699e8113df90a851ed674f5e",
         "type": "github"
       },
       "original": {
