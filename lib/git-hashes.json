@@ -23,5 +23,6 @@
   "git+https://github.com/nyxos-project/nyx-system.git?rev=2c051e628af5582516ece1a8790882328194c26b#2c051e628af5582516ece1a8790882328194c26b": "sha256-bViBoEbUX5dL/8wAMBF4BTS1/PlLkfN8f+w0qXmYPNU=",
   "git+https://github.com/nyxos-project/nyx-system.git?rev=87461e53c2fc5fb5e045204e2a492c32c86a3f26#87461e53c2fc5fb5e045204e2a492c32c86a3f26": "sha256-Z3JX5oCD2D7ATX6PGVC0pFK+UikS3NwNsUzUUL9PqIw=",
   "git+https://github.com/nyxos-project/nyx-system.git?rev=88962d876b30df66e3c5db3c70f28876b7e39db2#88962d876b30df66e3c5db3c70f28876b7e39db2": "sha256-QFjS4scliVfpaiAP34g859b/cCOu6f04Fi4kXXP1fWM=",
-  "git+https://github.com/nyxos-project/nyx-system.git?rev=8e723ee#8e723eebbb4d6316ccaa7f772bf6aebd78b8f5e1": "sha256-U3crfA/5GrfFwWRTJyof1JYjavfx8rsx6Vf0S0OOpz8="
+  "git+https://github.com/nyxos-project/nyx-system.git?rev=8e723ee#8e723eebbb4d6316ccaa7f772bf6aebd78b8f5e1": "sha256-U3crfA/5GrfFwWRTJyof1JYjavfx8rsx6Vf0S0OOpz8=",
+  "git+https://github.com/nyxos-project/nyx-system.git?rev=f68ecc891cd0d5a36b6ed29e93ed5ffc52e77acc#f68ecc891cd0d5a36b6ed29e93ed5ffc52e77acc": "sha256-MvctohUobsadK2jsvrjOJ1vlne10+6ut5DRINI50WEA="
 }
