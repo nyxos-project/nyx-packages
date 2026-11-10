@@ -142,6 +142,17 @@ rec {
       postInstall ? "",
       ...
     }@args:
+    let
+      # What starts with the session (unit name -> target), kept in the package too, for
+      # an app in someone's Nix profile (the module's nyx-profile-units generator).
+      autostart = (args.passthru or { }).autostart or { };
+      autostartFile = lib.optionalString (autostart != { }) ''
+        mkdir -p $out/share/nyx
+        printf '%s\n' ${
+          lib.escapeShellArgs (lib.mapAttrsToList (unit: target: "${unit} ${target}") autostart)
+        } > $out/share/nyx/autostart
+      '';
+    in
     rustPlatform.buildRustPackage (
       {
         version = version baseVersion src;
@@ -160,7 +171,7 @@ rec {
         "dbusServices"
       ]
       // {
-        postInstall = postInstall + installServices { inherit userUnits dbusServices; };
+        postInstall = postInstall + installServices { inherit userUnits dbusServices; } + autostartFile;
       }
     );
 

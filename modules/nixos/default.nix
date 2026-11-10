@@ -79,6 +79,51 @@ let
     ++ lib.optional cfg.accounts.enable nyxPkgs.nyx-accounts
     ++ lib.optional cfg.ai.enable aiPackage;
 
+  # Nyx apps in someone's Nix profile (installed per user): their user units, with the
+  # PATH and condition the module's `services` gives the system's, and the units they
+  # start with the session (share/nyx/autostart). The system's copy of a unit wins.
+  # `systemctl --user daemon-reload` (done after each profile change) runs it again.
+  profileUnits = pkgs.writeShellScript "nyx-profile-units" ''
+    export PATH=${
+      lib.makeBinPath [
+        pkgs.coreutils
+        pkgs.getent
+      ]
+    }
+    normal=$1
+    home=''${HOME:-$(getent passwd "$(id -u)" | cut -d: -f6)}
+    [ -n "$home" ] || exit 0
+    seen=" "
+    for profile in "$home/.nix-profile" "''${XDG_STATE_HOME:-$home/.local/state}/nix/profile"; do
+      [ -d "$profile/lib/systemd/user" ] || continue
+      real=$(readlink -f "$profile")
+      case "$seen" in *" $real "*) continue ;; esac
+      seen="$seen$real "
+      for unit in "$profile"/lib/systemd/user/*; do
+        [ -e "$unit" ] || continue
+        name=''${unit##*/}
+        [ -e "/etc/systemd/user/$name" ] && continue
+        [ -e "$normal/$name" ] || ln -s "$unit" "$normal/$name"
+        case $name in
+          *.service)
+            mkdir -p "$normal/$name.d"
+            printf '%s\n' '[Unit]' 'ConditionUser=!@system' '[Service]' \
+              "Environment=\"PATH=/run/wrappers/bin:$profile/bin:/etc/profiles/per-user/%u/bin:/run/current-system/sw/bin\"" \
+              > "$normal/$name.d/nyx-profile.conf"
+            ;;
+        esac
+      done
+      [ -f "$profile/share/nyx/autostart" ] || continue
+      while read -r unit target; do
+        [ -n "$unit" ] && [ -n "$target" ] || continue
+        case $unit in *.*) ;; *) unit=$unit.service ;; esac
+        [ -e "$normal/$unit" ] || continue
+        mkdir -p "$normal/$target.wants"
+        ln -sfn "$normal/$unit" "$normal/$target.wants/$unit"
+      done < "$profile/share/nyx/autostart"
+    done
+  '';
+
   services = package: {
     systemd.packages = [ package ];
     # A NixOS drop-in also sets PATH, to a minimal one by default; these services
@@ -196,9 +241,29 @@ in
     ) apps
     ++ [
       # Services that trust callers by program (Clipboard, Accounts) read the folders
-      # of installed Nyx apps from here; each app has its own store folder (nyx-peer).
+      # of installed Nyx apps from /etc/nyx/trusted-bin; each app has its own store
+      # folder (nyx-peer). It's this list and the Nyx apps people installed for
+      # themselves that NyxOS's cache built (the System Manager's TrustApps), put
+      # together here and by the manager.
       (lib.mkIf (enabledPackages != [ ]) {
-        environment.etc."nyx/trusted-bin".text = lib.concatMapStrings (p: "${p}/bin\n") enabledPackages;
+        environment.etc."nyx/trusted-bin.system".text =
+          lib.concatMapStrings (p: "${p}/bin\n") enabledPackages;
+        system.activationScripts.nyx-trusted-bin = {
+          deps = [ "etc" ];
+          text = ''
+            mkdir -p /etc/nyx
+            {
+              cat /etc/nyx/trusted-bin.system
+              if [ -r /var/lib/nyx-system/trusted-profile-bin ]; then
+                while read -r _ dir; do
+                  if [ -d "$dir" ]; then printf '%s\n' "$dir"; fi
+                done < /var/lib/nyx-system/trusted-profile-bin
+              fi
+            } | ${pkgs.gawk}/bin/awk '!seen[$0]++' > /etc/nyx/trusted-bin.new
+            chmod 0644 /etc/nyx/trusted-bin.new
+            mv /etc/nyx/trusted-bin.new /etc/nyx/trusted-bin
+          '';
+        };
         # Apps' Glimpse plugins, at /run/current-system/sw/share/nyx-APP/glimpse.
         environment.pathsToLink = map (p: "/share/${p.pname}/glimpse") (
           lib.filter (p: p.passthru.glimpsePlugin or false) enabledPackages
@@ -227,6 +292,8 @@ in
             Type = "oneshot";
             ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
             ExecStart = "${lib.getExe iconTools} sync --quiet";
+            # Apps in the person's own Nix profile too (installed per user).
+            Environment = "XDG_DATA_DIRS=%h/.nix-profile/share:%h/.local/state/nix/profile/share:/etc/profiles/per-user/%u/share:/run/current-system/sw/share";
           };
         };
 
@@ -393,6 +460,22 @@ in
         environment.etc."nyx/apps".text = lib.concatLines (
           lib.filter (name: cfg.${name}.enable) (lib.attrNames apps)
         );
+        # Nyx apps people install for themselves: their session services, and trusted
+        # like the system's once NyxOS's cache built them (checked at each sign-in and
+        # after each profile change).
+        environment.etc."systemd/user-generators/nyx-profile-units".source = profileUnits;
+        systemd.user.services.nyx-trust-apps = {
+          description = "Trust the Nyx apps in your Nix profile";
+          wantedBy = [ "default.target" ];
+          unitConfig = {
+            ConditionUser = "!@system";
+            ConditionPathExistsGlob = "%h/.nix-profile/share/applications/io.github.design_nexus.nyx.*";
+          };
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${pkgs.systemd}/bin/busctl --system call io.github.nyxos_project.System /io/github/nyxos_project/System io.github.nyxos_project.System1 TrustApps";
+          };
+        };
         systemd.services.nyx-system-manager = {
           description = "Nyx System Manager";
           # It runs the switch itself: stopping it mid-switch would cut the switch's
@@ -414,18 +497,23 @@ in
             StateDirectory = "nyx-system";
           };
         };
-        # The daily check for updates: a notification when something new is available,
-        # once per set of updates. It waits out metered connections unless the user allows
-        # them (nyx-system config set updates check-on-metered true) and does nothing when
-        # checks are off (updates check false).
+        # The daily run: what each person's update settings say (updates.system, .apps,
+        # .tools, .firmware: off, check, notify or auto). Their own apps and tools
+        # (profile, Flatpaks, mise, uv) install themselves when set to auto, the default,
+        # at updates.install-at if set; the system and firmware only ever notify, once per
+        # set of updates. It waits out metered connections unless allowed
+        # (updates.check-on-metered) and does nothing when checks are off (updates.check).
         systemd.user.services.nyx-update-check = {
-          description = "Check for NyxOS updates";
+          description = "Check for NyxOS updates and install your own";
           unitConfig.ConditionUser = "!@system";
-          # nix, flatpak and fwupdmgr, as the system has them.
-          path = [ "/run/current-system/sw" ];
+          # nix, flatpak, mise, uv and fwupdmgr, as the system and the person have them.
+          path = [
+            "/etc/profiles/per-user/%u"
+            "/run/current-system/sw"
+          ];
           serviceConfig = {
             Type = "oneshot";
-            ExecStart = "${nyxPkgs.nyx-system}/bin/nyx-system update status --notify";
+            ExecStart = "${nyxPkgs.nyx-system}/bin/nyx-system update auto";
             Nice = 10;
             IOSchedulingClass = "idle";
           };
