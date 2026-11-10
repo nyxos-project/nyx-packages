@@ -161,6 +161,11 @@ in
       which announces theme changes and carries each user's theme to Hyprland, Foot,
       GTK and the wallpaper), the nyx-theme command and the Nyx.Theme QML module
     '';
+    connect.enable = lib.mkEnableOption ''
+      Nyx Connect's backend: upstream Flux's fluxd (started with the graphical session)
+      and flux-cli, with its port (12100, TCP and UDP) open and Avahi for discovery.
+      Pair a phone running Flux for Android or iOS in Settings › Devices
+    '';
     locker.enable = lib.mkEnableOption ''
       Nyx Locker, the lock screen on the Wayland session-lock protocol: the password,
       and the methods in `nyx.biometrics.surfaces.lock`, each its own PAM service at once
@@ -263,6 +268,27 @@ in
       })
 
       # Maps finds "my location" through GeoClue.
+      (lib.mkIf cfg.connect.enable (
+        lib.mkMerge [
+          (services nyxPkgs.flux)
+          {
+            environment.systemPackages = [ nyxPkgs.flux ];
+            networking.firewall = {
+              allowedTCPPorts = [ 12100 ];
+              allowedUDPPorts = [ 12100 ];
+            };
+            # fluxd publishes and browses _flux._udp through Avahi's D-Bus API.
+            services.avahi = {
+              enable = lib.mkDefault true;
+              publish = {
+                enable = lib.mkDefault true;
+                userServices = lib.mkDefault true;
+              };
+            };
+          }
+        ]
+      ))
+
       (lib.mkIf cfg.maps.enable {
         services.geoclue2.enable = lib.mkDefault true;
       })

@@ -252,6 +252,12 @@
       url = "github:design-nexus/umbra-icons";
       flake = false;
     };
+    # Flux (fluxd and flux-cli), Nyx Connect's backend, at a release tested with the
+    # current Flux for Android. Move the tag only after that check.
+    flux = {
+      url = "github:bjarneo/flux/v0.19.1";
+      flake = false;
+    };
   };
 
   outputs =

@@ -85,6 +85,8 @@ fromSource [
 
   nyx-wallpapers = pkgs.callPackage ./nyx-wallpapers.nix { src = inputs.nyx-wallpapers; };
 
+  flux = pkgs.callPackage ./flux.nix { src = inputs.flux; };
+
   hyprland = pkgs.callPackage ./hyprland.nix { };
 
   nyx-greeter = pkgs.callPackage ./nyx-greeter.nix {
