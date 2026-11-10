@@ -12,6 +12,9 @@
   wayland,
   git,
   sway,
+  dbus,
+  xwayland,
+  foot,
   wl-clipboard,
   xdg-utils,
   xdg-terminal-exec,
@@ -48,11 +51,16 @@ nyx.buildApp {
     sqlite
     wayland
   ];
-  # git for branches and worktrees, sway for agent workspaces (headless), and what the
-  # AI Hub runs: wl-copy, xdg-open, and the user's terminal for "resume in a terminal".
+  # git for branches and worktrees; for agent workspaces, sway (headless) with
+  # dbus-daemon for each one's private bus, Xwayland for X11 programs and foot, a
+  # terminal that needs no GPU; and what the AI Hub runs: wl-copy, xdg-open, and the
+  # user's terminal for "resume in a terminal".
   runtimeInputs = [
     git
     sway
+    dbus
+    xwayland
+    foot
     wl-clipboard
     xdg-utils
     xdg-terminal-exec
