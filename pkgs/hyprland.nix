@@ -18,7 +18,9 @@ let
     path = patchSeries;
     name = "hyprland-nyx-patches";
   };
-  names = lib.sort lib.lessThan (lib.filter (lib.hasSuffix ".patch") (lib.attrNames (builtins.readDir dir)));
+  names = lib.sort lib.lessThan (
+    lib.filter (lib.hasSuffix ".patch") (lib.attrNames (builtins.readDir dir))
+  );
   # Hyprland's flake source leaves out hyprtester, so the series goes in without its
   # test changes, as one patch (a patch that only touched hyprtester would be empty).
   series = runCommand "nyx-hyprland-series.patch" { nativeBuildInputs = [ patchutils ]; } ''

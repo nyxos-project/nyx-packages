@@ -17,7 +17,14 @@
 nyx.buildApp {
   pname = "nyx-desktop-widgets";
   inherit src;
-  cargoBuildFlags = [ "-p" "nyx-desktop-widgets" "-p" "nyx-desktop-widgets-backend" "-p" "nyx-desktop-upnext" ];
+  cargoBuildFlags = [
+    "-p"
+    "nyx-desktop-widgets"
+    "-p"
+    "nyx-desktop-widgets-backend"
+    "-p"
+    "nyx-desktop-upnext"
+  ];
   buildInputs = [
     gtk4-layer-shell
     librsvg

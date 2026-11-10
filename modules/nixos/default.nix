@@ -247,8 +247,9 @@ in
       # themselves that NyxOS's cache built (the System Manager's TrustApps), put
       # together here and by the manager.
       (lib.mkIf (enabledPackages != [ ]) {
-        environment.etc."nyx/trusted-bin.system".text =
-          lib.concatMapStrings (p: "${p}/bin\n") enabledPackages;
+        environment.etc."nyx/trusted-bin.system".text = lib.concatMapStrings (
+          p: "${p}/bin\n"
+        ) enabledPackages;
         system.activationScripts.nyx-trusted-bin = {
           deps = [ "etc" ];
           text = ''
