@@ -31,8 +31,10 @@ stdenv.mkDerivation {
   buildPhase = ''
     runHook preBuild
     export ZIG_GLOBAL_CACHE_DIR=$TMPDIR/zig-global-cache
+    # An explicit target: "native" looks for the system's libc headers, which the
+    # sandbox doesn't have; Zig brings glibc's for a named one.
     zig build --prefix $out --system ../libghostty-vt-${version}-deps \
-      -Doptimize=ReleaseFast -Dcpu=baseline
+      -Doptimize=ReleaseFast -Dcpu=baseline -Dtarget=x86_64-linux-gnu
     runHook postBuild
   '';
   dontInstall = true;

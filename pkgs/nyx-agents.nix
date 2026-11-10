@@ -43,6 +43,8 @@ nyx.buildApp {
     "-p"
     "nyx-ai-hub-plugin"
   ];
+  # The worktree tests run git.
+  nativeCheckInputs = [ git ];
   # ghostty-vt-sys links the library built here instead of its vendored tarballs, and
   # generates its bindings with bindgen.
   env.NYX_GHOSTTY_VT_PREFIX = "${libghostty-vt}";
