@@ -60,7 +60,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-greeter` | nyx-greeter | Nyx Greeter, the NyxOS login screen for greetd (in a bare Hyprland session) |
 | `packages.nyx-bar` | nyx-bar | Nyx Bar, `nyx-plugin` and the first-party bar plugins |
 | `packages.nyx-biometrics` | nixosModules `nyx.biometrics` | Nyx Biometrics: the sign-in broker, the TPM key service, `nyx-authctl` and the root helper; PAM wiring for face, fingerprint and security keys from `nyx.biometrics.surfaces` |
-| `packages.irlume`, `packages.gaze` | `nyx.biometrics.face` | Irlume (infrared cameras) and Gaze (webcams) from their own flakes, at v0.15.0 and v0.4.2 |
+| `packages.irlume`, `packages.gaze` | `nyx.biometrics.face` | Irlume (infrared cameras) and Gaze (webcams) from their own flakes, at v0.15.0 and v0.5.1 |
 | `packages.nyx-settings` | nyx-settings | Nyx Settings built for NyxOS: every system change through the Nyx System Manager, no root helper |
 | `packages.nyx-store` | nyx-store | Nyx Store: the NyxOS catalog and nixpkgs for everyone through the System Manager, Flathub for each user; system updates and rollback |
 | `packages.nyx-system` | `nyx.system`, `nyx.themes` | The Nyx System Manager (root D-Bus service, started on demand), `nyx-system`, and the `nyx-themed` theme service |
