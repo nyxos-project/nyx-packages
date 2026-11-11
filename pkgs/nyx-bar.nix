@@ -12,6 +12,7 @@
   gnutar,
   gzip,
   systemd,
+  pipewire,
   wireplumber,
   pulseaudio,
   networkmanager,
@@ -29,6 +30,10 @@ nyx.buildApp {
     "-p"
     "nyx-bar-workspaces"
     "-p"
+    "nyx-bar-clock"
+    "-p"
+    "nyx-bar-weather"
+    "-p"
     "nyx-bar-system"
     "-p"
     "nyx-bar-stats"
@@ -38,14 +43,28 @@ nyx.buildApp {
     "nyx-bar-media"
     "-p"
     "nyx-bar-tray"
+    "-p"
+    "nyx-bar-launcher"
+    "-p"
+    "nyx-bar-window"
+    "-p"
+    "nyx-bar-privacy"
+    "-p"
+    "nyx-bar-recording"
+    "-p"
+    "nyx-bar-keyboard"
+    "-p"
+    "nyx-bar-updates"
+    "-p"
+    "nyx-bar-keepawake"
   ];
   buildInputs = [
     gtk4-layer-shell
     librsvg
   ];
   # The host runs plugins in systemd scopes and bubblewrap; nyx-plugin clones, fetches
-  # and unpacks; the first-party plugins use wpctl, pactl, nmcli and cal. Trusted
-  # plugins inherit the bar's PATH.
+  # and unpacks; the first-party plugins use wpctl, pactl, pw-dump, nmcli and cal.
+  # Trusted plugins inherit the bar's PATH.
   runtimeInputs = [
     bubblewrap
     xdg-dbus-proxy
@@ -54,6 +73,7 @@ nyx.buildApp {
     gnutar
     gzip
     systemd
+    pipewire
     wireplumber
     pulseaudio
     networkmanager
