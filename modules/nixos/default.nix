@@ -328,6 +328,8 @@ in
               "%h/.config/nyx"
               "%h/.config/nyx/themes"
               "%h/.local/share/icons/hicolor/scalable/apps"
+              # The resolved theme every app reads, written after theme.toml changes.
+              "%t/nyx/theme"
             ];
             Unit = "nyx-icons.service";
           };
@@ -337,6 +339,7 @@ in
         systemd.user.tmpfiles.rules = [
           "d %h/.config/nyx/themes - - - -"
           "d %h/.local/share/icons/hicolor/scalable/apps - - - -"
+          "d %t/nyx/theme - - - -"
         ];
 
         # Apps installed by a system switch put their icons in the system profile,

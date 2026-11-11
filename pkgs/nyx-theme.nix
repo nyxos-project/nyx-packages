@@ -1,6 +1,7 @@
 # Nyx Theme Engine 2.0 from nyx-design: the `nyx-theme` command (choosing, installing,
-# updating and checking themes; the snapshot the shell reads) and the Nyx.Theme QML
-# module for Quickshell components. The engine itself is built into every app.
+# updating and checking themes; the snapshot the shell reads), the Nyx.Theme QML
+# module for Quickshell components, and the built-in themes' preview pictures. The
+# engine itself is built into every app.
 {
   nyx,
   src,
@@ -27,6 +28,8 @@ nyx.buildWorkspace {
     mkdir -p $out/share/nyx/qml
     cp -r qml/Nyx $out/share/nyx/qml/
     install -Dm644 crates/nyx-theme-core/themes/catppuccin-mocha/LICENSE $out/share/licenses/nyx-theme/catppuccin-LICENSE
+    # The built-in themes' preview pictures, for the theme picker.
+    install -Dm644 -t $out/share/nyx/theme-previews crates/nyx-theme-core/previews/*.jpg
     install -Dm644 -t $out/share/doc/nyx-theme docs/theme-engine/*.md
   '';
   meta = {
