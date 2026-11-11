@@ -17,7 +17,7 @@
       inputs.rust-overlay.follows = "rust-overlay";
     };
     gaze = {
-      url = "github:GunduLabs/gaze/v0.4.2";
+      url = "github:GunduLabs/gaze/v0.5.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
