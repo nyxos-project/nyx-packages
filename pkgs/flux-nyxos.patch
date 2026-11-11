@@ -1,0 +1,198 @@
+diff --git c/internal/desktop/dnd.go i/internal/desktop/dnd.go
+index a8cd65a..b345e41 100644
+--- c/internal/desktop/dnd.go
++++ i/internal/desktop/dnd.go
+@@ -43,12 +43,30 @@ func NewDND() *DND {
+ 	switch {
+ 	case onPath("omarchy-shell"):
+ 		d.kind = "omarchy-shell"
++	case onPath("nyx-notifyd") && onPath("busctl"):
++		d.kind = "nyx"
+ 	case onPath("makoctl"):
+ 		d.kind = "mako"
+ 	}
+ 	return d
+ }
+ 
++// nyxNotifications is the D-Bus object of nyx-notifyd (NyxOS) and its
++// interface.
++var nyxNotifications = []string{"--user", "call", "io.github.design_nexus.nyx.Notifications",
++	"/io/github/design_nexus/nyx/Notifications", "io.github.design_nexus.nyx.Notifications1"}
++
++// nyxDND calls method of nyx-notifyd, which answers "b true" or "b false".
++func nyxDND(method string, args ...string) (on, ok bool) {
++	ctx, cancel := context.WithTimeout(context.Background(), dndTimeout)
++	defer cancel()
++	out, err := dndCommand(ctx, "busctl", append(append(append([]string{}, nyxNotifications...), method), args...)...).Output()
++	if err != nil {
++		return false, false
++	}
++	return strings.TrimSpace(string(out)) == "b true", true
++}
++
+ // dndCommand returns a command that stops after the context ends. WaitDelay
+ // makes Wait return also when a child keeps the output open.
+ func dndCommand(ctx context.Context, name string, args ...string) *exec.Cmd {
+@@ -62,7 +80,7 @@ func onPath(name string) bool {
+ 	return err == nil
+ }
+ 
+-// Kind returns "omarchy-shell", "mako", or an empty string.
++// Kind returns "omarchy-shell", "nyx", "mako", or an empty string.
+ func (d *DND) Kind() string { return d.kind }
+ 
+ // Get returns the Do Not Disturb state. ok is false when the service does
+@@ -71,6 +89,8 @@ func (d *DND) Get() (on, ok bool) {
+ 	switch d.kind {
+ 	case "omarchy-shell":
+ 		return d.getOmarchy()
++	case "nyx":
++		return nyxDND("Dnd")
+ 	case "mako":
+ 		ctx, cancel := context.WithTimeout(context.Background(), dndTimeout)
+ 		defer cancel()
+@@ -129,6 +149,16 @@ func (d *DND) Set(on bool) error {
+ 		// refreshes it the same way.
+ 		_ = dndCommand(ctx, "omarchy-shell", "-q", "omarchy.indicators", "refresh").Run()
+ 		return nil
++	case "nyx":
++		value := "false"
++		if on {
++			value = "true"
++		}
++		// SetDnd answers whether the change took.
++		if took, ok := nyxDND("SetDnd", "b", value); !ok || !took {
++			return errors.New("nyx-notifyd didn't change Do Not Disturb")
++		}
++		return nil
+ 	case "mako":
+ 		flag := "-r"
+ 		if on {
+diff --git c/internal/desktop/theme.go i/internal/desktop/theme.go
+index 812d486..11244eb 100644
+--- c/internal/desktop/theme.go
++++ i/internal/desktop/theme.go
+@@ -2,6 +2,7 @@ package desktop
+ 
+ import (
+ 	"context"
++	"encoding/json"
+ 	"errors"
+ 	"fmt"
+ 	"io"
+@@ -84,16 +85,78 @@ type ThemeBorder struct {
+ }
+ 
+ // ThemePath returns the colors.toml file of the active Omarchy theme. The
+-// desktop window reads the same file.
++// desktop window reads the same file. Without Omarchy (NyxOS) it is the
++// theme of nyx-themed, $XDG_RUNTIME_DIR/nyx/theme/system.json (nyx-notifyd keeps
++// its state under ~/.local/state/omarchy there, so the theme folder decides).
+ func ThemePath() string {
+ 	home, _ := os.UserHomeDir()
+-	return filepath.Join(home, ".local", "state", "omarchy", "current", "theme", "colors.toml")
++	omarchy := filepath.Join(home, ".local", "state", "omarchy", "current", "theme", "colors.toml")
++	runtime := os.Getenv("XDG_RUNTIME_DIR")
++	if _, err := os.Stat(filepath.Join(home, ".local", "state", "omarchy", "current")); err != nil && runtime != "" {
++		return filepath.Join(runtime, "nyx", "theme", "system.json")
++	}
++	return omarchy
++}
++
++// nyxThemeKeys are the colors.toml keys that a Nyx theme fills, with the
++// Nyx color token of each.
++var nyxThemeKeys = [][2]string{
++	{"background", "surface.primary"}, {"foreground", "text.primary"},
++	{"accent", "accent.primary"}, {"cursor", "text.primary"}, {"muted", "text.tertiary"},
++	{"selection", "selection.background"}, {"selection_background", "selection.background"},
++	{"selection_foreground", "selection.foreground"},
++	{"dark_background", "surface.secondary"}, {"darker_background", "surface.overlay"},
++	{"lighter_background", "surface.tertiary"}, {"dark_foreground", "text.secondary"},
++	{"red", "status.error"}, {"green", "status.success"}, {"yellow", "status.warning"},
++	{"cyan", "status.info"}, {"blue", "accent.primary"}, {"magenta", "accent.secondary"},
++}
++
++// loadNyxTheme reads the theme of nyx-themed (its system.json) as a Theme,
++// with the accent as the border.
++func loadNyxTheme(path string) (*Theme, error) {
++	data, err := readLimited(path, maxThemeFile)
++	if err != nil {
++		return nil, err
++	}
++	var snap struct {
++		Theme struct {
++			ID         string `json:"id"`
++			Appearance string `json:"appearance"`
++		} `json:"theme"`
++		Tokens struct {
++			Colors map[string]string `json:"colors"`
++		} `json:"tokens"`
++	}
++	if err := json.Unmarshal(data, &snap); err != nil {
++		return nil, fmt.Errorf("%s: %w", path, err)
++	}
++	t := &Theme{Name: themeName(snap.Theme.ID), Colors: map[string]string{}}
++	for _, k := range nyxThemeKeys {
++		if c, ok := hexColor(snap.Tokens.Colors[k[1]]); ok {
++			t.Colors[k[0]] = c
++		}
++	}
++	bg, fg := t.Colors["background"], t.Colors["foreground"]
++	if bg == "" || fg == "" {
++		return nil, fmt.Errorf("%s has no valid background and foreground", path)
++	}
++	t.Mode = "dark"
++	if snap.Theme.Appearance == "light" || (snap.Theme.Appearance != "dark" && luminance(bg) > luminance(fg)) {
++		t.Mode = "light"
++	}
++	if a := t.Colors["accent"]; a != "" {
++		t.Border = &ThemeBorder{Colors: []string{a + "ff"}}
++	}
++	return t, nil
+ }
+ 
+ // LoadTheme reads the colors.toml file at path, and the theme name from
+ // theme.name next to the theme folder. It returns an error when the file
+ // is missing or does not parse.
+ func LoadTheme(path string) (*Theme, error) {
++	if strings.HasSuffix(path, ".json") {
++		return loadNyxTheme(path)
++	}
+ 	data, err := readLimited(path, maxThemeFile)
+ 	if err != nil {
+ 		return nil, err
+diff --git c/internal/desktop/theme_nyx_test.go i/internal/desktop/theme_nyx_test.go
+new file mode 100644
+index 0000000..33d581d
+--- /dev/null
++++ i/internal/desktop/theme_nyx_test.go
+@@ -0,0 +1,29 @@
++package desktop
++
++import (
++	"os"
++	"path/filepath"
++	"testing"
++)
++
++func TestLoadNyxTheme(t *testing.T) {
++	path := filepath.Join(t.TempDir(), "system.json")
++	snap := `{"theme": {"id": "catppuccin-mocha", "appearance": "dark"},
++		"tokens": {"colors": {"surface.primary": "#1e1e2e", "text.primary": "#cdd6f4", "accent.primary": "#89b4fa"}}}`
++	if err := os.WriteFile(path, []byte(snap), 0o644); err != nil {
++		t.Fatal(err)
++	}
++	theme, err := LoadTheme(path)
++	if err != nil {
++		t.Fatal(err)
++	}
++	if theme.Name != "catppuccin-mocha" || theme.Mode != "dark" {
++		t.Fatalf("name %q mode %q", theme.Name, theme.Mode)
++	}
++	if theme.Colors["background"] != "#1e1e2e" || theme.Colors["foreground"] != "#cdd6f4" || theme.Colors["accent"] != "#89b4fa" {
++		t.Fatalf("colors %v", theme.Colors)
++	}
++	if theme.Border == nil || theme.Border.Colors[0] != "#89b4faff" {
++		t.Fatalf("border %+v", theme.Border)
++	}
++}

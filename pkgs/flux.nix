@@ -19,6 +19,9 @@ in
   pname = "flux";
   inherit version src;
   vendorHash = "sha256-ziP/NS+YCcakzYOcszxqCV5dWKD4upCUVB8Rf6YFf+Y=";
+  # Without Omarchy: the theme it sends the phone is nyx-themed's
+  # ($XDG_RUNTIME_DIR/nyx/theme/system.json), and Do Not Disturb sync talks to nyx-notifyd.
+  patches = [ ./flux-nyxos.patch ];
   subPackages = [
     "cmd/fluxd"
     "cmd/flux"
@@ -37,7 +40,9 @@ in
     # Upstream calls it flux-cli: fluxcd owns `flux`.
     mv $out/bin/flux $out/bin/flux-cli
     # fluxd copies and pastes with wl-clipboard and opens shared links with xdg-open.
-    wrapProgram $out/bin/fluxd --prefix PATH : ${
+    # It restarts itself when the file in argv[0] isn't the one running (an update);
+    # the wrapper's own path never is, so it gets the real program's.
+    wrapProgram $out/bin/fluxd --argv0 "$out/bin/.fluxd-wrapped" --prefix PATH : ${
       lib.makeBinPath [
         wl-clipboard
         xdg-utils

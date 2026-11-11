@@ -240,8 +240,10 @@ nyx.buildApp {
     # `[ui] aura_renderer = "quickshell"`.
     mkdir -p $out/share/nyx-shell/components
     ln -s $share/quickshell/Aura $out/share/nyx-shell/components/nyx-assistant-aura
-    substituteInPlace $share/quickshell/shell.qml \
-      --replace-fail '(Quickshell.env("HOME") || "") + "/.local/bin/nyx-assistant"' "\"$out/bin/nyx-assistant\""
+    for qml in $share/quickshell/shell.qml $share/quickshell/Aura/Main.qml; do
+      substituteInPlace $qml \
+        --replace-fail '(Quickshell.env("HOME") || "") + "/.local/bin/nyx-assistant"' "\"$out/bin/nyx-assistant\""
+    done
     ln -s ${browser} $share/browser
     ln -s ${search} $share/search/duckduckgo
     ln -s ${lib.getExe nodejs} $out/bin/nyx-assistant-node
