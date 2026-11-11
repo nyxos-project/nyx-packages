@@ -46,9 +46,11 @@ stdenvNoCC.mkDerivation {
       -t $tools/assets
     # As tools/package-icons.py bundles them: the shipped themes, for following a theme
     # without any app installed.
-    python3 - ${design}/crates/nyx-theme/themes $tools/assets/themes.json <<'EOF'
+    python3 - ${design}/crates/nyx-theme-core/themes $tools/assets/themes.json <<'EOF'
     import json, pathlib, sys, tomllib
     themes = {p.stem: tomllib.loads(p.read_text()) for p in sorted(pathlib.Path(sys.argv[1]).glob('*.toml'))}
+    # Without them every theme falls back to the same colours.
+    assert 'nyx-dark' in themes, f"no shipped themes in {sys.argv[1]}"
     pathlib.Path(sys.argv[2]).write_text(json.dumps(themes, indent=1, sort_keys=True) + '\n')
     EOF
     runHook postInstall

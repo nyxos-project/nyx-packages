@@ -21,7 +21,7 @@
   "git+https://github.com/design-nexus/nyx-core.git?rev=eabed7896937775faeb69f0d9129e9af67d935ba#eabed7896937775faeb69f0d9129e9af67d935ba": "sha256-JxDYh4kaRQT1g+6L9tzo3eqbTzrqN0PcxwBWQvBbXoM=",
   "git+https://github.com/design-nexus/nyx-design.git?rev=40db521bab468d54f18f65c6aabd7fc8533d6a4d#40db521bab468d54f18f65c6aabd7fc8533d6a4d": "sha256-g5+s8nvkYifXIw/D2ej39RHjhKpptb4/p3Jt/vSAOyQ=",
   "git+https://github.com/design-nexus/nyx-design.git?rev=604b46a71bedc340779cddfc27c438c52da90061#604b46a71bedc340779cddfc27c438c52da90061": "sha256-S6ftyUhXkF6qqbeeRFEcZ4pFXC2QjqnlCRup+KRjzlU=",
-  "git+https://github.com/design-nexus/nyx-design.git?rev=78a1910cabe3535f588b3dc7004c378295297ec3#78a1910cabe3535f588b3dc7004c378295297ec3": "sha256-GFMelJ8jozuTFxiDJJrTsHtpXSDEalKM8W0Gd1h6jfI=",
+  "git+https://github.com/design-nexus/nyx-design.git?rev=7a9bd08390cb9d9bed71529da47a990a48889651#7a9bd08390cb9d9bed71529da47a990a48889651": "sha256-WlFL8+4vegtgtwCToyhNz7zJY7tx2XZkrnv37chlKVw=",
   "git+https://github.com/design-nexus/nyx-design.git?rev=cf393978364ca7b2a309a88a8d1651bf9d338916#cf393978364ca7b2a309a88a8d1651bf9d338916": "sha256-JQEB6cnUwm2sBehneH65Cfmed8Xikj6voQ6WOJclaeA=",
   "git+https://github.com/design-nexus/nyx-glimpse.git?rev=6f9f7325259bb05c2bc6a5eb1920ce6caed7aa82#6f9f7325259bb05c2bc6a5eb1920ce6caed7aa82": "sha256-uxrEpc4zI51yNi9eMNb0n/dfY/ZLWjbz3mRSwdhhJsE=",
   "git+https://github.com/design-nexus/nyx-passwords.git?rev=271eac96e166f1adceecc3e3c6c0dfde027ca522#271eac96e166f1adceecc3e3c6c0dfde027ca522": "sha256-qvUsV0SbYRIlGSmMgV0nZLi+y9a4gI2zmRzQT65kZzY=",
