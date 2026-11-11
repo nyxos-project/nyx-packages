@@ -886,11 +886,11 @@
     "nyx-glimpse": {
       "flake": false,
       "locked": {
-        "lastModified": 1794380124,
-        "narHash": "sha256-cB5rkHoq5SxBN+4Mz94cp0bZn9EQ5ZwAdTC8HzmYL7I=",
+        "lastModified": 1794424918,
+        "narHash": "sha256-pukMAXt1lpA8jZVAo8gRsMLkfFDuwjNCSRPnvGDldM4=",
         "owner": "design-nexus",
         "repo": "nyx-glimpse",
-        "rev": "64621b1fe015c7a777287028e8fb6964c58904ba",
+        "rev": "396695c0c38261d9090de5211bc8a7d78eb8bae7",
         "type": "github"
       },
       "original": {
