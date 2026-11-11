@@ -160,15 +160,25 @@ in
       '';
     };
     accounts.enable = lib.mkEnableOption "the Nyx Online Accounts service";
+    voice.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = cfg.assistant.enable;
+      defaultText = lib.literalExpression "config.nyx.assistant.enable";
+      description = ''
+        Nyx Voice: dictation, listening and speaking for Nyx apps, started on first use.
+        On by default with the Assistant, which listens through its recognizer worker.
+      '';
+    };
     ai = {
       enable = lib.mkOption {
         type = lib.types.bool;
-        default = cfg.chat.enable;
-        defaultText = lib.literalExpression "config.nyx.chat.enable";
+        default = cfg.chat.enable || cfg.assistant.enable;
+        defaultText = lib.literalExpression "config.nyx.chat.enable || config.nyx.assistant.enable";
         description = ''
           Nyx AI Core: the shared local model runtime (PrismML's llama.cpp) that Nyx apps
           use, started on first use, with an OpenAI-compatible API for coding tools on
-          127.0.0.1:8080. On by default with Chat.
+          127.0.0.1:8080. On by default with Chat and the Assistant, whose language
+          models run there.
         '';
       };
       acceleration = lib.mkOption {
@@ -377,10 +387,10 @@ in
         services.gnome.gnome-keyring.enable = lib.mkDefault true;
       })
 
-      # At login the Assistant's settings, abilities and browser and search assets are set
-      # up in the user's folders, as its install script does. The daemon starts once the
-      # user enables it (`systemctl --user enable --now nyx-assistantd`), after a model is
-      # downloaded; the Canvas starts with it, as the install script arranges.
+      # At login the Assistant's settings, abilities and browser, search and voice assets are
+      # set up in the user's folders, as its install script does. The daemon starts once
+      # the user enables it (`systemctl --user enable --now nyx-assistantd`); its language
+      # model is Nyx AI Core's and its listening Nyx Voice's (`nyx-voice models fetch asr`).
       (lib.mkIf cfg.assistant.enable {
         systemd.user.services.nyx-assistant-setup = {
           description = "Set up Nyx Assistant's settings and abilities";
@@ -396,10 +406,6 @@ in
           overrideStrategy = "asDropin";
           wants = [ "nyx-assistant-setup.service" ];
           after = [ "nyx-assistant-setup.service" ];
-        };
-        systemd.user.services.nyx-assistant-visual = {
-          overrideStrategy = "asDropin";
-          wantedBy = [ "nyx-assistantd.service" ];
         };
       })
 
@@ -612,6 +618,17 @@ in
       (lib.mkIf cfg.store.enable {
         services.flatpak.enable = true;
         xdg.portal.enable = lib.mkDefault true;
+      })
+
+      # The socket starts nyx-voiced on the first request.
+      (lib.mkIf cfg.voice.enable {
+        environment.systemPackages = [ nyxPkgs.nyx-voice ];
+        systemd.packages = [ nyxPkgs.nyx-voice ];
+        systemd.user.sockets.nyx-voiced = {
+          overrideStrategy = "asDropin";
+          wantedBy = [ "sockets.target" ];
+          unitConfig.ConditionUser = "!@system";
+        };
       })
 
       # The socket starts nyx-aid on the first request, from an app or a coding tool.

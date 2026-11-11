@@ -205,6 +205,10 @@
       url = "github:design-nexus/nyx-assistant";
       flake = false;
     };
+    nyx-voice = {
+      url = "github:design-nexus/nyx-voice";
+      flake = false;
+    };
     nyx-glimpse = {
       url = "github:design-nexus/nyx-glimpse";
       flake = false;

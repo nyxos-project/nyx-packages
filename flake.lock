@@ -453,11 +453,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1793633738,
-        "narHash": "sha256-tItrb9M8eYA6WhFgmT9tpGKueri3+wRuVA952o/2xSU=",
+        "lastModified": 1794165970,
+        "narHash": "sha256-XuAV2cUwaod3Bt4XFVqiXz3v1w2ex16W6Sv4S7EWres=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "7dcdd87373d72e7a2173e4db02e20d3d7f495cfd",
+        "rev": "ac588ef1c914865dad517b337ea0eb9694a4021c",
         "type": "github"
       },
       "original": {
@@ -566,11 +566,11 @@
     "nyx-assistant": {
       "flake": false,
       "locked": {
-        "lastModified": 1794143179,
-        "narHash": "sha256-Rz7j8h2gConcDLQbyz1wUV8egAQ4Wq3RVhb4laV6zwQ=",
+        "lastModified": 1794289349,
+        "narHash": "sha256-C03jkXjoYclAyrP+uPNbnM2zf+5dm8netlZHD3CYU4M=",
         "owner": "design-nexus",
         "repo": "nyx-assistant",
-        "rev": "48100ac1fe8a79cc0122099dea7222a2b9bf5832",
+        "rev": "e13a92d267d5ba6fde7e134438abe1d37af82bd5",
         "type": "github"
       },
       "original": {
@@ -742,11 +742,11 @@
     "nyx-containers": {
       "flake": false,
       "locked": {
-        "lastModified": 1794333910,
-        "narHash": "sha256-QJR94KA7nnRuAyMaY7TmR1mFUVEvNzLEwAfR5LYS85I=",
+        "lastModified": 1794368562,
+        "narHash": "sha256-BhkygAHQY1NBrZV8KlXbFns7gAg9UvKECfFr45zDyHM=",
         "owner": "design-nexus",
         "repo": "nyx-containers",
-        "rev": "5352175a530331a5c87579cb2addcfa206f1e3bd",
+        "rev": "d286c840d41d3a7e9aed82fcacca240ed50de652",
         "type": "github"
       },
       "original": {
@@ -822,11 +822,11 @@
     "nyx-dock": {
       "flake": false,
       "locked": {
-        "lastModified": 1794317632,
-        "narHash": "sha256-18nW2wyJspHS5kfw2fQx35Unx/Ur/LU0Gyvps0CtG84=",
+        "lastModified": 1794371508,
+        "narHash": "sha256-azse6SpuIxGohcA7z7nu1f4CNvMHzQ4XUIlACp34Zzc=",
         "owner": "design-nexus",
         "repo": "nyx-dock",
-        "rev": "d33b0c9260a8ec3efe657838967d17b4cac5b3c0",
+        "rev": "29713bd11a10cab200605c67f3f2500a0dd3571d",
         "type": "github"
       },
       "original": {
@@ -934,11 +934,11 @@
     "nyx-hyprland": {
       "flake": false,
       "locked": {
-        "lastModified": 1794331889,
-        "narHash": "sha256-QDbZumVUiULwkDgrYnZA46OaSgM4O+SwtyXeIZq2By4=",
+        "lastModified": 1794372525,
+        "narHash": "sha256-CEjk49dE6kw4tRWVvhEPelGJXcDdNb60O3AsgEy3OfY=",
         "owner": "nyxos-project",
         "repo": "nyx-hyprland",
-        "rev": "0cfd3f1da60f1b417c68f27f61321fe2bd63d107",
+        "rev": "72628f0d4c2fb20f3c7ffc4a8026fb8bca97dc4a",
         "type": "github"
       },
       "original": {
@@ -1238,11 +1238,11 @@
     "nyx-shell": {
       "flake": false,
       "locked": {
-        "lastModified": 1794331889,
-        "narHash": "sha256-hbv2DlvHgIvGqfLTRGE0xWsSVLCAg+vFcfqUHJfGLxU=",
+        "lastModified": 1794372525,
+        "narHash": "sha256-00yMzbZf5EaAqUpRzv0yb/3irHbwT1Z/sau0AebW6Oc=",
         "owner": "nyxos-project",
         "repo": "nyx-shell",
-        "rev": "b444f27f94e830194fd030819c5ce8fbbca4963a",
+        "rev": "f203a2e2bfc44f8721e94a6c25a5c5e74b990b36",
         "type": "github"
       },
       "original": {
@@ -1344,6 +1344,22 @@
       "original": {
         "owner": "design-nexus",
         "repo": "nyx-transfer",
+        "type": "github"
+      }
+    },
+    "nyx-voice": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794200112,
+        "narHash": "sha256-e8Z9iLvFBPHXsBXtZ83ss/dg819mF0A5GgoIO4rf1m8=",
+        "owner": "design-nexus",
+        "repo": "nyx-voice",
+        "rev": "1ebd749c2f22c9af0838ac057e247acd28e13c25",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-voice",
         "type": "github"
       }
     },
@@ -1479,6 +1495,7 @@
         "nyx-theater": "nyx-theater",
         "nyx-torrents": "nyx-torrents",
         "nyx-transfer": "nyx-transfer",
+        "nyx-voice": "nyx-voice",
         "nyx-wallpapers": "nyx-wallpapers",
         "nyx-weather": "nyx-weather",
         "nyx-welcome": "nyx-welcome",
