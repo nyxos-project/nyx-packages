@@ -758,11 +758,11 @@
     "nyx-control-center": {
       "flake": false,
       "locked": {
-        "lastModified": 1794385380,
-        "narHash": "sha256-RtEhrTapyTcjVBtMcxirFb/yqc4kpFrg0JXc9zj9veA=",
+        "lastModified": 1794387557,
+        "narHash": "sha256-NNULAJP1Rst4wssb61kiZQUtE52MTtZTqLJY3+9AvXM=",
         "owner": "design-nexus",
         "repo": "nyx-control-center",
-        "rev": "9e253a7a5ff7e5235c3b7ebe7996f5e1575bc341",
+        "rev": "5ca4b4f57111000e591078b0da957190cacfdb44",
         "type": "github"
       },
       "original": {
