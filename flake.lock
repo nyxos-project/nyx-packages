@@ -598,11 +598,11 @@
     "nyx-bar": {
       "flake": false,
       "locked": {
-        "lastModified": 1794392961,
-        "narHash": "sha256-X8HgFH+jyoyXbQW3t3nQuvFyPbjU++pWVPaY2u386k8=",
+        "lastModified": 1794411691,
+        "narHash": "sha256-XxppDNL0B/ed6cTXBztMqnCaDlQy6jwkF7bIcpnGqVs=",
         "owner": "design-nexus",
         "repo": "nyx-bar",
-        "rev": "81a2f405dec26e4ad06b7c05128778ff4133d765",
+        "rev": "e851a2d72129603391a960107694b0e6fb930695",
         "type": "github"
       },
       "original": {
