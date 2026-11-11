@@ -1,5 +1,8 @@
 # Nyx Bar: the bar, `nyx-plugin`, and the first-party plugins in share/nyx/plugins,
 # where the bar finds them as packaged (trusted) plugins through XDG_DATA_DIRS.
+# NyxOS runs its Quickshell interface: nyx-bar-backend starts with the session and the
+# bar goes to share/nyx-shell/components, drawn by Nyx Shell's nyx-shell-qs. The GTK bar
+# stays installed; its unit isn't started.
 {
   nyx,
   src,
@@ -25,6 +28,8 @@ nyx.buildApp {
   cargoBuildFlags = [
     "-p"
     "nyx-bar"
+    "-p"
+    "nyx-bar-backend"
     "-p"
     "nyx-plugin-cli"
     "-p"
@@ -84,9 +89,14 @@ nyx.buildApp {
   # isn't available.
   nativeCheckInputs = [ bubblewrap ];
   preCheck = nyx.privateBusPreCheck;
-  userUnits = [ "data/nyx-bar.service" ];
-  passthru.autostart."nyx-bar" = "graphical-session.target";
+  userUnits = [
+    "data/nyx-bar.service"
+    "apps/bar-backend/data/nyx-bar-backend.service"
+  ];
+  passthru.autostart."nyx-bar-backend" = "graphical-session.target";
   postInstall = ''
+    mkdir -p $out/share/nyx-shell/components
+    cp -r qml/Bar $out/share/nyx-shell/components/nyx-bar
     for dir in plugins/*/; do
       [ -f "$dir/plugin.toml" ] || continue
       id=$(sed -n 's/^id = "\(.*\)"/\1/p' "$dir/plugin.toml" | head -1)
