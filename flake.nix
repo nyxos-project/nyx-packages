@@ -97,6 +97,10 @@
       url = "github:design-nexus/nyx-music";
       flake = false;
     };
+    nyx-lyra = {
+      url = "github:design-nexus/nyx-lyra";
+      flake = false;
+    };
     nyx-media-player = {
       url = "github:design-nexus/nyx-media-player";
       flake = false;

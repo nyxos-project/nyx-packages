@@ -22,6 +22,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-office` | nyx-office | Write, Sheets and Present (`nyx-write`, `nyx-sheets`, `nyx-present`) |
 | `packages.nyx-git` | nyx-git | Nyx Git |
 | `packages.nyx-music` | nyx-music | Nyx Music, with the GStreamer plugin sets |
+| `packages.nyx-lyra` | nyx-lyra | Nyx Lyra, YouTube Music in WebKitGTK 6 with the GStreamer plugin sets |
 | `packages.nyx-media-player` | nyx-media-player | Nyx Media Player (libmpv) |
 | `packages.nyx-theater` | nyx-theater | Nyx Theater (libmpv) |
 | `packages.nyx-photos` | nyx-photos | Nyx Photos and `nyx-viewer`; "Set as background" is hidden until NyxOS has a wallpaper command |

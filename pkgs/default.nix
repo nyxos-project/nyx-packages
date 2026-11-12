@@ -42,6 +42,7 @@ fromSource [
   "nyx-office"
   "nyx-git"
   "nyx-music"
+  "nyx-lyra"
   "nyx-media-player"
   "nyx-theater"
   "nyx-photos"

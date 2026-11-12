@@ -966,11 +966,11 @@
     "nyx-lyra": {
       "flake": false,
       "locked": {
-        "lastModified": 1794452910,
-        "narHash": "sha256-UNqJCH10U7NK8yl5T7l0sBOO/Yk2I5A8xDnRA8rugH4=",
+        "lastModified": 1794453641,
+        "narHash": "sha256-RZyz3VjeS5KNXBLo7Flz1gTJxv+3s3IS5uuSUM3QP+0=",
         "owner": "design-nexus",
         "repo": "nyx-lyra",
-        "rev": "dde1143d0be17b6826335e9992643d36fa6596c2",
+        "rev": "c786ddc55d8e0d47849958d70e76b6688b812ce6",
         "type": "github"
       },
       "original": {

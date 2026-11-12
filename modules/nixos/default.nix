@@ -21,6 +21,7 @@ let
     office = "Nyx Office (Write, Sheets and Present)";
     git = "Nyx Git";
     music = "Nyx Music";
+    lyra = "Nyx Lyra (YouTube Music)";
     media-player = "Nyx Media Player";
     theater = "Nyx Theater";
     photos = "Nyx Photos and the photo viewer";
