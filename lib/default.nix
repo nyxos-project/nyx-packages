@@ -199,7 +199,11 @@ rec {
         "actions"
       ]
       // {
-        postInstall = postInstall + installServices { inherit userUnits dbusServices; } + installActions actions + autostartFile;
+        postInstall =
+          postInstall
+          + installServices { inherit userUnits dbusServices; }
+          + installActions actions
+          + autostartFile;
       }
     );
 

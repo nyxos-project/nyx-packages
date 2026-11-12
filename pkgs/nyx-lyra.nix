@@ -19,18 +19,17 @@ nyx.buildApp {
   # glib-networking gives WebKit TLS. WebKit plays YouTube Music's AAC and Opus streams
   # through GStreamer; wrapGAppsHook4 puts the plugin sets on GST_PLUGIN_SYSTEM_PATH_1_0,
   # which the web process inherits.
-  buildInputs =
-    [
-      webkitgtk_6_0
-      glib-networking
-    ]
-    ++ (with gst_all_1; [
-      gstreamer
-      gst-plugins-base
-      gst-plugins-good
-      gst-plugins-bad
-      gst-libav
-    ]);
+  buildInputs = [
+    webkitgtk_6_0
+    glib-networking
+  ]
+  ++ (with gst_all_1; [
+    gstreamer
+    gst-plugins-base
+    gst-plugins-good
+    gst-plugins-bad
+    gst-libav
+  ]);
   meta = {
     description = "YouTube Music for NyxOS, through YouTube Music's own web player";
     homepage = "https://github.com/design-nexus/nyx-lyra";
