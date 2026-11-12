@@ -1126,11 +1126,11 @@
     "nyx-passwords": {
       "flake": false,
       "locked": {
-        "lastModified": 1794508212,
-        "narHash": "sha256-Ob+O6P/Z/CzRvWDeRADu26yConBUJXFwc3q/mkrhXoY=",
+        "lastModified": 1794515303,
+        "narHash": "sha256-ezoId0DxJ7VNhn3a48Z9uq6V16nywlV9x3Ti8GyGrTU=",
         "owner": "design-nexus",
         "repo": "nyx-passwords",
-        "rev": "644ff8257cab0a86ae59be9ddae74e2af422de3a",
+        "rev": "2df6988c10b6d31f190a0e89f1b73d09d250fd02",
         "type": "github"
       },
       "original": {
