@@ -256,7 +256,7 @@ in
       enable = lib.mkEnableOption "the Nyx wallpapers, with the theme's default shown on every output";
       theme = lib.mkOption {
         type = lib.types.str;
-        default = "nyx-dark";
+        default = "catppuccin-mocha";
         description = "The theme whose default wallpaper is shown (a table in wallpapers.toml).";
       };
     };
