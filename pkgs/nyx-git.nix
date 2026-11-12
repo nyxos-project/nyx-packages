@@ -11,6 +11,8 @@
 }:
 nyx.buildApp {
   pname = "nyx-git";
+  # Its action manifest (nyx git …, Glimpse's Git panel, the Assistant): lib installActions.
+  actions = [ "nyx-git" ];
   inherit src;
   buildInputs = [ gtksourceview5 ];
   nativeCheckInputs = [

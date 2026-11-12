@@ -963,6 +963,22 @@
         "type": "github"
       }
     },
+    "nyx-lyra": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794452910,
+        "narHash": "sha256-UNqJCH10U7NK8yl5T7l0sBOO/Yk2I5A8xDnRA8rugH4=",
+        "owner": "design-nexus",
+        "repo": "nyx-lyra",
+        "rev": "dde1143d0be17b6826335e9992643d36fa6596c2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "design-nexus",
+        "repo": "nyx-lyra",
+        "type": "github"
+      }
+    },
     "nyx-mail": {
       "flake": false,
       "locked": {
@@ -1471,6 +1487,7 @@
         "nyx-home": "nyx-home",
         "nyx-hyprland": "nyx-hyprland",
         "nyx-installer": "nyx-installer",
+        "nyx-lyra": "nyx-lyra",
         "nyx-mail": "nyx-mail",
         "nyx-maps": "nyx-maps",
         "nyx-media-player": "nyx-media-player",
