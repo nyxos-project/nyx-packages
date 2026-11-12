@@ -1270,11 +1270,11 @@
     "nyx-store": {
       "flake": false,
       "locked": {
-        "lastModified": 1794378903,
-        "narHash": "sha256-Wn9FzR1eIhgxI7ppEvYSc49oW9B2JEFJS8wpvHRzXwU=",
+        "lastModified": 1794455415,
+        "narHash": "sha256-kA3LK5yTE5A9B/ufltBfJExQOm4Ivu0JwsoU5cgXRv4=",
         "owner": "design-nexus",
         "repo": "nyx-store",
-        "rev": "0342302d328888d7491970feb203c72fae7ccc7c",
+        "rev": "fc2bdca66f984eb600bed8ecb6ac80322427b4f9",
         "type": "github"
       },
       "original": {
