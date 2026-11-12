@@ -1302,11 +1302,11 @@
     "nyx-system": {
       "flake": false,
       "locked": {
-        "lastModified": 1794454787,
-        "narHash": "sha256-ycKv2DODdMbumXHDChHycrhsw0kOSc4FVDcw7jrYJpw=",
+        "lastModified": 1794456393,
+        "narHash": "sha256-mgdzMY2GkU4CL6RgLXTmBaw4BJBLCPYcxUA4vxvej9A=",
         "owner": "nyxos-project",
         "repo": "nyx-system",
-        "rev": "713e98ec6309e91ae425ad40cab2e4a5064a7b64",
+        "rev": "38d765b7c9531973c101d8280c169d5c2e726a62",
         "type": "github"
       },
       "original": {
