@@ -1,8 +1,8 @@
 # The dock: pinned and running apps, folders and the trash. NyxOS runs its Quickshell
 # interface, as the laptop does: nyx-dock-backend starts with the session and the dock
 # goes to share/nyx-shell/components, drawn by Nyx Shell's nyx-shell-qs. The GTK dock
-# stays installed; its unit isn't started. The swipe plugin isn't built (it builds
-# against the running Hyprland), so the dock hides once a workspace swipe ends.
+# stays installed; its unit isn't started. Its swipe plugin is nyx-dock-swipe, built
+# against NyxOS's Hyprland.
 {
   nyx,
   src,

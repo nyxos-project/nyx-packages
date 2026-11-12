@@ -137,6 +137,11 @@ fromSource [
     hyprland = nyxHyprland;
   };
 
+  nyx-dock-swipe = pkgs.callPackage ./nyx-dock-swipe.nix {
+    src = inputs.nyx-dock;
+    hyprland = nyxHyprland;
+  };
+
   nyx-greeter = pkgs.callPackage ./nyx-greeter.nix {
     inherit nyx;
     src = inputs.nyx-greeter;

@@ -793,6 +793,12 @@ in
         };
       })
 
+      # The dock's swipe plugin, built for this Hyprland; the backend loads it.
+      (lib.mkIf cfg.dock.enable {
+        systemd.user.services.nyx-dock-backend.environment.NYX_DOCK_SWIPE_PLUGIN =
+          "${nyxPkgs.nyx-dock-swipe}/lib/nyx-dock-swipe.so";
+      })
+
       (lib.mkIf cfg.accounts.enable {
         environment.systemPackages = [ nyxPkgs.nyx-accounts ];
         # Account credentials live in the Secret Service.
