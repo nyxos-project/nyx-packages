@@ -171,13 +171,14 @@ rec {
     }@args:
     let
       # What starts with the session (unit name -> target), kept in the package too, for
-      # an app in someone's Nix profile (the module's nyx-profile-units generator).
+      # an app in someone's Nix profile (the module's nyx-profile-units generator). One
+      # file per package: a profile can't hold two packages with the same file.
       autostart = (args.passthru or { }).autostart or { };
       autostartFile = lib.optionalString (autostart != { }) ''
-        mkdir -p $out/share/nyx
+        mkdir -p $out/share/nyx/autostart.d
         printf '%s\n' ${
           lib.escapeShellArgs (lib.mapAttrsToList (unit: target: "${unit} ${target}") autostart)
-        } > $out/share/nyx/autostart
+        } > $out/share/nyx/autostart.d/${pname}
       '';
     in
     rustPlatform.buildRustPackage (

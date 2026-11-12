@@ -83,7 +83,7 @@ let
 
   # Nyx apps in someone's Nix profile (installed per user): their user units, with the
   # PATH and condition the module's `services` gives the system's, and the units they
-  # start with the session (share/nyx/autostart). The system's copy of a unit wins.
+  # start with the session (share/nyx/autostart.d). The system's copy of a unit wins.
   # `systemctl --user daemon-reload` (done after each profile change) runs it again.
   profileUnits = pkgs.writeShellScript "nyx-profile-units" ''
     export PATH=${
@@ -115,14 +115,17 @@ let
             ;;
         esac
       done
-      [ -f "$profile/share/nyx/autostart" ] || continue
-      while read -r unit target; do
-        [ -n "$unit" ] && [ -n "$target" ] || continue
-        case $unit in *.*) ;; *) unit=$unit.service ;; esac
-        [ -e "$normal/$unit" ] || continue
-        mkdir -p "$normal/$target.wants"
-        ln -sfn "$normal/$unit" "$normal/$target.wants/$unit"
-      done < "$profile/share/nyx/autostart"
+      # share/nyx/autostart is the single file packages had before autostart.d.
+      for list in "$profile"/share/nyx/autostart.d/* "$profile/share/nyx/autostart"; do
+        [ -f "$list" ] || continue
+        while read -r unit target; do
+          [ -n "$unit" ] && [ -n "$target" ] || continue
+          case $unit in *.*) ;; *) unit=$unit.service ;; esac
+          [ -e "$normal/$unit" ] || continue
+          mkdir -p "$normal/$target.wants"
+          ln -sfn "$normal/$unit" "$normal/$target.wants/$unit"
+        done < "$list"
+      done
     done
   '';
 
@@ -356,6 +359,15 @@ in
         environment.etc."chromium/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json".source =
           "${nyxPkgs.nyx-passwords}/etc/chromium/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json";
         services.gnome.gnome-keyring.enable = lib.mkDefault true;
+      })
+
+      # Nearby sharing (LocalSend's protocol): transfers on TCP 53317, discovery on UDP
+      # 53317 multicast. Share asks before receiving from a device it doesn't trust.
+      (lib.mkIf cfg.share.enable {
+        networking.firewall = {
+          allowedTCPPorts = [ 53317 ];
+          allowedUDPPorts = [ 53317 ];
+        };
       })
 
       # Maps finds "my location" through GeoClue.
