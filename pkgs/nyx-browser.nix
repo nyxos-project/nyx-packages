@@ -153,9 +153,9 @@ stdenv.mkDerivation {
 }
 EOF
 
-    # Nyx actions (nyx browser …) and D-Bus activation of the bridge's actions server.
+    # D-Bus activation of the bridge's actions server; its manifest is written after
+    # fixup, once autoPatchelf has made the bridge runnable.
     mkdir -p "$out/share/nyx/actions" "$out/share/dbus-1/services"
-    "$out/lib/${libName}/nyx-browser-bridge" actions --describe >"$out/share/nyx/actions/${appId}.json"
     cat >"$out/share/dbus-1/services/${appId}.service" <<EOF
 [D-BUS Service]
 Name=${appId}
@@ -177,6 +177,14 @@ EOF
     done
 
     runHook postInstall
+  '';
+
+  # After autoPatchelf's own post-fixup hook, which the postFixup variable runs before.
+  preFixup = ''
+    writeActions() {
+      "$out/lib/${libName}/nyx-browser-bridge" actions --describe >"$out/share/nyx/actions/${appId}.json"
+    }
+    postFixupHooks+=(writeActions)
   '';
 
   passthru = {
