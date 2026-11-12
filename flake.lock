@@ -566,11 +566,11 @@
     "nyx-assistant": {
       "flake": false,
       "locked": {
-        "lastModified": 1794436655,
-        "narHash": "sha256-uju7RqbMnrcBrqq5NCtTQACQVxa+UW2bP6FEA+7KohQ=",
+        "lastModified": 1794442860,
+        "narHash": "sha256-FmemhGYOL+UaQVCRF1RxtpasXQhj9m8w9Hts7obp1Ig=",
         "owner": "design-nexus",
         "repo": "nyx-assistant",
-        "rev": "80c9d3fec254b3c46765f68d230555ce018d7610",
+        "rev": "58ed80e2ddf66e0c30aba653a2be02d0d33f8dcd",
         "type": "github"
       },
       "original": {
