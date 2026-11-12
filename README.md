@@ -47,6 +47,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-backup` | nyx-backup | Nyx Backup, its background service, CLI and recovery tool |
 | `packages.nyx-mail` | nyx-mail | Nyx Mail (WebKitGTK 6), its sync service and Glimpse plugin |
 | `packages.nyx-capture` | nyx-capture | Nyx Capture with nixpkgs' ONNX Runtime; no scrolling capture (needs Omarchy's omasnap) |
+| `packages.nyx-browser` | nyx-browser | Nyx Browser from the GitHub release tarball (Zen's engine with Nyx's chrome); not built from source |
 | `packages.nyx-passwords` | nyx-passwords | Nyx Passwords, its vault service and browser bridge; no polkit sign-in or TPM broker until Nyx Biometrics is packaged |
 | `packages.nyx-pulse` | nyx-pulse | Nyx Pulse with TDLib 1.8.67 (built from source) and the NTgCalls 3.0.5 release build, and its Glimpse plugin |
 | `packages.nyx-assistant` | nyx-assistant | Nyx Assistant: daemon, CLI, TUI, plugin worker, Canvas, Quickshell HUD and Aura, abilities, browser automation (Playwright with nixpkgs Chromium) and the DuckDuckGo search server; its language model runs in Nyx AI Core and its speech in Nyx Voice's engine |

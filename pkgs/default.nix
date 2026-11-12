@@ -124,6 +124,10 @@ fromSource [
 
   nyx-wallpapers = pkgs.callPackage ./nyx-wallpapers.nix { src = inputs.nyx-wallpapers; };
 
+  # Browser's engine is too large to build here; the release tarball holds the
+  # binary and the native host. Update version and hash when UPDATING.md says to.
+  nyx-browser = pkgs.callPackage ./nyx-browser.nix { };
+
   flux = pkgs.callPackage ./flux.nix { src = inputs.flux; };
 
   hyprland = nyxHyprland;

@@ -59,6 +59,7 @@ let
     shell = "Nyx Shell Core (the shell's coordinator) and the Nyx.Shell Quickshell module";
     welcome = "Nyx Welcome, the setup after installation";
     agents = "Nyx Agents, its session manager and the AI Hub for Nyx Bar and the Control Center";
+    browser = "Nyx Browser (Zen's engine with Nyx's chrome, theme and integrations)";
   };
 
   # Nyx AI Core with the worker for this machine's acceleration. The CUDA build is
@@ -372,6 +373,20 @@ in
         environment.etc."chromium/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json".source =
           "${nyxPkgs.nyx-passwords}/etc/chromium/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json";
         services.gnome.gnome-keyring.enable = lib.mkDefault true;
+      })
+
+      # Browser reads MOZ_SYSTEM_DIR for its own host, and ~/.mozilla for others (Passwords).
+      # Keep the user folder in sync so a Passwords update reaches Browser without a rebuild.
+      (lib.mkIf cfg.browser.enable {
+        system.userActivationScripts.nyx-browser-native-hosts = ''
+          mkdir -p "$HOME/.mozilla/native-messaging-hosts"
+          ln -sfn ${nyxPkgs.nyx-browser}/lib/mozilla/native-messaging-hosts/io.github.design_nexus.nyx.browser.json \
+            "$HOME/.mozilla/native-messaging-hosts/io.github.design_nexus.nyx.browser.json"
+          ${lib.optionalString cfg.passwords.enable ''
+            ln -sfn ${nyxPkgs.nyx-passwords}/lib/mozilla/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json \
+              "$HOME/.mozilla/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json"
+          ''}
+        '';
       })
 
       # Nearby sharing (LocalSend's protocol): transfers on TCP 53317, discovery on UDP
