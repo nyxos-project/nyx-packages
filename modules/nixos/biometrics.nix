@@ -295,7 +295,6 @@ in
     # and apps know the broker by its own. The activation script in default.nix writes
     # /etc/nyx/trusted-bin from this list.
     environment.etc."nyx/trusted-bin.system".text = lib.mkAfter "${bio}/bin\n";
-    services.dbus.packages = [ bio ];
     systemd.packages = [ bio ];
     systemd.sockets.nyx-auth-keyd.wantedBy = [ "sockets.target" ];
     security.polkit.enable = true;

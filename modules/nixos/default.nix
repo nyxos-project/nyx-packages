@@ -146,7 +146,9 @@ let
         "/run/current-system/sw"
       ];
     }) (package.passthru.autostart or { });
-    services.dbus.packages = [ package ];
+    # Its D-Bus services and policies need no services.dbus.packages: NixOS reads the
+    # system profile's share/dbus-1, and listing the package too made D-Bus find each
+    # file twice and log an error for every one.
     # Its action manifests (share/nyx/actions) for `nyx APP …`, Glimpse and Nyx
     # Assistant, and the nyx command's part that reads them.
     environment.pathsToLink = [ "/share/nyx" ];
@@ -549,7 +551,6 @@ in
 
       # Settings adds and removes printers through cups-pk-helper, CUPS's polkit D-Bus service.
       (lib.mkIf (cfg.settings.enable && config.services.printing.enable) {
-        services.dbus.packages = [ pkgs.cups-pk-helper ];
         environment.systemPackages = [ pkgs.cups-pk-helper ];
       })
 
@@ -582,7 +583,6 @@ in
       # The System Manager starts on its first call (D-Bus activation) and exits when idle.
       (lib.mkIf cfg.system.enable {
         environment.systemPackages = [ nyxPkgs.nyx-system ];
-        services.dbus.packages = [ nyxPkgs.nyx-system ];
         security.polkit.enable = true;
         environment.etc."nyxos/system.toml".text = ''
           flake = "${cfg.system.flake}"
@@ -704,8 +704,8 @@ in
         ];
         # `import Nyx.Theme` in Quickshell components.
         environment.sessionVariables.QML_IMPORT_PATH = [ "/run/current-system/sw/share/nyx/qml" ];
-        # io.github.design_nexus.nyx.Theme starts nyx-themed when a client calls it first.
-        services.dbus.packages = [ nyxPkgs.nyx-system ];
+        # io.github.design_nexus.nyx.Theme starts nyx-themed when a client calls it first
+        # (its service file comes with nyx-system, from the system profile).
         programs.dconf.enable = true;
         systemd.user.services.nyx-themed = {
           description = "Nyx theme service (io.github.design_nexus.nyx.Theme)";
@@ -795,7 +795,6 @@ in
 
       (lib.mkIf cfg.accounts.enable {
         environment.systemPackages = [ nyxPkgs.nyx-accounts ];
-        services.dbus.packages = [ nyxPkgs.nyx-accounts ];
         # Account credentials live in the Secret Service.
         services.gnome.gnome-keyring.enable = lib.mkDefault true;
       })
