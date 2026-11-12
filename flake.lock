@@ -790,11 +790,11 @@
     "nyx-design": {
       "flake": false,
       "locked": {
-        "lastModified": 1794440678,
-        "narHash": "sha256-DlYgavQnhjHM3TYyM6c9wvbidAYwzPKxIJnVXXarX88=",
+        "lastModified": 1794442882,
+        "narHash": "sha256-jKYHtaWrMf1Wb+0BiCZqzUQ4oxx3LhBLApyAcHQEgfc=",
         "owner": "design-nexus",
         "repo": "nyx-design",
-        "rev": "53bf2d729152ba82893963045f91efa3b8950f46",
+        "rev": "8b41fb14ec11fa18199d8f4228d267d94dc8e323",
         "type": "github"
       },
       "original": {
