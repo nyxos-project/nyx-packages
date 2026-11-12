@@ -316,6 +316,25 @@ in
         # nyx-shell-qs finds the components (its OSD and window menu, the Control
         # Center's panel, Desktop Widgets) in the system profile.
         environment.pathsToLink = [ "/share/nyx-shell/components" ];
+
+        # Past its start limit the shell (bar, dock, launcher) stays down; say so and offer
+        # to start it again. The Notification Center draws the pop-up, not the shell.
+        systemd.user.services.nyx-shell-core.unitConfig.OnFailure = [ "nyx-shell-failed.service" ];
+        systemd.user.services.nyx-shell-qs.unitConfig.OnFailure = [ "nyx-shell-failed.service" ];
+        systemd.user.services.nyx-shell-failed = {
+          description = "Offer to restart Nyx Shell after it stopped";
+          serviceConfig.Type = "oneshot";
+          script = ''
+            choice=$(${pkgs.libnotify}/bin/notify-send --app-name="Nyx Shell" --icon=dialog-warning \
+              --urgency=critical --action=restart="Restart the shell" --wait \
+              "The shell stopped" \
+              "The bar, dock and launcher kept crashing, so they were stopped. Super+Return still opens a terminal.")
+            if [ "$choice" = restart ]; then
+              systemctl --user reset-failed nyx-shell-core.service nyx-shell-qs.service
+              systemctl --user restart nyx-shell-core.service nyx-shell-qs.service
+            fi
+          '';
+        };
       })
 
       (lib.mkIf cfg.icons.followTheme {
