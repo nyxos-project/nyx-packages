@@ -7,6 +7,7 @@
   yt-dlp,
   libnotify,
   xdg-utils,
+  libsecret,
 }:
 nyx.buildApp {
   pname = "nyx-media-player";
@@ -16,8 +17,10 @@ nyx.buildApp {
     mpv-unwrapped
     libGL
   ];
-  # ffmpeg and ffprobe for scrub previews; yt-dlp for online links.
+  # ffmpeg and ffprobe for scrub previews; yt-dlp for online links; secret-tool keeps the
+  # TMDB key.
   runtimeInputs = [
+    libsecret
     ffmpeg
     yt-dlp
     libnotify

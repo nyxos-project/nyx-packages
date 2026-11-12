@@ -1,6 +1,6 @@
 # Nyx AI Core: nyx-aid (the shared local model runtime), the nyx-ai command, and the
-# user socket and service that start it on first use (the socket also holds the
-# OpenAI-compatible API on 127.0.0.1:8080). Its worker is `llama`: Prism's llama.cpp
+# user socket and service that start it on first use (nyx-aid-openai.socket holds the
+# OpenAI-compatible API on 127.0.0.1:8080 once a user turns it on). Its worker is `llama`: Prism's llama.cpp
 # with Vulkan by default; the NixOS module swaps in the CUDA build on NVIDIA's driver.
 {
   nyx,
@@ -23,6 +23,7 @@ nyx.buildWorkspace {
   userUnits = [
     "data/nyx-aid.service"
     "data/nyx-aid.socket"
+    "data/nyx-aid-openai.socket"
   ];
   postInstall = ''
     rm -f $out/bin/nyx-ai-stub-worker

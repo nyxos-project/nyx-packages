@@ -23,6 +23,11 @@ let
     hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     patchSeries = "${inputs.nyx-hyprland}/patches/0.57.2";
   };
+  # grim and wf-recorder of their own for Capture and the Assistant: NyxOS lets only
+  # these store paths (and the portal) capture the screen, so another program running
+  # nixpkgs' grim gets nothing.
+  screenGrim = pkgs.grim.overrideAttrs { pname = "nyx-screen-grim"; };
+  screenRecorder = pkgs.wf-recorder.overrideAttrs { pname = "nyx-screen-wf-recorder"; };
   # Nyx Agents needs libghostty-vt 1.0, built with Zig 0.17 (newer than nixpkgs has).
   zig_0_17 = pkgs.callPackage ./zig_0_17.nix { };
   libghostty-vt = pkgs.callPackage ./libghostty-vt.nix { zig = zig_0_17; };
@@ -51,7 +56,6 @@ fromSource [
   "nyx-cloud"
   "nyx-clipboard"
   "nyx-home"
-  "nyx-chat"
   "nyx-activity"
   "nyx-containers"
   "nyx-torrents"
@@ -64,10 +68,8 @@ fromSource [
   "nyx-backup"
   "nyx-maps"
   "nyx-mail"
-  "nyx-capture"
   "nyx-passwords"
   "nyx-pulse"
-  "nyx-assistant"
   "nyx-voice"
   "nyx-glimpse"
   "nyx-notification-center"
@@ -86,6 +88,24 @@ fromSource [
 ]
 // {
   inherit llama-prism;
+  nyx-screen-grim = screenGrim;
+  nyx-screen-wf-recorder = screenRecorder;
+  nyx-capture = pkgs.callPackage ./nyx-capture.nix {
+    inherit nyx;
+    src = inputs.nyx-capture;
+    grim = screenGrim;
+    wf-recorder = screenRecorder;
+  };
+  nyx-assistant = pkgs.callPackage ./nyx-assistant.nix {
+    inherit nyx;
+    src = inputs.nyx-assistant;
+    grim = screenGrim;
+  };
+  nyx-chat = pkgs.callPackage ./nyx-chat.nix {
+    inherit nyx;
+    src = inputs.nyx-chat;
+    grim = screenGrim;
+  };
   nyx-actions = pkgs.callPackage ./nyx-actions.nix {
     inherit nyx;
     src = inputs.nyx-core;

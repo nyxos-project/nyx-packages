@@ -22,6 +22,14 @@ in
   # Without Omarchy: the theme it sends the phone is nyx-themed's
   # ($XDG_RUNTIME_DIR/nyx/theme/system.json), and Do Not Disturb sync talks to nyx-notifyd.
   patches = [ ./flux-nyxos.patch ];
+  # NyxOS's defaults for a new config.toml: a paired phone doesn't browse the home folder
+  # or get the clipboard until Settings › Devices turns them on, and fluxd updates with
+  # the system, not from GitHub.
+  postPatch = ''
+    substituteInPlace internal/config/config.go --replace-fail \
+      'c := &Config{AutoClipboard: true, Notifications: true, ShareHome: true, PauseMediaOnCall: true, SyncDnd: true, Herdr: true, CheckUpdates: true}' \
+      'c := &Config{AutoClipboard: false, Notifications: true, ShareHome: false, PauseMediaOnCall: true, SyncDnd: true, Herdr: true, CheckUpdates: false}'
+  '';
   subPackages = [
     "cmd/fluxd"
     "cmd/flux"

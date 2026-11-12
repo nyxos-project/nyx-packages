@@ -9,12 +9,15 @@
   pipewire,
   poppler-utils,
   xdg-utils,
+  libsecret,
 }:
 nyx.buildApp {
   pname = "nyx-chat";
   inherit src;
-  # Screenshots and clipboard as attachments, voice input, PDF text.
+  # Screenshots and clipboard as attachments, voice input, PDF text; secret-tool keeps
+  # the search keys.
   runtimeInputs = [
+    libsecret
     wl-clipboard
     grim
     slurp

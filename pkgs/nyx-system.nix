@@ -6,11 +6,14 @@
   src,
   pkg-config,
   coreutils,
+  libxcrypt,
 }:
 nyx.buildWorkspace {
   pname = "nyx-system";
   inherit src;
   nativeBuildInputs = [ pkg-config ];
+  # nyx-recovery checks an administrator's password with crypt(3).
+  buildInputs = [ libxcrypt ];
   postInstall = ''
     install -Dm644 data/io.github.nyxos_project.system.policy -t $out/share/polkit-1/actions
     install -Dm644 data/io.github.nyxos_project.System.conf -t $out/share/dbus-1/system.d

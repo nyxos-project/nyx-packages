@@ -180,9 +180,14 @@ in
       default = "none";
       description = ''
         Face sign-in: Irlume for infrared (Windows Hello) cameras, Gaze for ordinary
-        webcams. A webcam match only shows someone is present.
+        webcams. A webcam match only shows someone is present (a photo can pass), so
+        Gaze works only on the lock screen, and only with `allowWebcamFace`.
       '';
     };
+    allowWebcamFace = lib.mkEnableOption ''
+      Gaze (an ordinary webcam) on the lock screen. A photo of you can unlock it; Gaze
+      never signs in, runs sudo or approves administrator prompts
+    '';
     fingerprint.enable = lib.mkEnableOption "fingerprint sign-in through fprintd";
     securityKey = {
       enable = lib.mkEnableOption "security-key sign-in through pam_u2f (keys registered with nyx-authctl keys add)";
@@ -256,6 +261,20 @@ in
         message = "nyx.biometrics: a surface uses face sign-in; set nyx.biometrics.face.";
       }
       {
+        assertion =
+          cfg.face == "gaze"
+          -> !lib.any (s: lib.elem "face" (cfg.surfaces.${s} or [ ])) [
+            "login"
+            "sudo"
+            "polkit"
+          ];
+        message = "nyx.biometrics: Gaze (an ordinary webcam) can't sign in, run sudo or approve administrator prompts, because a photo can pass. Use Irlume with an infrared camera, or keep face for the lock screen only.";
+      }
+      {
+        assertion = cfg.face == "gaze" && lib.elem "face" (cfg.surfaces.lock or [ ]) -> cfg.allowWebcamFace;
+        message = "nyx.biometrics: Gaze on the lock screen lets a photo of you unlock it. Set nyx.biometrics.allowWebcamFace = true to use it anyway.";
+      }
+      {
         assertion = lib.elem "fingerprint" usedMethods -> cfg.fingerprint.enable;
         message = "nyx.biometrics: a surface uses fingerprint sign-in; set nyx.biometrics.fingerprint.enable.";
       }
@@ -272,8 +291,10 @@ in
       pkgs.pam_u2f
       pkgs.libfido2
     ];
-    # The broker and the key service know Nyx Passwords and Assistant by these folders.
-    environment.etc."nyx/trusted-bin".text = lib.mkAfter "${bio}/bin\n";
+    # The broker and the key service know Nyx Passwords and Assistant by these folders,
+    # and apps know the broker by its own. The activation script in default.nix writes
+    # /etc/nyx/trusted-bin from this list.
+    environment.etc."nyx/trusted-bin.system".text = lib.mkAfter "${bio}/bin\n";
     services.dbus.packages = [ bio ];
     systemd.packages = [ bio ];
     systemd.sockets.nyx-auth-keyd.wantedBy = [ "sockets.target" ];

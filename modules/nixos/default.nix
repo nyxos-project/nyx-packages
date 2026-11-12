@@ -156,6 +156,16 @@ in
   imports = [ (import ./biometrics.nix self) ];
 
   options.nyx = lib.mapAttrs (_: description: { enable = lib.mkEnableOption description; }) apps // {
+    trustedNetworkPorts = lib.mkOption {
+      type = lib.types.listOf lib.types.port;
+      default = [ ];
+      internal = true;
+      description = ''
+        Ports (TCP and UDP) the firewall opens only on network connections in
+        NetworkManager's home, work or trusted zone, for features such as Nyx Connect
+        that shouldn't be reachable on a café's Wi-Fi.
+      '';
+    };
     icons = {
       enable = lib.mkEnableOption "the Nyx application icons";
       followTheme = lib.mkEnableOption ''
@@ -180,8 +190,9 @@ in
         defaultText = lib.literalExpression "config.nyx.chat.enable || config.nyx.assistant.enable";
         description = ''
           Nyx AI Core: the shared local model runtime (PrismML's llama.cpp) that Nyx apps
-          use, started on first use, with an OpenAI-compatible API for coding tools on
-          127.0.0.1:8080. On by default with Chat and the Assistant, whose language
+          use, started on first use. Its OpenAI-compatible API for coding tools
+          (127.0.0.1:8080, with an API key) stays off until each user turns it on in
+          Settings > AI. On by default with Chat and the Assistant, whose language
           models run there.
         '';
       };
@@ -226,9 +237,11 @@ in
       GTK and the wallpaper), the nyx-theme command and the Nyx.Theme QML module
     '';
     connect.enable = lib.mkEnableOption ''
-      Nyx Connect's backend: upstream Flux's fluxd (started with the graphical session)
-      and flux-cli, with its port (12100, TCP and UDP) open and Avahi for discovery.
-      Pair a phone running Flux for Android or iOS in Settings › Devices
+      Nyx Connect's backend: upstream Flux's fluxd and flux-cli, with Avahi for
+      discovery. fluxd starts with the session once a phone is paired (or while one is
+      being paired in Settings › Devices), and its port (12100, TCP and UDP) opens only
+      on networks marked trusted (NetworkManager's home, work or trusted zone), which
+      Settings › Devices offers when pairing
     '';
     locker.enable = lib.mkEnableOption ''
       Nyx Locker, the lock screen on the Wayland session-lock protocol: the password,
@@ -265,7 +278,7 @@ in
       # themselves that NyxOS's cache built (the System Manager's TrustApps), put
       # together here and by the manager. nyx-actions (`nyx APP …`) is there too: Clipboard
       # and Passwords answer it only as a program they trust.
-      (lib.mkIf (enabledPackages != [ ]) {
+      (lib.mkIf (enabledPackages != [ ] || cfg.biometrics.enable) {
         environment.etc."nyx/trusted-bin.system".text = lib.concatMapStrings (p: "${p}/bin\n") (
           enabledPackages ++ [ nyxPkgs.nyx-actions ]
         );
@@ -370,16 +383,73 @@ in
         };
       })
 
+      # Trusted-network ports: a chain of their own, filled for the interfaces whose
+      # connection is in a trusted zone whenever a connection comes up, goes down or
+      # changes (Settings › Devices reapplies one after marking it trusted).
+      (lib.mkIf (cfg.trustedNetworkPorts != [ ]) (
+        let
+          ports = lib.unique cfg.trustedNetworkPorts;
+          update = pkgs.writeShellScript "nyx-trusted-net" ''
+            export PATH=${
+              lib.makeBinPath [
+                pkgs.networkmanager
+                pkgs.iptables
+                pkgs.coreutils
+              ]
+            }
+            chain=nyx-trusted-net
+            iptables -w -n -L "$chain" >/dev/null 2>&1 || exit 0
+            iptables -w -F "$chain"
+            ip6tables -w -F "$chain"
+            nmcli -t -f UUID,DEVICE connection show --active 2>/dev/null | while IFS=: read -r uuid dev; do
+              [ -n "$dev" ] && [ "$dev" != lo ] || continue
+              case "$(nmcli -g connection.zone connection show "$uuid" 2>/dev/null)" in
+                home | work | trusted) ;;
+                *) continue ;;
+              esac
+              for ipt in iptables ip6tables; do
+                for port in ${lib.concatMapStringsSep " " toString ports}; do
+                  "$ipt" -w -A "$chain" -i "$dev" -p tcp --dport "$port" -j nixos-fw-accept
+                  "$ipt" -w -A "$chain" -i "$dev" -p udp --dport "$port" -j nixos-fw-accept
+                done
+              done
+            done
+          '';
+        in
+        {
+          networking.firewall.extraCommands = ''
+            ip46tables -N nyx-trusted-net 2>/dev/null || ip46tables -F nyx-trusted-net
+            ip46tables -A nixos-fw -j nyx-trusted-net
+            ${update} || true
+          '';
+          networking.firewall.extraStopCommands = ''
+            ip46tables -F nyx-trusted-net 2>/dev/null || true
+          '';
+          networking.networkmanager.dispatcherScripts = [
+            {
+              type = "basic";
+              source = pkgs.writeShellScript "nyx-trusted-net-dispatch" ''
+                case "$2" in
+                  up | down | reapply | dhcp4-change | dhcp6-change) exec ${update} ;;
+                esac
+              '';
+            }
+          ];
+        }
+      ))
+
       # Maps finds "my location" through GeoClue.
       (lib.mkIf cfg.connect.enable (
         lib.mkMerge [
           (services nyxPkgs.flux)
           {
             environment.systemPackages = [ nyxPkgs.flux ];
-            networking.firewall = {
-              allowedTCPPorts = [ 12100 ];
-              allowedUDPPorts = [ 12100 ];
-            };
+            nyx.trustedNetworkPorts = [ 12100 ];
+            # Not before a phone is paired or Settings starts pairing.
+            systemd.user.services.fluxd.unitConfig.ConditionPathExists = [
+              "|%h/.local/share/flux/devices.json"
+              "|%t/nyx-connect/pairing"
+            ];
             # fluxd publishes and browses _flux._udp through Avahi's D-Bus API.
             services.avahi = {
               enable = lib.mkDefault true;
@@ -514,7 +584,9 @@ in
           path = [
             config.system.build.nixos-rebuild
             config.nix.package
+            # git and ssh-keygen check a stable update's release signature.
             pkgs.git
+            pkgs.openssh
             # chpasswd, for passwords (they never go into the configuration).
             pkgs.shadow
             # Snapshots before and after a change, where NyxOS has them on.
@@ -647,7 +719,8 @@ in
         };
       })
 
-      # The socket starts nyx-aid on the first request, from an app or a coding tool.
+      # The socket starts nyx-aid on the first request from an app. nyx-aid-openai.socket
+      # (coding tools) is left to each user: Settings > AI enables it.
       (lib.mkIf cfg.ai.enable {
         environment.systemPackages = [ aiPackage ];
         systemd.packages = [ aiPackage ];
