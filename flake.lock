@@ -838,11 +838,11 @@
     "nyx-files": {
       "flake": false,
       "locked": {
-        "lastModified": 1794450832,
-        "narHash": "sha256-jyvWPFe93uSSY5yEebBqgZabs6xOIfEo4yDAEsfgBMU=",
+        "lastModified": 1794465217,
+        "narHash": "sha256-thsY9qiUGUQRgM3eD2eHcnyHi7ivKucovPJITKLQsYk=",
         "owner": "design-nexus",
         "repo": "nyx-files",
-        "rev": "4a2d8bfd4e85da000c4f88b3263ef956181f8865",
+        "rev": "c1e7ccadddc54c39dde936e49fe8ee92631406d5",
         "type": "github"
       },
       "original": {
