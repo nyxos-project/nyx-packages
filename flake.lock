@@ -1110,11 +1110,11 @@
     "nyx-office": {
       "flake": false,
       "locked": {
-        "lastModified": 1794378886,
-        "narHash": "sha256-d+hanf52seZQU1MRlQ0fFUNLxA2MwfecZvXHJt0r0nU=",
+        "lastModified": 1794501026,
+        "narHash": "sha256-LQLlARHsW5wBO4YGb8vOjyPqbsWz9m4Rr3x/TXbCDNQ=",
         "owner": "design-nexus",
         "repo": "nyx-office",
-        "rev": "98becf42b3a64a70c0f59453bf3fc2d02a2bb760",
+        "rev": "00ef3fe758a46367d9ca9c1421c861f135673dab",
         "type": "github"
       },
       "original": {
