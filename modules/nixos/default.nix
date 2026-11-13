@@ -388,8 +388,10 @@ in
         '';
       })
 
-      # The browsers find the Passwords bridge through these manifests.
+      # The browsers find the Passwords bridge through these manifests, and Browser installs
+      # Passwords' extension from the system's data folders.
       (lib.mkIf cfg.passwords.enable {
+        environment.pathsToLink = [ "/share/nyx-passwords/browser" ];
         programs.firefox.nativeMessagingHosts.packages = [ nyxPkgs.nyx-passwords ];
         environment.etc."chromium/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json".source =
           "${nyxPkgs.nyx-passwords}/etc/chromium/native-messaging-hosts/io.github.design_nexus.nyx.passwords.json";

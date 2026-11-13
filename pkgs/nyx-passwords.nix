@@ -1,21 +1,29 @@
 # Vaultwarden client: the app, its vault service, the assistant and settings
-# extensions, and the browser bridge with its native-messaging manifests. The
-# polkit-confirmed sign-in and the TPM key broker come with Nyx Biometrics, which isn't
-# packaged yet; without them the vault works with its master password.
+# extensions, the browser extension, and the browser bridge with its native-messaging
+# manifests. The polkit-confirmed sign-in and the TPM key broker come with Nyx
+# Biometrics, which isn't packaged yet; without them the vault works with its master
+# password.
 {
   nyx,
   src,
   cmake,
   cacert,
   libsecret,
+  librsvg,
+  zip,
 }:
 nyx.buildApp {
   pname = "nyx-passwords";
   # Its action manifest (nyx passwords …, Glimpse, the Assistant): lib installActions.
   actions = [ "nyx-passwords" ];
   inherit src;
-  # aws-lc-sys builds its C library with CMake.
-  nativeBuildInputs = [ cmake ];
+  # aws-lc-sys builds its C library with CMake; the browser extension's icons and Firefox
+  # package need rsvg-convert and zip.
+  nativeBuildInputs = [
+    cmake
+    librsvg
+    zip
+  ];
   dontUseCmakeConfigure = true;
   runtimeInputs = [ libsecret ];
   # reqwest's platform verifier won't build a client without a CA bundle, even for the
@@ -28,7 +36,9 @@ nyx.buildApp {
 
   # The browsers start the bridge from these manifests: Firefox reads
   # lib/mozilla/native-messaging-hosts, Chromium /etc/chromium/native-messaging-hosts.
+  # The extension goes in share/nyx-passwords/browser, where Browser installs it from.
   postInstall = ''
+    bash apps/passwords/scripts/build-extension.sh $out/share/nyx-passwords/browser
     host=io.github.design_nexus.nyx.passwords
     for target in firefox:lib/mozilla/native-messaging-hosts chromium:etc/chromium/native-messaging-hosts; do
       mkdir -p $out/''${target#*:}
