@@ -123,60 +123,60 @@ stdenv.mkDerivation {
   dontBuild = true;
 
   installPhase = ''
-    runHook preInstall
+        runHook preInstall
 
-    mkdir -p "$out/lib/${libName}"
-    cp -a . "$out/lib/${libName}"
+        mkdir -p "$out/lib/${libName}"
+        cp -a . "$out/lib/${libName}"
 
-    mkdir -p "$out/bin"
-    # The binary looks next to itself for omni.ja and libs.
-    makeWrapper "$out/lib/${libName}/nyx-browser" "$out/bin/nyx-browser" \
-      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ ffmpeg_8 ]}" \
-      --set MOZ_SYSTEM_DIR "$out/lib/mozilla/native-messaging-hosts" \
-      --add-flags "--name=${appId}" \
-      --add-flags "--class=${appId}"
+        mkdir -p "$out/bin"
+        # The binary looks next to itself for omni.ja and libs.
+        makeWrapper "$out/lib/${libName}/nyx-browser" "$out/bin/nyx-browser" \
+          --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ ffmpeg_8 ]}" \
+          --set MOZ_SYSTEM_DIR "$out/lib/mozilla/native-messaging-hosts" \
+          --add-flags "--name=${appId}" \
+          --add-flags "--class=${appId}"
 
-    ln -s "$out/lib/${libName}/nyx-browser-bridge" "$out/bin/nyx-browser-bridge"
+        ln -s "$out/lib/${libName}/nyx-browser-bridge" "$out/bin/nyx-browser-bridge"
 
-    mkdir -p "$out/lib/${libName}/distribution"
-    ln -sf ${policiesJson} "$out/lib/${libName}/distribution/policies.json"
+        mkdir -p "$out/lib/${libName}/distribution"
+        ln -sf ${policiesJson} "$out/lib/${libName}/distribution/policies.json"
 
-    # Native messaging: only the Nyx integration extension may talk to the bridge.
-    mkdir -p "$out/lib/mozilla/native-messaging-hosts"
-    cat >"$out/lib/mozilla/native-messaging-hosts/${hostId}.json" <<EOF
-{
-  "name": "${hostId}",
-  "description": "Browser",
-  "path": "$out/lib/${libName}/nyx-browser-bridge",
-  "type": "stdio",
-  "allowed_extensions": ["nyx-integration@design-nexus.github.io"]
-}
-EOF
+        # Native messaging: only the Nyx integration extension may talk to the bridge.
+        mkdir -p "$out/lib/mozilla/native-messaging-hosts"
+        cat >"$out/lib/mozilla/native-messaging-hosts/${hostId}.json" <<EOF
+    {
+      "name": "${hostId}",
+      "description": "Browser",
+      "path": "$out/lib/${libName}/nyx-browser-bridge",
+      "type": "stdio",
+      "allowed_extensions": ["nyx-integration@design-nexus.github.io"]
+    }
+    EOF
 
-    # D-Bus activation of the bridge's actions server; its manifest is written after
-    # fixup, once autoPatchelf has made the bridge runnable.
-    mkdir -p "$out/share/nyx/actions" "$out/share/dbus-1/services"
-    cat >"$out/share/dbus-1/services/${appId}.service" <<EOF
-[D-BUS Service]
-Name=${appId}
-Exec=$out/lib/${libName}/nyx-browser-bridge actions
-EOF
+        # D-Bus activation of the bridge's actions server; its manifest is written after
+        # fixup, once autoPatchelf has made the bridge runnable.
+        mkdir -p "$out/share/nyx/actions" "$out/share/dbus-1/services"
+        cat >"$out/share/dbus-1/services/${appId}.service" <<EOF
+    [D-BUS Service]
+    Name=${appId}
+    Exec=$out/lib/${libName}/nyx-browser-bridge actions
+    EOF
 
-    # Icon from the brand, with a PNG fallback from the chrome defaults.
-    mkdir -p "$out/share/icons/hicolor/scalable/apps" "$out/share/icons/hicolor/128x128/apps"
-    if [ -f browser/chrome/icons/default/default128.png ]; then
-      install -m644 browser/chrome/icons/default/default128.png \
-        "$out/share/icons/hicolor/128x128/apps/${appId}.png"
-    fi
-    for size in 16 32 48 64 128; do
-      if [ -f browser/chrome/icons/default/default$size.png ]; then
-        mkdir -p "$out/share/icons/hicolor/''${size}x''${size}/apps"
-        install -m644 browser/chrome/icons/default/default$size.png \
-          "$out/share/icons/hicolor/''${size}x''${size}/apps/${appId}.png"
-      fi
-    done
+        # Icon from the brand, with a PNG fallback from the chrome defaults.
+        mkdir -p "$out/share/icons/hicolor/scalable/apps" "$out/share/icons/hicolor/128x128/apps"
+        if [ -f browser/chrome/icons/default/default128.png ]; then
+          install -m644 browser/chrome/icons/default/default128.png \
+            "$out/share/icons/hicolor/128x128/apps/${appId}.png"
+        fi
+        for size in 16 32 48 64 128; do
+          if [ -f browser/chrome/icons/default/default$size.png ]; then
+            mkdir -p "$out/share/icons/hicolor/''${size}x''${size}/apps"
+            install -m644 browser/chrome/icons/default/default$size.png \
+              "$out/share/icons/hicolor/''${size}x''${size}/apps/${appId}.png"
+          fi
+        done
 
-    runHook postInstall
+        runHook postInstall
   '';
 
   # After autoPatchelf's own post-fixup hook, which the postFixup variable runs before.
