@@ -13,7 +13,7 @@ self:
 }:
 let
   cfg = config.nyx.biometrics;
-  bio = self.packages.${pkgs.stdenv.hostPlatform.system}.nyx-biometrics;
+  bio = config.nyx.packages.nyx-biometrics;
   gate = "${bio}/lib/nyx-biometrics/nyx-auth-gate";
 
   # Nyx surfaces and the PAM services that enforce them.
@@ -305,11 +305,11 @@ in
     security.pam.services = lockServices;
     services.irlume = {
       enable = cfg.face == "irlume";
-      package = self.packages.${pkgs.stdenv.hostPlatform.system}.irlume;
+      package = config.nyx.packages.irlume;
     };
     services.gaze = {
       enable = cfg.face == "gaze";
-      package = self.packages.${pkgs.stdenv.hostPlatform.system}.gaze;
+      package = config.nyx.packages.gaze;
       pam.defaultServices = [ ];
     };
   };

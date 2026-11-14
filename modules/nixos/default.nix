@@ -7,7 +7,9 @@ self:
 }:
 let
   cfg = config.nyx;
-  nyxPkgs = self.packages.${pkgs.stdenv.hostPlatform.system};
+  nyxPkgs = lib.mapAttrs (
+    name: package: if lib.elem name cfg.fastBuilds then self.lib.fast package else package
+  ) self.packages.${pkgs.stdenv.hostPlatform.system};
   iconTools = nyxPkgs.nyx-icon-tools;
 
   # nyx.<app>.enable installs nyx-<app>.
@@ -159,6 +161,23 @@ in
   imports = [ (import ./biometrics.nix self) ];
 
   options.nyx = lib.mapAttrs (_: description: { enable = lib.mkEnableOption description; }) apps // {
+    fastBuilds = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "nyx-welcome" ];
+      description = ''
+        Nyx packages to build as a development system does: no tests and no link-time
+        optimization. For a development VM building local checkouts; the binary cache
+        doesn't have these builds.
+      '';
+    };
+    packages = lib.mkOption {
+      type = lib.types.lazyAttrsOf lib.types.raw;
+      readOnly = true;
+      internal = true;
+      default = nyxPkgs;
+      description = "The Nyx packages this system uses, with `nyx.fastBuilds` applied.";
+    };
     trustedNetworkPorts = lib.mkOption {
       type = lib.types.listOf lib.types.port;
       default = [ ];

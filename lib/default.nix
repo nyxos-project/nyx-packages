@@ -257,6 +257,22 @@ rec {
       }
     );
 
+  # A package as a development system builds it (nyx.fastBuilds): no tests and no
+  # link-time optimization, a fraction of the release build's time. Packages that aren't
+  # Rust builds are returned as they are.
+  fast =
+    package:
+    if package ? cargoDeps then
+      package.overrideAttrs (old: {
+        doCheck = false;
+        env = (old.env or { }) // {
+          CARGO_PROFILE_RELEASE_LTO = "off";
+          CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "16";
+        };
+      })
+    else
+      package;
+
   # `cargo test --workspace`, as the repositories' own CI runs it.
   testWorkspace =
     args:

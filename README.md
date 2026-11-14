@@ -72,7 +72,7 @@ builds it reproducibly and runs its tests.
 | `packages.libshumate_1_7` | libshumate | libshumate 1.7.0 for Nyx Maps (nixpkgs has 1.6) |
 | `checks.nyx-core` | nyx-core | `cargo test --workspace` for the shared libraries |
 | `checks.nyx-design` | nyx-design | `cargo test --workspace` for the design system |
-| `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, `nyx.ai` (on with Chat; `acceleration`), and `nyx.icons.followTheme` (the tool plus its user units) |
+| `nixosModules.default` | | `nyx.<app>.enable` for each app above, `nyx.accounts.enable`, `nyx.ai` (on with Chat; `acceleration`), `nyx.icons.followTheme` (the tool plus its user units), and `nyx.fastBuilds` (packages a development VM builds without tests or link-time optimization) |
 | `overlays.default` | | `pkgs.nyx.<package>` |
 | `lib` | | Toolchain and build helpers for Nyx Rust workspaces |
 
