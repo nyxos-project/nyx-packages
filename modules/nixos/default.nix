@@ -315,6 +315,10 @@ in
       (lib.mkIf cfg.shell.enable {
         environment.etc."nyxos/defaults/shell.toml".source =
           "${nyxPkgs.nyx-shell}/share/nyx-shell/shell.toml";
+        # Hyprland plugins load from a path that stays the same across updates: Hyprland
+        # reads its plugin permission rules only when it starts.
+        environment.etc."nyxos/hyprland-plugins/nyx-decor.so".source =
+          "${nyxPkgs.nyx-decor}/lib/nyx-decor.so";
         # nyx-shell-qs finds the components (its OSD and window menu, the Control
         # Center's panel, Desktop Widgets) in the system profile.
         environment.pathsToLink = [ "/share/nyx-shell/components" ];
@@ -797,8 +801,10 @@ in
 
       # The dock's swipe plugin, built for this Hyprland; the backend loads it.
       (lib.mkIf cfg.dock.enable {
-        systemd.user.services.nyx-dock-backend.environment.NYX_DOCK_SWIPE_PLUGIN =
+        environment.etc."nyxos/hyprland-plugins/nyx-dock-swipe.so".source =
           "${nyxPkgs.nyx-dock-swipe}/lib/nyx-dock-swipe.so";
+        systemd.user.services.nyx-dock-backend.environment.NYX_DOCK_SWIPE_PLUGIN =
+          "/etc/nyxos/hyprland-plugins/nyx-dock-swipe.so";
       })
 
       (lib.mkIf cfg.accounts.enable {
