@@ -132,7 +132,7 @@ stdenv.mkDerivation {
         # The binary looks next to itself for omni.ja and libs.
         makeWrapper "$out/lib/${libName}/nyx-browser" "$out/bin/nyx-browser" \
           --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ ffmpeg_8 ]}" \
-          --set MOZ_SYSTEM_DIR "$out/lib/mozilla/native-messaging-hosts" \
+          --set MOZ_SYSTEM_DIR "$out/lib/mozilla" \
           --add-flags "--name=${appId}" \
           --add-flags "--class=${appId}"
 
@@ -185,6 +185,18 @@ stdenv.mkDerivation {
       "$out/lib/${libName}/nyx-browser-bridge" actions --describe >"$out/share/nyx/actions/${appId}.json"
     }
     postFixupHooks+=(writeActions)
+  '';
+
+  # The engine looks for native-messaging manifests in MOZ_SYSTEM_DIR/native-messaging-hosts:
+  # the bridge's must be there, through the wrapper's own setting.
+  doInstallCheck = true;
+  installCheckPhase = ''
+    runHook preInstallCheck
+    dir=$(sed -n 's/^export MOZ_SYSTEM_DIR=.\(.*\).$/\1/p' "$out/bin/nyx-browser")
+    [ -n "$dir" ] || { echo "the wrapper sets no MOZ_SYSTEM_DIR"; exit 1; }
+    [ -f "$dir/native-messaging-hosts/${hostId}.json" ] \
+      || { echo "no bridge manifest at $dir/native-messaging-hosts/${hostId}.json"; exit 1; }
+    runHook postInstallCheck
   '';
 
   passthru = {
