@@ -192,7 +192,8 @@ stdenv.mkDerivation {
   doInstallCheck = true;
   installCheckPhase = ''
     runHook preInstallCheck
-    dir=$(sed -n 's/^export MOZ_SYSTEM_DIR=.\(.*\).$/\1/p' "$out/bin/nyx-browser")
+    # fixup wraps the wrapper again: the setting is in whichever of the two has it.
+    dir=$(sed -n 's/^export MOZ_SYSTEM_DIR=.\(.*\).$/\1/p' "$out"/bin/nyx-browser "$out"/bin/.nyx-browser-wrapped 2>/dev/null | head -1)
     [ -n "$dir" ] || { echo "the wrapper sets no MOZ_SYSTEM_DIR"; exit 1; }
     [ -f "$dir/native-messaging-hosts/${hostId}.json" ] \
       || { echo "no bridge manifest at $dir/native-messaging-hosts/${hostId}.json"; exit 1; }
