@@ -998,11 +998,11 @@
     "nyx-maps": {
       "flake": false,
       "locked": {
-        "lastModified": 1794799547,
-        "narHash": "sha256-KHbXJ3zR8HehB6kdNI89ZBWrxiNdmkn1mFi+3JEE28w=",
+        "lastModified": 1794810777,
+        "narHash": "sha256-6A4Ku+6u6e3BMA/rIP4b0g5g3CET+YMqyrriwWbO/bY=",
         "owner": "design-nexus",
         "repo": "nyx-maps",
-        "rev": "fdf0d981be84adac08d3e1b12bc661edeaaa5b9f",
+        "rev": "ff772a2aea4022145e6a563fc26bf0e098a2f6d8",
         "type": "github"
       },
       "original": {
