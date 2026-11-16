@@ -502,11 +502,11 @@
     "nyx-activity": {
       "flake": false,
       "locked": {
-        "lastModified": 1794798538,
-        "narHash": "sha256-WOBs5zJvARSi8md+ZNwu/WfGQEaZLy4gx4JzNFjPXqM=",
+        "lastModified": 1794807223,
+        "narHash": "sha256-E2ASigzwbm7uV1XHgRt6VP5PNbSQhLMyTCELcTuEmJc=",
         "owner": "design-nexus",
         "repo": "nyx-activity",
-        "rev": "656eeba10565f0aa601547401c13997d66a28796",
+        "rev": "76b8a08d2c835386f8b04980d1b848bd8c641b98",
         "type": "github"
       },
       "original": {
@@ -646,11 +646,11 @@
     "nyx-calendar": {
       "flake": false,
       "locked": {
-        "lastModified": 1794798647,
-        "narHash": "sha256-N+m07RS+/+YkVJwu1p4MpFHrismcN1UiNWzCVl57fX4=",
+        "lastModified": 1794799469,
+        "narHash": "sha256-xFVdlj6cnqxajXKYXitq+G8ewsC8JNemS6hEgIBEMto=",
         "owner": "design-nexus",
         "repo": "nyx-calendar",
-        "rev": "20eadca4c7cb1a5475303c5d9f6475266d0818c9",
+        "rev": "d67cce2a99cc3b858efc9400f9643599f9031c9a",
         "type": "github"
       },
       "original": {
@@ -982,11 +982,11 @@
     "nyx-mail": {
       "flake": false,
       "locked": {
-        "lastModified": 1794798493,
-        "narHash": "sha256-3bHsJJdJA7V5AcjM/bV3wJegSssg/JSwyRnfNpZhVGc=",
+        "lastModified": 1794799390,
+        "narHash": "sha256-5I1JHD3HDENDMkczKb1ogWQTTY/ei1DUcQAvCQyaDb0=",
         "owner": "design-nexus",
         "repo": "nyx-mail",
-        "rev": "c9e03532f7f20e98f593970942d73b2066fe2c7a",
+        "rev": "1688db13b8075ea439cc22d8d374279528752575",
         "type": "github"
       },
       "original": {
@@ -998,11 +998,11 @@
     "nyx-maps": {
       "flake": false,
       "locked": {
-        "lastModified": 1794798387,
-        "narHash": "sha256-qSJVDP7sGPjQZpYO8tPJ//3KMlQHTmg0xIUeLul0joY=",
+        "lastModified": 1794799547,
+        "narHash": "sha256-KHbXJ3zR8HehB6kdNI89ZBWrxiNdmkn1mFi+3JEE28w=",
         "owner": "design-nexus",
         "repo": "nyx-maps",
-        "rev": "585b27900229154b5555c6013acade5d595f0e3b",
+        "rev": "fdf0d981be84adac08d3e1b12bc661edeaaa5b9f",
         "type": "github"
       },
       "original": {
@@ -1030,11 +1030,11 @@
     "nyx-music": {
       "flake": false,
       "locked": {
-        "lastModified": 1794798392,
-        "narHash": "sha256-Nt59NWJE0cwNifs75lHmK2huDqEq4Fd/ajdAZYRzaDs=",
+        "lastModified": 1794799500,
+        "narHash": "sha256-mD2DZH8qMw0Anje7R6gipP7oh0bYwO8eFKzRe+NJe38=",
         "owner": "design-nexus",
         "repo": "nyx-music",
-        "rev": "d3b564308c82a9984531f3dbc4b3b19e6f644ac8",
+        "rev": "526400e8b46e68475fcb30628b147684e1b3e1e4",
         "type": "github"
       },
       "original": {
@@ -1046,11 +1046,11 @@
     "nyx-news": {
       "flake": false,
       "locked": {
-        "lastModified": 1794798396,
-        "narHash": "sha256-jx++aOg2RG3yJaSJVD+vm7TMalth5YgTe/YPjJUIjjc=",
+        "lastModified": 1794799518,
+        "narHash": "sha256-Wsqrt6NLOY/hoOqk5cFTYukYPwp2mjDKmItlu0RxFs0=",
         "owner": "design-nexus",
         "repo": "nyx-news",
-        "rev": "a7be6d2836022e7fd23f814279ed3d99e916b176",
+        "rev": "cdca7521c03f50c20e3e91a27b67a683ceef97bc",
         "type": "github"
       },
       "original": {
@@ -1222,11 +1222,11 @@
     "nyx-settings": {
       "flake": false,
       "locked": {
-        "lastModified": 1794798233,
-        "narHash": "sha256-TQek+tymR7XVB6iNGjvTkG1HOotDFn7DGgV5loKMQ64=",
+        "lastModified": 1794799359,
+        "narHash": "sha256-GW8oBF+H91JRpastE/z+b5FNrsfuyTIks9rX8qyP+88=",
         "owner": "design-nexus",
         "repo": "nyx-settings",
-        "rev": "0fd7a4a49eb019c4696e23db324ce1525bf7cbc0",
+        "rev": "7fce7d30f12689cd0fafca609904f26c3e1d4a0a",
         "type": "github"
       },
       "original": {
@@ -1270,11 +1270,11 @@
     "nyx-store": {
       "flake": false,
       "locked": {
-        "lastModified": 1794798418,
-        "narHash": "sha256-nKDiC3++rYd+fM9WiNkm4mROBuAduL4xKCMYkbR968o=",
+        "lastModified": 1794799623,
+        "narHash": "sha256-gmhDUauih0SZVjyIJxCYu5CyjKsi0SSxLCviKuF45LM=",
         "owner": "design-nexus",
         "repo": "nyx-store",
-        "rev": "d2f8186f61c15b6fcd2069ae646bc93592bd7a5d",
+        "rev": "0add2cb2c20830e80fd8616300f2f0648bbf2831",
         "type": "github"
       },
       "original": {
@@ -1318,11 +1318,11 @@
     "nyx-theater": {
       "flake": false,
       "locked": {
-        "lastModified": 1794798423,
-        "narHash": "sha256-UIYLGB5n+WXtGlm+B4v6//2f4/T2AgctOOkPw0IxVSs=",
+        "lastModified": 1794799448,
+        "narHash": "sha256-Tgk8d2M099Dvaj4vJHGkd0GOHFh10i0JeaQcgOFmU2s=",
         "owner": "design-nexus",
         "repo": "nyx-theater",
-        "rev": "27e3bc4e4501fe40b4acd57593eb58c67612021c",
+        "rev": "04a550ad4f69dff686c6b9959c2b14d9a1ae44a7",
         "type": "github"
       },
       "original": {
