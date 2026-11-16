@@ -742,11 +742,11 @@
     "nyx-containers": {
       "flake": false,
       "locked": {
-        "lastModified": 1794840725,
-        "narHash": "sha256-l/wufuznZwsco3wPxO4UI4Oa3tbGe9AhLxcHX5UgZos=",
+        "lastModified": 1794842083,
+        "narHash": "sha256-2zU7icx/LBAU6jZqgfPLnyTbqdu2OW/bECwiQQD6uEY=",
         "owner": "design-nexus",
         "repo": "nyx-containers",
-        "rev": "1d40af28ff7e78fb240103a6367d60de37fc4c00",
+        "rev": "bdaf15a9eb9c47564ad25d6a4cac95c65c37f3e6",
         "type": "github"
       },
       "original": {
