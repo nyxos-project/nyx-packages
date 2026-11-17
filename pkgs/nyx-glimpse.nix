@@ -25,13 +25,10 @@ nyx.buildApp {
     "--skip=backend::tests::fast_results_need_no_ai_and_no_display"
     "--skip=semantic::tests::old_indexes_stay_and_a_new_model_rebuilds_beside_them"
   ];
-  # The library and program tests; tests/core.rs still includes a file from the old
-  # monorepo's Settings.
+  # Its library, program and integration tests (tests/core.rs and the rest).
   cargoTestFlags = [
     "-p"
     "nyx-glimpse"
-    "--lib"
-    "--bins"
   ];
   # bwrap sandboxes plugins; curl and unzip fetch models and plugins; ffmpeg and
   # poppler-utils read media and PDFs for previews and the index.

@@ -1,0 +1,47 @@
+# nixpkgs and rust-overlay, updated weekly as a pull request (branch update/inputs) that
+# CI checks before anyone merges it. The pull request is opened with this run's token,
+# which doesn't start CI by itself, so CI is started on the branch.
+name: Update nixpkgs
+
+on:
+  schedule:
+    - cron: "11 4 * * 2"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: update-inputs
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b # v31
+        with:
+          github_access_token: ${{ github.token }}
+      - name: Update and propose
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          nix flake update nixpkgs rust-overlay
+          if git diff --quiet flake.lock; then
+            echo "nixpkgs and rust-overlay are current"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C update/inputs
+          git commit -qam "nixpkgs and rust-overlay: weekly update"
+          git push -qf origin update/inputs
+          if [ -z "$(gh pr list --head update/inputs --state open --json number --jq '.[].number')" ]; then
+            gh pr create --head update/inputs --title "nixpkgs and rust-overlay: weekly update" \
+              --body "The weekly update of nixpkgs and rust-overlay. Merge once CI is green; \`checks.overrides\` says when an override can go."
+          fi
+          gh workflow run ci.yml --ref update/inputs

@@ -2,6 +2,7 @@
 # x86_64-linux release is a static binary; it finds its standard library beside its
 # real path, so both stay together in share/zig.
 {
+  lib,
   stdenvNoCC,
   fetchurl,
 }:
@@ -22,6 +23,9 @@ stdenvNoCC.mkDerivation rec {
     ln -s $out/share/zig/zig $out/bin/zig
   '';
   meta = {
+    # Zig's own release build, not built from source here.
+    sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
+    license = lib.licenses.mit;
     description = "The Zig compiler, release ${version}";
     homepage = "https://ziglang.org";
     platforms = [ "x86_64-linux" ];

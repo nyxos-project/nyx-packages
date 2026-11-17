@@ -305,6 +305,17 @@ in
       # themselves that NyxOS's cache built (the System Manager's TrustApps), put
       # together here and by the manager. nyx-actions (`nyx APP …`) is there too: Clipboard
       # and Passwords answer it only as a program they trust.
+      # The Nyx apps' line tables (their `debug` outputs), so a crash's backtrace in
+      # coredumpctl and the crash reports names functions and lines. Only theirs: the
+      # whole system's debug outputs (environment.enableDebugInfo) would be gigabytes.
+      (lib.mkIf (enabledPackages != [ ]) {
+        environment.systemPackages = map (p: p.debug) (lib.filter (p: p ? debug) enabledPackages);
+        environment.pathsToLink = [ "/lib/debug" ];
+        environment.variables.NIX_DEBUG_INFO_DIRS = [ "/run/current-system/sw/lib/debug" ];
+        # systemd-coredump writes the backtrace when the crash happens.
+        systemd.services."systemd-coredump@".environment.NIX_DEBUG_INFO_DIRS = "/run/current-system/sw/lib/debug";
+      })
+
       (lib.mkIf (enabledPackages != [ ] || cfg.biometrics.enable) {
         environment.etc."nyx/trusted-bin.system".text = lib.concatMapStrings (p: "${p}/bin\n") (
           enabledPackages ++ [ nyxPkgs.nyx-actions ]

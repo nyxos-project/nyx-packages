@@ -319,7 +319,7 @@
       checks.${system} =
         packages
         // import ./checks {
-          inherit pkgs nyx inputs;
+          inherit pkgs nyx inputs packages;
         };
 
       overlays.default = final: _prev: {

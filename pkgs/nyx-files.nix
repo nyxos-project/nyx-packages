@@ -1,4 +1,4 @@
-# File manager (a Strata fork, GPL-3.0-or-later) and its RAR helper, with the
+# File manager (GPL-3.0-or-later) and its RAR helper, with the
 # org.freedesktop.FileManager1 D-Bus service.
 {
   lib,

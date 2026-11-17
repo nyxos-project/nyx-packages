@@ -1,5 +1,25 @@
 # Compatibility with nixpkgs 26.05
 
+## Packages built ahead of nixpkgs
+
+Each of these is built at a newer version than nixpkgs has, so it no longer gets
+nixpkgs' security fixes: watch its upstream. They're listed in `lib/overrides.nix`;
+`checks.overrides` fails as soon as nixpkgs ships the same version or newer, and the
+override goes. Owner: the nyx-packages maintainers. Review by the date even when nothing
+fails.
+
+| Package | Ours | Why | Review by |
+| --- | --- | --- | --- |
+| libical | 4.0.7 | nyx-pim (Contacts, Calendar, Reminders): libical 4's time zone behaviour (below) | 2027-02-17 |
+| libshumate | 1.7.0 | Maps: libshumate 1.7's API | 2027-02-17 |
+| TDLib | 1.8.67 (commit `bc9c263`, no tag) | Pulse: typed input objects. Network-facing: follow its releases | 2026-12-17 |
+| sherpa-onnx | 1.13.8 | Nyx Voice and the Assistant: the bindings match its C API; its nine bundled archives are ours to watch | 2027-02-17 |
+| pacman (libalpm) | 7.1.0 | Store and the Assistant link libalpm 16 through the alpm crate | 2027-02-17 |
+| Zig | 0.17.0 | libghostty-vt 1.0 (Nyx Agents) | 2027-02-17 |
+| wayland-protocols | 1.49 | Hyprland 0.57.2 | 2027-02-17 |
+| Rust | 1.99.1 (rust-overlay) | every Nyx app; `build-environment.json` in each repository | 2027-02-17 |
+| Go | 1.27 | flux (Nyx Connect's backend) | 2027-02-17 |
+
 ## One nyx-core revision per app
 
 `cargo vendor`, and so Nix's vendoring, can't hold two packages with the same name and

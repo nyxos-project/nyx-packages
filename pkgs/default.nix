@@ -19,9 +19,27 @@ let
         src = inputs.${name};
       }
     );
+  # The patch series for the Hyprland the flake pins: patches/<its version>. Bumping the
+  # tag without a series for it fails here instead of applying an old series.
+  hyprlandUpstream = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  hyprlandVersion = pkgs.lib.head (pkgs.lib.splitString "+" hyprlandUpstream.version);
+  hyprlandSeries =
+    let
+      dir = "${inputs.nyx-hyprland}/patches/${hyprlandVersion}";
+    in
+    if builtins.pathExists dir then
+      dir
+    else
+      throw "nyx-hyprland has no patch series for Hyprland ${hyprlandVersion} (patches/${hyprlandVersion})";
   nyxHyprland = pkgs.callPackage ./hyprland.nix {
-    hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    patchSeries = "${inputs.nyx-hyprland}/patches/0.57.2";
+    hyprland = hyprlandUpstream;
+    patchSeries = hyprlandSeries;
+  };
+  # The same with Hyprland's tests built (hyprland_gtests, hyprtester and its plugin).
+  nyxHyprlandWithTests = pkgs.callPackage ./hyprland.nix {
+    hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland-with-tests;
+    patchSeries = hyprlandSeries;
+    withTests = true;
   };
   # grim and wf-recorder of their own for Capture and the Assistant: NyxOS lets only
   # these store paths (and the portal) capture the screen, so another program running
@@ -184,6 +202,13 @@ fromSource [
     sherpa-onnx_1_13_8
     pacman_7_1
     ;
+
+  hyprland-with-tests = nyxHyprlandWithTests;
+
+  # Hyprland's screen-sharing and screenshot portal from the same flake as the compositor,
+  # as Hyprland's own NixOS module pairs them.
+  xdg-desktop-portal-hyprland =
+    inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 
   # Face sign-in for Nyx Biometrics, from their own flakes.
   irlume = inputs.irlume.packages.${pkgs.stdenv.hostPlatform.system}.default;

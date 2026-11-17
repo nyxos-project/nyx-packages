@@ -4,6 +4,7 @@
 # Biometrics, which isn't packaged yet; without them the vault works with its master
 # password.
 {
+  lib,
   nyx,
   src,
   cmake,
@@ -61,5 +62,7 @@ nyx.buildApp {
     description = "Password manager for a self-hosted Vaultwarden server";
     homepage = "https://github.com/design-nexus/nyx-passwords";
     mainProgram = "nyx-passwords";
+    # bitwarden-crypto is GPL-3.0-only, which makes the app so (its README).
+    license = lib.licenses.gpl3Only;
   };
 }

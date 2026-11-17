@@ -27,5 +27,8 @@ stdenvNoCC.mkDerivation {
     mkdir -p $out/share/plymouth/themes
     cp -r build/themes/* $out/share/plymouth/themes/
   '';
-  meta.description = "The NyxOS boot splash, one Plymouth theme per Nyx theme";
+  meta = {
+    description = "The NyxOS boot splash, one Plymouth theme per Nyx theme";
+    license = lib.licenses.mit;
+  };
 }

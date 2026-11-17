@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+"""Move local checkouts of the Nyx repositories onto one revision of each shared crate.
+
+    scripts/repin REPO=REV... -- CHECKOUT...      rewrite, then `cargo check` each checkout
+    scripts/repin --report CHECKOUT...            the shared crates' revisions, per crate
+
+REPO is a repository name (nyx-core, nyx-design, ...), REV a full commit hash. Every
+`git = ".../REPO(.git)"` dependency in a checkout's Cargo.toml files is set to REV;
+Cargo then re-resolves only those sources in Cargo.lock. Nothing is committed.
+"""
+import collections, pathlib, re, subprocess, sys
+
+DEP = re.compile(r'(git\s*=\s*"https://github\.com/[^/"]+/(nyx-[a-z0-9-]+?)(?:\.git)?"\s*,\s*rev\s*=\s*")([0-9a-f]{7,40})(")')
+SRC = re.compile(r'source = "git\+https://github\.com/[^/]+/(nyx-[a-z0-9-]+?)(?:\.git)?\?rev=([0-9a-f]+)#')
+
+
+def manifests(root):
+    return [p for p in root.rglob("Cargo.toml") if "target" not in p.parts and "node_modules" not in p.parts]
+
+
+def locks(root):
+    return [p for p in root.rglob("Cargo.lock") if "target" not in p.parts and "node_modules" not in p.parts]
+
+
+def rewrite(root, pins):
+    changed = []
+    for m in manifests(root):
+        text = m.read_text()
+        new = DEP.sub(lambda g: g.group(1) + pins.get(g.group(2), g.group(3)) + g.group(4), text)
+        if new != text:
+            m.write_text(new)
+            changed.append(m)
+    return changed
+
+
+def check(root):
+    # The workspace roots: folders whose Cargo.lock sits beside a Cargo.toml.
+    for lock in locks(root):
+        r = subprocess.run(["cargo", "check", "-q", "--all-targets"], cwd=lock.parent, capture_output=True, text=True)
+        if r.returncode != 0:
+            return f"{lock.parent}: " + (r.stderr.strip().splitlines() or ["cargo check failed"])[-1]
+    return None
+
+
+def report(roots):
+    pins = collections.defaultdict(lambda: collections.defaultdict(set))
+    for root in roots:
+        for lock in locks(root):
+            for block in lock.read_text().split("[[package]]"):
+                name, src = re.search(r'name = "([^"]+)"', block), SRC.search(block)
+                if name and src:
+                    pins[(src.group(1), name.group(1))][src.group(2)[:7]].add(root.name)
+    bad = 0
+    for (repo, crate), revs in sorted(pins.items()):
+        mark = "" if len(revs) == 1 else "  <- more than one revision"
+        bad += len(revs) > 1
+        print(f"{repo}/{crate}: " + " | ".join(f"{r} ({len(v)})" for r, v in sorted(revs.items())) + mark)
+    return bad
+
+
+def main(argv):
+    if argv[:1] == ["--report"]:
+        return 1 if report([pathlib.Path(a) for a in argv[1:]]) else 0
+    if "--" not in argv:
+        print(__doc__)
+        return 2
+    i = argv.index("--")
+    pins = dict(a.split("=", 1) for a in argv[:i])
+    for rev in pins.values():
+        if not re.fullmatch(r"[0-9a-f]{40}", rev):
+            print(f"{rev} isn't a full commit hash", file=sys.stderr)
+            return 2
+    failed = 0
+    for a in argv[i + 1:]:
+        root = pathlib.Path(a)
+        changed = rewrite(root, pins)
+        if not changed:
+            print(f"{root.name}: already there")
+            continue
+        err = check(root)
+        failed += err is not None
+        print(f"{root.name}: {len(changed)} manifest(s) " + ("ok" if err is None else f"FAILED {err}"))
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

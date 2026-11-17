@@ -39,6 +39,10 @@ jobs:
       - name: Format
         run: nix fmt -- --check $(git ls-files '*.nix')
 
+      # One revision of each Nyx crate across every pinned source (scripts/repin).
+      - name: One revision of each shared crate
+        run: scripts/shared-pins
+
       - name: Evaluate every output
         run: nix flake check --no-build -L
 

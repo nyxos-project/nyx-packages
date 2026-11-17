@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# RustSec advisories (vulnerabilities, unmaintained and unsound crates) in every pinned
+# source's Cargo.lock, as a Markdown report on stdout; exit 1 when there is a
+# vulnerability. With --issue, the report also replaces the body of the open issue "Rust
+# advisories" (opened if needed, closed when the report is empty). Needs Nix (and gh with
+# --issue).
+set -euo pipefail
+cd "$(dirname "$0")/.."
+here=$(pwd)
+issue=false
+[[ ${1:-} == --issue ]] && issue=true
+
+# Every flake input with a Cargo.lock at its root or one level down, as name<TAB>path.
+mapfile -t locks < <(nix eval --raw --impure --expr "
+  let
+    f = builtins.getFlake \"path:$here\";
+    lib = f.inputs.nixpkgs.lib;
+    srcs = removeAttrs f.inputs [ \"self\" \"nixpkgs\" ];
+    found = name: src:
+      let
+        top = lib.optional (builtins.pathExists \"\${src}/Cargo.lock\") \"\${src}/Cargo.lock\";
+        dirs = lib.attrNames (lib.filterAttrs (_: t: t == \"directory\") (builtins.readDir src));
+        below = lib.concatMap (d: lib.optional (builtins.pathExists \"\${src}/\${d}/Cargo.lock\") \"\${src}/\${d}/Cargo.lock\") dirs;
+      in map (l: \"\${name}\t\${l}\") (if top != [ ] then top else below);
+  in lib.concatStringsSep \"\n\" (lib.concatLists (lib.mapAttrsToList (n: s: if builtins.pathExists s then found n s else [ ]) srcs))")
+
+db=$(mktemp -d)
+trap 'rm -rf "$db"' EXIT
+git clone -q --depth 1 https://github.com/rustsec/advisory-db "$db/advisory-db"
+report=$(mktemp)
+vulnerable=0
+for entry in "${locks[@]}"; do
+  name=${entry%%$'\t'*} lock=${entry#*$'\t'}
+  json=$(nix run nixpkgs#cargo-audit -- audit --no-fetch -d "$db/advisory-db" -f "$lock" --json 2>/dev/null || true)
+  [[ -n $json ]] || continue
+  jq -r --arg app "$name" '
+    ([.vulnerabilities.list[]? | {kind: "vulnerability", id: .advisory.id, crate: .package.name, version: .package.version, title: .advisory.title}]
+     + [(.warnings // {}) | to_entries[] | .key as $k | .value[]? | {kind: $k, id: (.advisory.id // "-"), crate: .package.name, version: .package.version, title: (.advisory.title // "")}])
+    | .[] | "| \($app) | \(.kind) | \(.id) | \(.crate) \(.version) | \(.title) |"' <<<"$json" >>"$report"
+done
+vulnerable=$(grep -c '| vulnerability |' "$report" || true)
+{
+  echo "RustSec advisories in the pinned sources' Cargo.lock files ($(date -u +%F))."
+  echo
+  if [[ -s $report ]]; then
+    echo "| Source | Kind | Advisory | Crate | Title |"
+    echo "| --- | --- | --- | --- | --- |"
+    sort -u "$report"
+  else
+    echo "None."
+  fi
+} | tee "$db/body.md"
+if $issue; then
+  open=$(gh issue list --state open --search '"Rust advisories" in:title' --json number,title --jq '.[] | select(.title == "Rust advisories") | .number' | head -1)
+  if [[ -s $report ]]; then
+    if [[ -n $open ]]; then gh issue edit "$open" --body-file "$db/body.md" >/dev/null; else gh issue create --title "Rust advisories" --body-file "$db/body.md" >/dev/null; fi
+  elif [[ -n $open ]]; then
+    gh issue close "$open" -c "No advisories in the pinned sources any more."
+  fi
+fi
+[[ $vulnerable -eq 0 ]]

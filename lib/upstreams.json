@@ -1,0 +1,55 @@
+[
+  {
+    "name": "llama.cpp (PrismML's fork)",
+    "repo": "PrismML-Eng/llama.cpp",
+    "pinned": "prism-b12128-d7b2896",
+    "where": "pkgs/llama-prism.nix, pkgs/llama-prism-cuda.nix, nyx-ai docs/PRISM.md",
+    "match": "^prism-b[0-9]+"
+  },
+  {
+    "name": "Hyprland",
+    "repo": "hyprwm/Hyprland",
+    "pinned": "v0.57.2",
+    "where": "flake.nix (hyprland), nyx-hyprland patches/0.57.2"
+  },
+  {
+    "name": "flux",
+    "repo": "bjarneo/flux",
+    "pinned": "v0.19.1",
+    "where": "flake.nix (flux), pkgs/flux.nix, flux-nyxos.patch"
+  },
+  {
+    "name": "irlume",
+    "repo": "archledger/irlume",
+    "pinned": "v0.15.0",
+    "where": "flake.nix (irlume)"
+  },
+  {
+    "name": "gaze",
+    "repo": "GunduLabs/gaze",
+    "pinned": "v0.5.1",
+    "where": "flake.nix (gaze)"
+  },
+  {
+    "name": "TDLib",
+    "repo": "tdlib/td",
+    "pinned": "1.8.67",
+    "where": "pkgs/tdlib_1_8_67.nix (commit bc9c263)",
+    "version_file": {
+      "path": "CMakeLists.txt",
+      "pattern": "project\\(TDLib VERSION ([0-9.]+)"
+    }
+  },
+  {
+    "name": "sherpa-onnx",
+    "repo": "k2-fsa/sherpa-onnx",
+    "pinned": "v1.13.8",
+    "where": "pkgs/sherpa-onnx_1_13_8.nix"
+  },
+  {
+    "name": "libical",
+    "repo": "libical/libical",
+    "pinned": "v4.0.7",
+    "where": "pkgs/libical_4.nix"
+  }
+]

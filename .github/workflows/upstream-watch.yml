@@ -1,0 +1,24 @@
+# The forks and the packages built ahead of nixpkgs (lib/upstreams.json): an issue
+# "Upstream release: NAME" when upstream has released past the pin, closed once the pin
+# catches up. Runs weekly. Builds nothing; reads releases and writes issues only.
+name: Upstream releases
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Compare pins with upstream releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/upstream-watch --issues

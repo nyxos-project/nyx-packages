@@ -23,6 +23,19 @@ in
 rec {
   inherit rustToolchain;
 
+  # The license the source's Cargo.toml declares (the workspace's or the package's), as
+  # an SPDX id; a recipe's own meta.license wins (Passwords: GPL through bitwarden-crypto).
+  cargoLicense =
+    src: root:
+    let
+      toml = builtins.fromTOML (builtins.readFile "${src}/${root}Cargo.toml");
+      id = toml.workspace.package.license or toml.package.license or null;
+    in
+    if id == null then
+      throw "${toString src}: Cargo.toml declares no license"
+    else
+      lib.getLicenseFromSpdxId id;
+
   rustPlatform = makeRustPlatform {
     cargo = rustToolchain;
     rustc = rustToolchain;
@@ -155,7 +168,7 @@ rec {
     '';
 
   # A Rust workspace from a source input. Releases build in the "release" profile
-  # the repositories ship (thin LTO, stripped). `userUnits` and `dbusServices` are
+  # the repositories ship (thin LTO), with line tables in a separate debug output. `userUnits` and `dbusServices` are
   # repository paths of service files to install (see installServices); `actions` names
   # programs whose action manifests to install (see installActions).
   buildWorkspace =
@@ -186,8 +199,18 @@ rec {
         version = version baseVersion src;
         cargoLock = cargoLock src;
         checkType = "debug";
+        # Line tables kept and moved into a separate `debug` output, so a crash's
+        # backtrace (coredumpctl, nyx crash reports) names functions and lines. The
+        # programs themselves stay as small; NyxOS installs the debug outputs
+        # (environment.enableDebugInfo).
+        separateDebugInfo = true;
+        env = {
+          CARGO_PROFILE_RELEASE_DEBUG = "line-tables-only";
+          CARGO_PROFILE_RELEASE_STRIP = "none";
+        }
+        // (args.env or { });
         meta = {
-          license = lib.licenses.mit;
+          license = cargoLicense src (lib.optionalString (args ? cargoRoot) "${args.cargoRoot}/");
           platforms = [ "x86_64-linux" ];
         }
         // (args.meta or { });
@@ -195,6 +218,7 @@ rec {
       // removeAttrs args [
         "baseVersion"
         "meta"
+        "env"
         "userUnits"
         "dbusServices"
         "actions"

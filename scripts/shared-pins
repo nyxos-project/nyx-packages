@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Every Nyx crate the pinned sources build, with its revisions; fails when one is at more
+# than one revision (an app would carry two copies of nyx-core or the theme engine).
+# scripts/repin moves local checkouts onto one revision. Needs Nix.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+here=$(pwd)
+mapfile -t srcs < <(nix eval --raw --impure --expr "
+  let
+    f = builtins.getFlake \"path:$here\";
+    lib = f.inputs.nixpkgs.lib;
+    srcs = lib.filterAttrs (n: _: lib.hasPrefix \"nyx\" n) (removeAttrs f.inputs [ \"self\" ]);
+  in lib.concatStringsSep \"\n\" (map toString (lib.attrValues srcs))")
+exec python3 scripts/repin --report "${srcs[@]}"

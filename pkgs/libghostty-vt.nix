@@ -3,6 +3,7 @@
 # tarballs (their SHA256SUMS are in nyx-agents/vendor/libghostty-vt), starting from an
 # empty Zig cache, as Ghostty's packaging notes require for Zig 0.17.
 {
+  lib,
   stdenv,
   fetchurl,
   zig,
@@ -41,6 +42,7 @@ stdenv.mkDerivation {
   meta = {
     description = "Ghostty's terminal emulation library (static), with its C headers";
     homepage = "https://ghostty.org";
+    license = lib.licenses.mit;
     platforms = [ "x86_64-linux" ];
   };
 }
