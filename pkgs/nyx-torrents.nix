@@ -10,6 +10,8 @@
   libnotify,
 }:
 nyx.buildApp {
+  # Its action manifest (nyx torrents …, Glimpse, the Assistant) and D-Bus activation.
+  actions = [ "nyx-torrents" ];
   pname = "nyx-torrents";
   inherit src;
   # The engine is a C++ shim over libtorrent, built by build.rs through cxx;

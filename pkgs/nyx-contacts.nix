@@ -1,5 +1,7 @@
 { nyx, src }:
 nyx.buildApp {
+  # Its action manifest (nyx contacts …, Glimpse, the Assistant) and D-Bus activation.
+  actions = [ "nyx-contacts" ];
   pname = "nyx-contacts";
   inherit src;
   buildInputs = nyx.pimInputs;

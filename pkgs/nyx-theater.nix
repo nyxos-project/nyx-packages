@@ -6,6 +6,8 @@
   libsecret,
 }:
 nyx.buildApp {
+  # Its action manifest (nyx theater …, Glimpse, the Assistant) and D-Bus activation.
+  actions = [ "nyx-theater" ];
   pname = "nyx-theater";
   inherit src;
   # libmpv and EGL for nyx-design's nyx-playback.

@@ -10,6 +10,8 @@
   libsecret,
 }:
 nyx.buildApp {
+  # Its action manifest (nyx video …, Glimpse, the Assistant) and D-Bus activation.
+  actions = [ "nyx-media-player" ];
   pname = "nyx-media-player";
   inherit src;
   # libmpv and EGL for nyx-design's nyx-playback.

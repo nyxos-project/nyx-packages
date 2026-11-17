@@ -6,6 +6,8 @@
   xz,
 }:
 nyx.buildApp {
+  # Its action manifest (nyx fonts …, Glimpse, the Assistant) and D-Bus activation.
+  actions = [ "nyx-fonts" ];
   pname = "nyx-fonts";
   inherit src;
   # fc-list and fc-cache for installed fonts; tar with xz to unpack Nerd Fonts.

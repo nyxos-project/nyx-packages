@@ -19,6 +19,8 @@
   xdg-utils,
 }:
 nyx.buildApp {
+  # Its action manifest (nyx capture …, Glimpse, the Assistant) and D-Bus activation.
+  actions = [ "nyx-capture" ];
   pname = "nyx-capture";
   inherit src;
   glimpsePlugin = true;
