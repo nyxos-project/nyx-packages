@@ -91,15 +91,18 @@
             weston --backend=headless --socket=wayland-test --idle-time=0 &
             sleep 3
             export WAYLAND_DISPLAY=wayland-test GSK_RENDERER=cairo
+            # Also to the journal, which the test VM echoes to the build log as it runs:
+            # one thread prints each test's name before running it, so a hang names itself.
+            exec > >(tee >(systemd-cat -t nyx-files-tests)) 2>&1
             for t in ${tests}/bin/nyx-files-tests-*; do
-              "$t" --test-threads=1 --exact ${pkgs.lib.escapeShellArgs skipped} || exit 1
+              timeout -k 10 2400 "$t" --test-threads=1 --exact ${pkgs.lib.escapeShellArgs skipped} || exit 1
             done
           '';
         in
         ''
           machine.wait_for_unit("multi-user.target")
           machine.succeed("mkdir -p /run/user/1000 && chown alice /run/user/1000 && chmod 700 /run/user/1000")
-          status, out = machine.execute("su - alice -c 'dbus-run-session -- ${run}' 2>&1")
+          status, out = machine.execute("su - alice -c 'dbus-run-session -- ${run}' 2>&1", timeout=2700)
           print(out)
           assert status == 0, f"Files' tests failed ({status})"
           # Every listed test ran (a renamed one would otherwise pass unnoticed).

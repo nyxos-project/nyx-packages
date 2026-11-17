@@ -19,7 +19,6 @@ adapters::local_preview::tests::cancelled_in_flight_document_renders_keep_the_pe
 adapters::local_preview::tests::preview_families_follow_file_bytes_not_names
 app::navigation::tests::type_sorting_orders_by_mime_descriptions_with_folders_first
 app::navigation::tests::type_sorting_orders_by_mime_descriptions_without_folders_first
-build_info::tests::package_metadata_is_available_to_the_about_page
 portal_setup::tests::an_existing_configured_chooser_is_not_offered_again
 portal_setup::tests::dismissing_the_offer_does_not_prevent_later_explicit_installation
 portal_setup::tests::file_manager_conflict_is_rejected
@@ -78,7 +77,6 @@ services::preview::tests::metadata_probes_skip_text_that_merely_shares_a_media_n
 services::preview::tests::preview_family_follows_bytes_when_names_disagree
 services::preview::tests::recognizes_image_paths_for_metadata_probes
 tests::version_line_is_the_package_name_and_installed_version
-ui::browser::transfer_report::tests::items_left_out_or_left_behind_make_the_report_a_warning_or_follow_a_stop
 ui::file_providers::tests::disconnect_does_not_retire_requests_admitted_after_the_failed_session
 ui::preview::tests::video::media_families_split_audio_and_video_and_skip_gifs
 util::tests::calendar_rendering_converts_entries_into_now_timezone
