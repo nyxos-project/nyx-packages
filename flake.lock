@@ -1190,11 +1190,11 @@
     "nyx-pulse": {
       "flake": false,
       "locked": {
-        "lastModified": 1794906107,
-        "narHash": "sha256-8TkRlb60YrLsdAPYEdYtEeDZEDhzC4X7fMsOYmQJgn4=",
+        "lastModified": 1794940248,
+        "narHash": "sha256-kCkku3BFUCBnEG4QhwscvvQbD2UnN9aGqw+YT7JNoZI=",
         "owner": "design-nexus",
         "repo": "nyx-pulse",
-        "rev": "6036bb1331152d6633d5453c2874077133338eba",
+        "rev": "78426bd679f394d2b54661052059276f3df56b3c",
         "type": "github"
       },
       "original": {
