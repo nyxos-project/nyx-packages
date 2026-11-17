@@ -19,13 +19,13 @@
       cuda = unfree.callPackage ../pkgs/llama-prism-cuda.nix { };
     in
     pkgs.runCommand "llama-prism-cuda-starts" { } ''
-      for exe in ${cuda}/bin/*; do
+      for exe in ${cuda}/lib/nyx-ai/llama.cpp/*; do
         if ${pkgs.binutils}/bin/readelf -h "$exe" >/dev/null 2>&1; then
           missing=$(${pkgs.glibc.bin}/bin/ldd "$exe" | grep 'not found' | grep -v libcuda.so || true)
           [ -z "$missing" ] || { echo "$exe: $missing" >&2; exit 1; }
         fi
       done
-      ${cuda}/bin/llama-server --version 2>&1 | tee $out
+      ${cuda}/lib/nyx-ai/llama.cpp/llama-server --version 2>&1 | tee $out
       grep -q "version" $out
     '';
 
@@ -119,6 +119,7 @@
       name = "nyx-hyprland-tests";
       nodes.machine = {
         environment.systemPackages = with pkgs; [
+          foot # the virtual-monitor tests (patch 0008) open foot
           jq
           kitty
           wl-clipboard

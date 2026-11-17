@@ -9,6 +9,7 @@
   autoPatchelfHook,
   addDriverRunpath,
   cudaPackages,
+  openssl,
 }:
 let
   tag = "prism-b12128-d7b2896";
@@ -29,6 +30,8 @@ stdenv.mkDerivation {
     (lib.getLib stdenv.cc.cc)
     (lib.getLib cudaPackages.cuda_cudart)
     (lib.getLib cudaPackages.libcublas)
+    # llama-server's HTTPS model downloads
+    (lib.getLib openssl)
   ];
   # The driver's library, found at run time through the driver runpath.
   autoPatchelfIgnoreMissingDeps = [ "libcuda.so.1" ];
