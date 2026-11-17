@@ -1,5 +1,5 @@
-# Also ships nyx-viewer, the single-image viewer. "Set as background" stays hidden:
-# it runs Omarchy's omarchy-theme-bg-set, which NyxOS doesn't have.
+# Also ships nyx-viewer, the single-image viewer. "Set as background" goes through
+# the Nyx Theme Engine (SetWallpaper) on NyxOS.
 {
   nyx,
   src,

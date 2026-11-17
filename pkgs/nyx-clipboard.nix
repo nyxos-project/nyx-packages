@@ -22,6 +22,11 @@ nyx.buildApp {
     "data/systemd/nyx-clipboard.service"
   ];
   dbusServices = [ "data/dbus/io.github.design_nexus.nyx.Clipboard1.service" ];
+  # Settings › Desktop › Clipboard (history, privacy, codes): Settings finds packaged
+  # pages in share/nyx-settings/extensions.
+  postInstall = ''
+    install -Dm644 data/settings/extension.toml -t $out/share/nyx-settings/extensions/clipboard
+  '';
   passthru.autostart = {
     "nyx-clipboardd" = "graphical-session.target";
     "nyx-clipboard" = "graphical-session.target";

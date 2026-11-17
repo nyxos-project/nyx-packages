@@ -37,7 +37,17 @@ nyx.buildApp {
   # The browsers start the bridge from these manifests: Firefox reads
   # lib/mozilla/native-messaging-hosts, Chromium /etc/chromium/native-messaging-hosts.
   # The extension goes in share/nyx-passwords/browser, where Browser installs it from.
+  # Its Settings page (Accounts › Passwords), which Settings finds in XDG_DATA_DIRS.
   postInstall = ''
+    mkdir -p $out/share/nyx-settings/extensions/passwords
+    cat > $out/share/nyx-settings/extensions/passwords/extension.toml <<EOF
+    id = "passwords"
+    name = "Passwords"
+    category = "Accounts"
+    version = "0.1.0"
+    description = "Vault locking, clipboard clearing and Glimpse."
+    exec = "nyx-passwords-settings"
+    EOF
     bash apps/passwords/scripts/build-extension.sh $out/share/nyx-passwords/browser
     host=io.github.design_nexus.nyx.passwords
     for target in firefox:lib/mozilla/native-messaging-hosts chromium:etc/chromium/native-messaging-hosts; do

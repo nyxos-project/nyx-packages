@@ -16,6 +16,7 @@
   pulseaudio,
   curl,
   gnutar,
+  libnotify,
 }:
 nyx.buildWorkspace {
   pname = "nyx-voice";
@@ -57,7 +58,8 @@ nyx.buildWorkspace {
     "data/nyx-voiced.socket"
   ];
   # wtype and wl-copy type and paste dictation, playerctl pauses media while it listens,
-  # pactl and pw-link find and duck audio devices, curl and tar fetch models.
+  # pactl and pw-link find and duck audio devices, curl and tar fetch models, and
+  # notify-send says why dictation didn't start from a key.
   postInstall = ''
     for program in nyx-voiced nyx-voice; do
       wrapProgram $out/bin/$program --prefix PATH : ${
@@ -69,6 +71,7 @@ nyx.buildWorkspace {
           pipewire
           curl
           gnutar
+          libnotify
         ]
       }
     done

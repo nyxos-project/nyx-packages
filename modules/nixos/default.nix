@@ -153,7 +153,12 @@ let
     # file twice and log an error for every one.
     # Its action manifests (share/nyx/actions) for `nyx APP …`, Glimpse and Nyx
     # Assistant, and the nyx command's part that reads them.
-    environment.pathsToLink = [ "/share/nyx" ];
+    # And its Settings pages (share/nyx-settings/extensions), which Nyx Settings finds
+    # through XDG_DATA_DIRS.
+    environment.pathsToLink = [
+      "/share/nyx"
+      "/share/nyx-settings"
+    ];
     environment.systemPackages = [ nyxPkgs.nyx-actions ];
   };
 in
@@ -349,7 +354,13 @@ in
         systemd.user.services.nyx-shell-failed = {
           description = "Offer to restart Nyx Shell after it stopped";
           serviceConfig.Type = "oneshot";
+          # Each crash triggers this, also one systemd restarts at once (the old shell
+          # during a switch); only a shell that stayed down is news.
           script = ''
+            sleep 5
+            if systemctl --user is-active --quiet nyx-shell-core.service nyx-shell-qs.service; then
+              exit 0
+            fi
             choice=$(${pkgs.libnotify}/bin/notify-send --app-name="Nyx Shell" --icon=dialog-warning \
               --urgency=critical --action=restart="Restart the shell" --wait \
               "The shell stopped" \

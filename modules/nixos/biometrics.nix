@@ -295,6 +295,14 @@ in
     # and apps know the broker by its own. The activation script in default.nix writes
     # /etc/nyx/trusted-bin from this list.
     environment.etc."nyx/trusted-bin.system".text = lib.mkAfter "${bio}/bin\n";
+    # What this configuration turns on, as the System Manager's `biometrics` setting
+    # spells it: Settings › Sign-in & Security shows it and changes it from there.
+    environment.etc."nyx/biometrics.json".text = builtins.toJSON {
+      enable = true;
+      inherit (cfg) face allowWebcamFace surfaces;
+      fingerprint = cfg.fingerprint.enable;
+      securityKey = cfg.securityKey.enable;
+    };
     systemd.packages = [ bio ];
     systemd.sockets.nyx-auth-keyd.wantedBy = [ "sockets.target" ];
     security.polkit.enable = true;

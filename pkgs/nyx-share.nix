@@ -1,21 +1,23 @@
-# The Share Sheet, its D-Bus service (activated on demand) and the CLI.
-# Share extensions stay unavailable: their bubblewrap sandbox binds /usr and sets
-# PATH=/usr/bin, which hold nothing on NixOS, so bwrap isn't put on PATH.
+# The Share Sheet, its D-Bus service (activated on demand) and the CLI. Share
+# extensions run in bubblewrap, which binds the Nix store and the system profile on
+# NixOS.
 {
   nyx,
   src,
   wl-clipboard,
   libsecret,
   zbar,
+  bubblewrap,
 }:
 nyx.buildApp {
   pname = "nyx-share";
   inherit src;
-  # wl-copy copies shared items; zbarimg reads QR codes.
+  # wl-copy copies shared items; zbarimg reads QR codes; bwrap is the extensions' sandbox.
   runtimeInputs = [
     wl-clipboard
     libsecret
     zbar
+    bubblewrap
   ];
   userUnits = [ "data/systemd/nyx-share.service" ];
   dbusServices = [ "data/dbus/io.github.design_nexus.nyx.Share1.service" ];

@@ -52,6 +52,15 @@ nyx.buildApp {
   # The unit `nyx-glimpse service enable` would otherwise write to ~/.config with this
   # package's path in it.
   postInstall = ''
+    mkdir -p $out/share/nyx-settings/extensions/glimpse
+    cat > $out/share/nyx-settings/extensions/glimpse/extension.toml <<EOF
+    id = "glimpse"
+    name = "Glimpse"
+    category = "Desktop"
+    version = "0.1.0"
+    description = "Local search, sources, semantic models, plugins, and privacy."
+    exec = "nyx-glimpse-settings"
+    EOF
     mkdir -p $out/share/nyx-shell/components
     cp -r quickshell/Glimpse $out/share/nyx-shell/components/nyx-glimpse
     mkdir -p $out/lib/systemd/user
