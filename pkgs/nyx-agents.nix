@@ -1,6 +1,7 @@
 # Nyx Agents: nyx-agentd (the session manager) and its user socket, the nyx-agents app
-# and command, its Glimpse plugin and Settings page, and the AI Hub plugin for Nyx Bar
-# and the Control Center. The plugin goes to share/nyx/plugins/nyx.ai-hub, where both
+# and command, its Glimpse plugin and Settings page, the AI Hub plugin for Nyx Bar
+# and the Control Center, and AI Lens (agent activity, allowances and local inference, a
+# read-only Quickshell panel: share/nyx-ai-lens/qml, also a Nyx Shell component). The plugin goes to share/nyx/plugins/nyx.ai-hub, where both
 # hosts find it as a packaged (trusted) plugin through XDG_DATA_DIRS: it talks to
 # nyx-agentd and Nyx AI Core over their sockets, which a sandboxed plugin can't.
 {
@@ -18,6 +19,7 @@
   wl-clipboard,
   xdg-utils,
   xdg-terminal-exec,
+  quickshell,
 }:
 nyx.buildApp {
   pname = "nyx-agents";
@@ -31,6 +33,8 @@ nyx.buildApp {
     "agents-glimpse"
     "-p"
     "nyx-ai-hub-plugin"
+    "-p"
+    "nyx-ai-lens"
   ];
   # The terminal, session records, usage scanners and the plugin's views and manifest.
   cargoTestFlags = [
@@ -66,6 +70,8 @@ nyx.buildApp {
     wl-clipboard
     xdg-utils
     xdg-terminal-exec
+    # AI Lens's panel runs in Quickshell when Nyx Shell isn't there to draw it.
+    quickshell
   ];
   glimpsePlugin = true;
   userUnits = [
@@ -80,6 +86,9 @@ nyx.buildApp {
     install -Dm644 apps/ai-hub-plugin/icons/hicolor/scalable/apps/nyx-ai-hub-symbolic.svg \
       -t $out/share/icons/hicolor/scalable/apps
     mv $out/bin/nyx-ai-hub-plugin "$dest/"
+    mkdir -p $out/share/nyx-ai-lens $out/share/nyx-shell/components
+    cp -r apps/ai-lens/qml $out/share/nyx-ai-lens/qml
+    ln -s ../../nyx-ai-lens/qml $out/share/nyx-shell/components/nyx-ai-lens
     rm -f $out/bin/nyx-term-lab
   '';
   meta = {
