@@ -168,12 +168,13 @@
       '';
     };
 
-
   # Fails once nixpkgs ships a version at least the one a package here is built at, so
   # the override is dropped (lib/overrides.nix, docs/compatibility.md).
   overrides =
     let
-      caught = builtins.filter (o: builtins.compareVersions (o.nixpkgs pkgs) o.ours >= 0) (import ../lib/overrides.nix);
+      caught = builtins.filter (o: builtins.compareVersions (o.nixpkgs pkgs) o.ours >= 0) (
+        import ../lib/overrides.nix
+      );
       lines = map (o: "${o.name}: nixpkgs has ${o.nixpkgs pkgs}, ours is ${o.ours}") caught;
     in
     pkgs.runCommand "nyx-overrides-ahead-of-nixpkgs" { } (

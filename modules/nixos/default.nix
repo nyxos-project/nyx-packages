@@ -313,7 +313,8 @@ in
         environment.pathsToLink = [ "/lib/debug" ];
         environment.variables.NIX_DEBUG_INFO_DIRS = [ "/run/current-system/sw/lib/debug" ];
         # systemd-coredump writes the backtrace when the crash happens.
-        systemd.services."systemd-coredump@".environment.NIX_DEBUG_INFO_DIRS = "/run/current-system/sw/lib/debug";
+        systemd.services."systemd-coredump@".environment.NIX_DEBUG_INFO_DIRS =
+          "/run/current-system/sw/lib/debug";
       })
 
       (lib.mkIf (enabledPackages != [ ] || cfg.biometrics.enable) {
