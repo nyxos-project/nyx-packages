@@ -566,11 +566,11 @@
     "nyx-assistant": {
       "flake": false,
       "locked": {
-        "lastModified": 1794909226,
-        "narHash": "sha256-jO0smIM0EhB65+IaChjkga98DXpPCAkWx8V4WLeEJPQ=",
+        "lastModified": 1794913968,
+        "narHash": "sha256-uHtJtCopVDK8e8V71ffz+87IEkb4b7JMIryvPcMOf8I=",
         "owner": "design-nexus",
         "repo": "nyx-assistant",
-        "rev": "b6e4bb4a0aac9789d263f7b92de49a95c6431caf",
+        "rev": "6e655765532da301bcf600772d92781a6d35c500",
         "type": "github"
       },
       "original": {
@@ -1078,11 +1078,11 @@
     "nyx-notes": {
       "flake": false,
       "locked": {
-        "lastModified": 1794906237,
-        "narHash": "sha256-lVHh46wY5N0ATEpR1/52sQja9fEdQF3v4o/w1c1LStw=",
+        "lastModified": 1794921537,
+        "narHash": "sha256-lIehFLxFZocbQ8PCi3MY4NHVX5sgTdS3/4oK4Y4iGM4=",
         "owner": "design-nexus",
         "repo": "nyx-notes",
-        "rev": "03295af8cbb3797cb82437d072a69905c4afd31c",
+        "rev": "dfeaae92f573db952475ad65603cce85fe37a0d1",
         "type": "github"
       },
       "original": {
@@ -1382,11 +1382,11 @@
     "nyx-wallpapers": {
       "flake": false,
       "locked": {
-        "lastModified": 1794452383,
-        "narHash": "sha256-s8q8CG0D18B/t+xpOPz+VBue8hb5I3m8OBMtq6PNbww=",
+        "lastModified": 1794911866,
+        "narHash": "sha256-RosWIBzSvb4lyoyAJTxwAopYz+GNEhIo+dtG+mipGbs=",
         "owner": "nyxos-project",
         "repo": "nyx-wallpapers",
-        "rev": "a2adbbc51f2967700c7072750243d991174b6768",
+        "rev": "80c0638e392b5430fb0cdd33da85e6b6d2768fab",
         "type": "github"
       },
       "original": {
