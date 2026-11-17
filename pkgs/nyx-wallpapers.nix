@@ -25,6 +25,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   meta = {
     description = "Wallpapers for the Nyx themes";
     homepage = "https://github.com/nyxos-project/nyx-wallpapers";
+    license = lib.licenses.cc0;
     platforms = lib.platforms.all;
   };
 })
