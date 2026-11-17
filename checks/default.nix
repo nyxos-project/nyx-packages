@@ -79,6 +79,7 @@
           pkgs.ffmpeg
           pkgs.python3
           pkgs.dbus
+          pkgs.imagemagick # the image actions' examples
         ];
         programs.fuse.userAllowOther = true;
         virtualisation.memorySize = 4096;
@@ -88,8 +89,18 @@
         let
           run = pkgs.writeShellScript "nyx-files-tests" ''
             export HOME=/home/alice XDG_RUNTIME_DIR=/run/user/1000
-            weston --backend=headless --socket=wayland-test --idle-time=0 &
+            # Weston's own output goes to a file: holding the script's output open, it
+            # kept the driver waiting after the tests had finished.
+            weston --backend=headless --socket=wayland-test --idle-time=0 > /tmp/weston.log 2>&1 &
+            weston=$!
+            trap 'kill $weston' EXIT
             sleep 3
+            # From a writable copy of the source, as in the package build (fixtures go in
+            # ./target).
+            cp -r ${packages.nyx-files.src} $HOME/source
+            chmod -R u+w $HOME/source
+            cd $HOME/source
+            mkdir -p target
             export WAYLAND_DISPLAY=wayland-test GSK_RENDERER=cairo
             # Also to the journal, which the test VM echoes to the build log as it runs:
             # one thread prints each test's name before running it, so a hang names itself.
@@ -102,6 +113,9 @@
         ''
           machine.wait_for_unit("multi-user.target")
           machine.succeed("mkdir -p /run/user/1000 && chown alice /run/user/1000 && chmod 700 /run/user/1000")
+          # Paths some tests name directly (a provider run with /usr/bin/python3, a child
+          # spawned as /bin/cat).
+          machine.succeed("mkdir -p /usr/bin && ln -s ${pkgs.python3}/bin/python3 /usr/bin/python3 && ln -s ${pkgs.coreutils}/bin/cat /bin/cat")
           status, out = machine.execute("su - alice -c 'dbus-run-session -- ${run}' 2>&1", timeout=2700)
           print(out)
           assert status == 0, f"Files' tests failed ({status})"
