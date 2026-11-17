@@ -8,12 +8,12 @@
   tzdata,
 }:
 libical.overrideAttrs (old: {
-  version = "4.0.7";
+  version = "4.0.8";
   src = fetchFromGitHub {
     owner = "libical";
     repo = "libical";
-    rev = "v4.0.7";
-    hash = "sha256-FrSFOP0VICdGIKBSAuVLFIqdctpTg/c8eMAkOU1odEM=";
+    rev = "v4.0.8";
+    hash = "sha256-dPAz/pMLOCJIJrQoB+Uz99qiE8xJDCoQ6V+AooqK6bc=";
   };
   # nixpkgs' patches backport TZDIR support to 3.0; 4 has it.
   patches = [ ];

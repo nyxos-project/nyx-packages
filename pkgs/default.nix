@@ -197,7 +197,7 @@ fromSource [
   inherit (nyx)
     libical_4
     libshumate_1_7
-    tdlib_1_8_67
+    tdlib_1_8_70
     ntgcalls
     sherpa-onnx_1_13_8
     pacman_7_1

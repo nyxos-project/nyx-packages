@@ -77,7 +77,7 @@ nyx.buildApp {
   # network. It passes outside the sandbox.
   checkFlags = [ "--skip=engine::transport_regression::local_signaling_loopback" ];
   preCheck = nyx.privateBusPreCheck + ''
-    export TDLIB_PATH=${nyx.tdlib_1_8_67}/lib/libtdjson.so
+    export TDLIB_PATH=${nyx.tdlib_1_8_70}/lib/libtdjson.so
     export XDG_RUNTIME_DIR=$TMPDIR GDK_BACKEND=broadway BROADWAY_DISPLAY=:5
     export FONTCONFIG_FILE=${makeFontsConf { fontDirectories = [ ]; }}
     ${gtk4}/bin/gtk4-broadwayd :5 &
@@ -97,7 +97,7 @@ nyx.buildApp {
     coreutils
   ];
   preFixup = ''
-    gappsWrapperArgs+=(--set-default TDLIB_PATH ${nyx.tdlib_1_8_67}/lib/libtdjson.so)
+    gappsWrapperArgs+=(--set-default TDLIB_PATH ${nyx.tdlib_1_8_70}/lib/libtdjson.so)
   '';
   # Pulse looks for NTgCalls next to its binary, in ../share/nyx/lib.
   postInstall = ''

@@ -12,12 +12,12 @@
     # Face sign-in for Nyx Biometrics, with their own packages and NixOS modules, at
     # their release tags.
     irlume = {
-      url = "github:archledger/irlume/v0.15.0";
+      url = "github:archledger/irlume/v0.16.0";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };
     gaze = {
-      url = "github:GunduLabs/gaze/v0.5.1";
+      url = "github:GunduLabs/gaze/v0.5.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

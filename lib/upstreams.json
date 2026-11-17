@@ -21,20 +21,20 @@
   {
     "name": "irlume",
     "repo": "archledger/irlume",
-    "pinned": "v0.15.0",
+    "pinned": "v0.16.0",
     "where": "flake.nix (irlume)"
   },
   {
     "name": "gaze",
     "repo": "GunduLabs/gaze",
-    "pinned": "v0.5.1",
+    "pinned": "v0.5.2",
     "where": "flake.nix (gaze)"
   },
   {
     "name": "TDLib",
     "repo": "tdlib/td",
-    "pinned": "1.8.67",
-    "where": "pkgs/tdlib_1_8_67.nix (commit bc9c263)",
+    "pinned": "1.8.70",
+    "where": "pkgs/tdlib_1_8_70.nix (commit 23383ae)",
     "version_file": {
       "path": "CMakeLists.txt",
       "pattern": "project\\(TDLib VERSION ([0-9.]+)"
@@ -49,7 +49,7 @@
   {
     "name": "libical",
     "repo": "libical/libical",
-    "pinned": "v4.0.7",
+    "pinned": "v4.0.8",
     "where": "pkgs/libical_4.nix"
   }
 ]

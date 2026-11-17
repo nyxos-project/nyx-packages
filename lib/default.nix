@@ -44,7 +44,7 @@ rec {
   # Newer libraries than nixpkgs 26.05 has, for the apps that need them.
   libical_4 = callPackage ../pkgs/libical_4.nix { };
   libshumate_1_7 = callPackage ../pkgs/libshumate_1_7.nix { };
-  tdlib_1_8_67 = callPackage ../pkgs/tdlib_1_8_67.nix { };
+  tdlib_1_8_70 = callPackage ../pkgs/tdlib_1_8_70.nix { };
   ntgcalls = callPackage ../pkgs/ntgcalls.nix { };
   sherpa-onnx_1_13_8 = callPackage ../pkgs/sherpa-onnx_1_13_8.nix { };
   pacman_7_1 = callPackage ../pkgs/pacman_7_1.nix { };
