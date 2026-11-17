@@ -1,8 +1,7 @@
 # Vaultwarden client: the app, its vault service, the assistant and settings
 # extensions, the browser extension, and the browser bridge with its native-messaging
-# manifests. The polkit-confirmed sign-in and the TPM key broker come with Nyx
-# Biometrics, which isn't packaged yet; without them the vault works with its master
-# password.
+# manifests. With Nyx Biometrics turned on, the vault also unlocks through its TPM key
+# service after a polkit sign-in; without it, with the master password.
 {
   lib,
   nyx,

@@ -40,7 +40,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-torrents` | nyx-torrents | Nyx Torrents on libtorrent 2.0 |
 | `packages.nyx-weather` | nyx-weather | Nyx Weather (no Omarchy bar widget) |
 | `packages.nyx-notes` | nyx-notes | Nyx Notes and its Glimpse plugin |
-| `packages.nyx-files` | nyx-files | Nyx Files, its RAR helper and the `FileManager1` D-Bus service; 82 desktop-only tests skipped |
+| `packages.nyx-files` | nyx-files | Nyx Files, its RAR helper and the `FileManager1` D-Bus service; the 81 tests the build sandbox can't run are skipped there and run in `checks.nyx-files-tests` (a NixOS VM) |
 | `packages.nyx-contacts` | nyx-contacts | Nyx Contacts |
 | `packages.nyx-calendar` | nyx-calendar | Nyx Calendar, its sync service and Glimpse plugin |
 | `packages.nyx-reminders` | nyx-reminders | Nyx Reminders, its sync service and Glimpse plugin |
@@ -48,7 +48,7 @@ builds it reproducibly and runs its tests.
 | `packages.nyx-mail` | nyx-mail | Nyx Mail (WebKitGTK 6), its sync service and Glimpse plugin |
 | `packages.nyx-capture` | nyx-capture | Nyx Capture with nixpkgs' ONNX Runtime; no scrolling capture (needs Omarchy's omasnap) |
 | `packages.nyx-browser` | nyx-browser | Nyx Browser from the GitHub release tarball (Zen's engine with Nyx's chrome); not built from source |
-| `packages.nyx-passwords` | nyx-passwords | Nyx Passwords, its vault service and browser bridge; no polkit sign-in or TPM broker until Nyx Biometrics is packaged |
+| `packages.nyx-passwords` | nyx-passwords | Nyx Passwords, its vault service and browser bridge; with Nyx Biometrics turned on, the vault also unlocks through its TPM key service, after a polkit sign-in |
 | `packages.nyx-pulse` | nyx-pulse | Nyx Pulse with TDLib 1.8.67 (built from source) and the NTgCalls 3.0.5 release build, and its Glimpse plugin |
 | `packages.nyx-assistant` | nyx-assistant | Nyx Assistant: daemon, CLI, TUI, plugin worker, Canvas, Quickshell HUD and Aura, abilities, browser automation (Playwright with nixpkgs Chromium) and the DuckDuckGo search server; its language model runs in Nyx AI Core and its speech in Nyx Voice's engine |
 | `packages.nyx-voice` | nyx-voice | Nyx Voice: `nyx-voiced`, `nyx-voice`, the streaming recognizer worker `nyx-voice-asr` and the user socket; models download at runtime |
@@ -110,7 +110,7 @@ nix flake check github:nyxos-project/nyx-packages
 - Each package builds the release profile its repository ships (thin LTO, stripped)
   and runs its tests in the debug profile.
 - Nyx crates fetched as Git dependencies come from the revisions in each
-  `Cargo.lock`, fetched at evaluation time (`allowBuiltinFetchGit`).
+  `Cargo.lock`, fetched by hash (`lib/git-hashes.json`, written by `scripts/git-hashes`).
 - Tests that need a session bus get a private one (`lib.privateBusPreCheck`).
 - `lib.buildApp` is the common GTK application recipe: it wraps the programs for
   GTK, puts `runtimeInputs` on their `PATH`, and installs the repository's
@@ -135,7 +135,9 @@ nix flake check
 - `main` is the testing channel: sources move forward as they're updated.
 - `stable` is promoted from `main` once a set of revisions has been tested in NyxOS.
 
-CI builds and tests both branches and pushes the results to the Cachix binary cache.
+CI builds and tests every push to either branch and pushes the results to the Cachix
+binary cache; `stable` requires a passing `ci` check, and moves only through nyxos'
+`scripts/promote-stable`.
 
 ## Compatibility
 
