@@ -13,17 +13,32 @@
   grim,
   git,
   xdg-utils,
+  python3,
 }:
 nyx.buildApp {
   pname = "nyx-glimpse";
   inherit src;
   buildInputs = [ gtk4-layer-shell ];
-  # Its index skips folders named build (config::forbidden), and the sandbox builds in
-  # /build, so these tests find no files there; they pass outside it.
-  checkFlags = [
-    "--skip=aicore::tests::offers_a_read_only_file_search"
-    "--skip=backend::tests::fast_results_need_no_ai_and_no_display"
-    "--skip=semantic::tests::old_indexes_stay_and_a_new_model_rebuilds_beside_them"
+  # Its index skips folders named build (config::forbidden) and the sandbox builds in
+  # /build, so the tests make their folders in /tmp. They sandbox plugins with bwrap and
+  # run a Python reader.
+  preCheck = ''
+    export TMPDIR=$(mktemp -d /tmp/glimpse-check.XXXXXX)
+  '';
+  nativeCheckInputs = [
+    bubblewrap
+    python3
+  ];
+  # The plugin sandbox mounts the system's /usr or /run/current-system and runs its
+  # `true`; the build sandbox has neither. Glimpse's own CI runs these on a real system.
+  checkFlags = map (t: "--skip=${t}") [
+    "capture_plugin_sees_only_its_library"
+    "custom_reader_and_source_revocation"
+    "news_plugin_sees_only_its_library"
+    "plugin_update_permission_change_disables_and_rolls_back"
+    "sandbox_blocks_home_and_network"
+    "plugins_install_disabled_and_execute_only_after_grant"
+    "contextual_plugin_actions_run_only_inside_current_grants"
   ];
   # Its library, program and integration tests (tests/core.rs and the rest).
   cargoTestFlags = [
