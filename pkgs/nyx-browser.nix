@@ -25,7 +25,7 @@
   adwaita-icon-theme,
 }:
 let
-  version = "1.24.2b-3";
+  version = "1.24.2b-4";
   zen = "1.24.2b";
   pname = "nyx-browser";
   appId = "io.github.design_nexus.nyx.Browser";
@@ -47,7 +47,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "https://github.com/design-nexus/nyx-browser/releases/download/v${version}/nyx-browser-${version}.linux-x86_64.tar.xz";
-    hash = "sha256-J93lDIo9pptTnuBAVB1Vd/NUKhreCtpzdj0pVyn35Qo=";
+    hash = "sha256-TZSgA7LvMRRdIwx2nX/apQcEH80xwXUTCRqvwXQiW0g=";
   };
 
   nativeBuildInputs = [
