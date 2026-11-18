@@ -123,10 +123,9 @@ nyx.buildApp {
   inherit src;
   cargoRoot = "apps/assistant";
   buildAndTestSubdir = "apps/assistant";
-  cargoLock = {
-    lockFile = "${app}/Cargo.lock";
-    allowBuiltinFetchGit = true;
-  };
+  # Git dependencies by hash (lib/git-hashes.json): fetching them while evaluating cloned
+  # every Nyx crate's whole repository first, and timed out on slow connections.
+  cargoLock = nyx.cargoLock app;
   cargoBuildFlags =
     lib.concatMap
       (p: [

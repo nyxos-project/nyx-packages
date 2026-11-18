@@ -663,9 +663,16 @@ in
         systemd.user.services.nyx-notifyd.environment.NYX_NOTIFYD_MODE = "nyx";
       })
 
-      # Settings asks polkit through the System Manager and cups-pk-helper.
+      # Settings asks polkit through the System Manager and cups-pk-helper. Its Sound page
+      # talks to PipeWire through pactl, and Sign-in & Security enrolls and reports through
+      # nyx-authctl (the ways to sign in stay off until chosen there, through nyx.biometrics).
       (lib.mkIf cfg.settings.enable {
         security.polkit.enable = true;
+        environment.systemPackages = [
+          # Only the command: PulseAudio's own daemon and autostart entry stay out.
+          (pkgs.runCommand "pactl" { } "mkdir -p $out/bin; ln -s ${pkgs.pulseaudio}/bin/pactl $out/bin/pactl")
+          nyxPkgs.nyx-biometrics
+        ];
       })
 
       # Settings adds and removes printers through cups-pk-helper, CUPS's polkit D-Bus service.
