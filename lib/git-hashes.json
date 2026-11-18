@@ -6,6 +6,7 @@
   "git+https://github.com/design-nexus/nyx-biometrics.git?rev=637a5cbadf597fb888f6419d2a373ed4b04aafbb#637a5cbadf597fb888f6419d2a373ed4b04aafbb": "sha256-cRFkJSMPIXmYQlWwXICewn5myOW9Z4Q+nInqTMEckTo=",
   "git+https://github.com/design-nexus/nyx-cloud.git?rev=a65d14cce64bc0cbce1a8ecfa711fae8a0290835#a65d14cce64bc0cbce1a8ecfa711fae8a0290835": "sha256-8JujV6EWvTJ9ZbEhGWHVSl72AvEQr8C7JT7p/LdZtxc=",
   "git+https://github.com/design-nexus/nyx-core.git?rev=2e7937ebd156a1df7d92457f9a3b35aecfc22ac9#2e7937ebd156a1df7d92457f9a3b35aecfc22ac9": "sha256-8vJcot+L1m0XamZeN7JqmZzocvzkMYNVeku/9Gpxmn8=",
+  "git+https://github.com/design-nexus/nyx-core.git?rev=344b15583175a0de74d8de1311cd528a6199da55#344b15583175a0de74d8de1311cd528a6199da55": "sha256-84Zo6hzq+JIQdC95iAqSgOok1r8s3HNOmnVyacdD+bY=",
   "git+https://github.com/design-nexus/nyx-core.git?rev=a258c315f056ac649586fdb55e98613056221411#a258c315f056ac649586fdb55e98613056221411": "sha256-EBu2wXRLiOmeiv0YnSbcGNIUIve+jwDT7FUdVAPMlXo=",
   "git+https://github.com/design-nexus/nyx-core.git?rev=efb68d7da4ab85db5a117d07808047ce8cf449eb#efb68d7da4ab85db5a117d07808047ce8cf449eb": "sha256-Fz79xHEW8KDFe5J4XNEIUWIH2n3k9pORHinLgp1WwEA=",
   "git+https://github.com/design-nexus/nyx-design.git?rev=914b14ec5574ca04cbb985b571cfbfb0a42aae15#914b14ec5574ca04cbb985b571cfbfb0a42aae15": "sha256-CRkY/mkDk9bKJ5kjpmyl8E56YS+ld73Mbx4XHG+nas4=",
