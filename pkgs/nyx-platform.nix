@@ -22,6 +22,12 @@ nyx.buildWorkspace {
     "--features"
     "cli"
   ];
+  # The jobs it does, which apps read (nyx_platform::installed_jobs) instead of the list
+  # they were built with.
+  postInstall = ''
+    mkdir -p $out/share/nyx-platform
+    $out/bin/nyx-platform jobs > $out/share/nyx-platform/jobs
+  '';
   meta = {
     description = "Desktop jobs the same way on NyxOS and Omarchy";
     homepage = "https://github.com/design-nexus/nyx-core";
