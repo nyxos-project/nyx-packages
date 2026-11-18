@@ -473,53 +473,115 @@ in
       (lib.mkIf (cfg.trustedNetworkPorts != [ ]) (
         let
           ports = lib.unique cfg.trustedNetworkPorts;
-          update = pkgs.writeShellScript "nyx-trusted-net" ''
-            export PATH=${
-              lib.makeBinPath [
-                pkgs.networkmanager
-                pkgs.iptables
-                pkgs.coreutils
-              ]
-            }
-            chain=nyx-trusted-net
-            iptables -w -n -L "$chain" >/dev/null 2>&1 || exit 0
-            iptables -w -F "$chain"
-            ip6tables -w -F "$chain"
+          portList = lib.concatMapStringsSep ", " toString ports;
+          nftables = config.networking.nftables.enable;
+          # The interfaces whose connection is in a trusted zone.
+          trustedDevices = ''
             nmcli -t -f UUID,DEVICE connection show --active 2>/dev/null | while IFS=: read -r uuid dev; do
               [ -n "$dev" ] && [ "$dev" != lo ] || continue
               case "$(nmcli -g connection.zone connection show "$uuid" 2>/dev/null)" in
-                home | work | trusted) ;;
-                *) continue ;;
+                home | work | trusted) echo "$dev" ;;
               esac
-              for ipt in iptables ip6tables; do
-                for port in ${lib.concatMapStringsSep " " toString ports}; do
-                  "$ipt" -w -A "$chain" -i "$dev" -p tcp --dport "$port" -j nixos-fw-accept
-                  "$ipt" -w -A "$chain" -i "$dev" -p udp --dport "$port" -j nixos-fw-accept
-                done
-              done
             done
           '';
+          update = pkgs.writeShellScript "nyx-trusted-net" (
+            if nftables then
+              ''
+                export PATH=${
+                  lib.makeBinPath [
+                    pkgs.networkmanager
+                    pkgs.nftables
+                    pkgs.coreutils
+                  ]
+                }
+                nft list set inet nyx-trusted-net devices >/dev/null 2>&1 || exit 0
+                nft flush set inet nyx-trusted-net devices
+                ${trustedDevices} | while read -r dev; do
+                  nft add element inet nyx-trusted-net devices "{ \"$dev\" }"
+                done
+              ''
+            else
+              ''
+                export PATH=${
+                  lib.makeBinPath [
+                    pkgs.networkmanager
+                    pkgs.iptables
+                    pkgs.coreutils
+                  ]
+                }
+                chain=nyx-trusted-net
+                iptables -w -n -L "$chain" >/dev/null 2>&1 || exit 0
+                iptables -w -F "$chain"
+                ip6tables -w -F "$chain"
+                ${trustedDevices} | while read -r dev; do
+                  for ipt in iptables ip6tables; do
+                    for port in ${lib.concatMapStringsSep " " toString ports}; do
+                      "$ipt" -w -A "$chain" -i "$dev" -p tcp --dport "$port" -j nixos-fw-accept
+                      "$ipt" -w -A "$chain" -i "$dev" -p udp --dport "$port" -j nixos-fw-accept
+                    done
+                  done
+                done
+              ''
+          );
+          # The bit a trusted-network packet carries from our table to NixOS's firewall.
+          mark = "0x00400000";
         in
-        {
-          networking.firewall.extraCommands = ''
-            ip46tables -N nyx-trusted-net 2>/dev/null || ip46tables -F nyx-trusted-net
-            ip46tables -A nixos-fw -j nyx-trusted-net
-            ${update} || true
-          '';
-          networking.firewall.extraStopCommands = ''
-            ip46tables -F nyx-trusted-net 2>/dev/null || true
-          '';
-          networking.networkmanager.dispatcherScripts = [
-            {
-              type = "basic";
-              source = pkgs.writeShellScript "nyx-trusted-net-dispatch" ''
-                case "$2" in
-                  up | down | reapply | dhcp4-change | dhcp6-change) exec ${update} ;;
-                esac
+        lib.mkMerge [
+          {
+            networking.networkmanager.dispatcherScripts = [
+              {
+                type = "basic";
+                source = pkgs.writeShellScript "nyx-trusted-net-dispatch" ''
+                  case "$2" in
+                    up | down | reapply | dhcp4-change | dhcp6-change) exec ${update} ;;
+                  esac
+                '';
+              }
+            ];
+          }
+          # iptables: a chain of their own in NixOS's, filled for the interfaces whose
+          # connection is in a trusted zone whenever a connection comes up, goes down or
+          # changes (Settings › Devices reapplies one after marking it trusted).
+          (lib.mkIf (!nftables) {
+            networking.firewall.extraCommands = ''
+              ip46tables -N nyx-trusted-net 2>/dev/null || ip46tables -F nyx-trusted-net
+              ip46tables -A nixos-fw -j nyx-trusted-net
+              ${update} || true
+            '';
+            networking.firewall.extraStopCommands = ''
+              ip46tables -F nyx-trusted-net 2>/dev/null || true
+            '';
+          })
+          # nftables (Incus turns it on): a table of our own marks what arrives on a trusted
+          # interface for these ports, and NixOS's firewall accepts what's marked. Its set
+          # of interfaces is filled the same way, and again whenever the rules reload.
+          (lib.mkIf nftables {
+            networking.nftables.tables.nyx-trusted-net = {
+              family = "inet";
+              content = ''
+                set devices {
+                  type ifname
+                }
+                chain mark {
+                  type filter hook input priority -10; policy accept;
+                  iifname @devices tcp dport { ${portList} } meta mark set meta mark | ${mark}
+                  iifname @devices udp dport { ${portList} } meta mark set meta mark | ${mark}
+                }
               '';
-            }
-          ];
-        }
+            };
+            networking.firewall.extraInputRules = "meta mark & ${mark} == ${mark} accept";
+            systemd.services.nyx-trusted-net = {
+              description = "Trusted-network ports: the interfaces in a trusted zone";
+              after = [ "nftables.service" ];
+              partOf = [ "nftables.service" ];
+              wantedBy = [ "nftables.service" ];
+              serviceConfig = {
+                Type = "oneshot";
+                ExecStart = update;
+              };
+            };
+          })
+        ]
       ))
 
       # Maps finds "my location" through GeoClue.
