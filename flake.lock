@@ -1078,11 +1078,11 @@
     "nyx-notes": {
       "flake": false,
       "locked": {
-        "lastModified": 1794956686,
-        "narHash": "sha256-t3oKs3zVQ5xv4gTCXnP59ASf3UivyvYn5BZn8w8CVHM=",
+        "lastModified": 1794961261,
+        "narHash": "sha256-ToOK0d6DtQ0049wSzHuVgSIYJ7Le0+nupLUBwdZIEzI=",
         "owner": "design-nexus",
         "repo": "nyx-notes",
-        "rev": "2b29deb9b83cd00e943499de01b389ab569cdcda",
+        "rev": "c66d7fc06697599559cfc2cb7f0feb1e0c6411e6",
         "type": "github"
       },
       "original": {
