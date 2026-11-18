@@ -482,12 +482,14 @@ in
           nftables = config.networking.nftables.enable;
           # The interfaces whose connection is in a trusted zone.
           trustedDevices = ''
+            trusted_devices() {
             nmcli -t -f UUID,DEVICE connection show --active 2>/dev/null | while IFS=: read -r uuid dev; do
               [ -n "$dev" ] && [ "$dev" != lo ] || continue
               case "$(nmcli -g connection.zone connection show "$uuid" 2>/dev/null)" in
                 home | work | trusted) echo "$dev" ;;
               esac
             done
+            }
           '';
           update = pkgs.writeShellScript "nyx-trusted-net" (
             if nftables then
@@ -501,7 +503,8 @@ in
                 }
                 nft list set inet nyx-trusted-net devices >/dev/null 2>&1 || exit 0
                 nft flush set inet nyx-trusted-net devices
-                ${trustedDevices} | while read -r dev; do
+                ${trustedDevices}
+                trusted_devices | while read -r dev; do
                   nft add element inet nyx-trusted-net devices "{ \"$dev\" }"
                 done
               ''
@@ -518,7 +521,8 @@ in
                 iptables -w -n -L "$chain" >/dev/null 2>&1 || exit 0
                 iptables -w -F "$chain"
                 ip6tables -w -F "$chain"
-                ${trustedDevices} | while read -r dev; do
+                ${trustedDevices}
+                trusted_devices | while read -r dev; do
                   for ipt in iptables ip6tables; do
                     for port in ${lib.concatMapStringsSep " " toString ports}; do
                       "$ipt" -w -A "$chain" -i "$dev" -p tcp --dport "$port" -j nixos-fw-accept
