@@ -128,6 +128,10 @@ fromSource [
     inherit nyx;
     src = inputs.nyx-core;
   };
+  nyx-platform = pkgs.callPackage ./nyx-platform.nix {
+    inherit nyx;
+    src = inputs.nyx-core;
+  };
   nyx-ai = pkgs.callPackage ./nyx-ai.nix {
     inherit nyx;
     src = inputs.nyx-ai;

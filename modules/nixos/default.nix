@@ -164,7 +164,12 @@ let
       "/share/nyx"
       "/share/nyx-settings"
     ];
-    environment.systemPackages = [ nyxPkgs.nyx-actions ];
+    # nyx-platform: the desktop jobs (Wi-Fi band, DNS, speed test, Taildrop, …) the Nyx
+    # apps ask Omarchy's scripts for elsewhere.
+    environment.systemPackages = [
+      nyxPkgs.nyx-actions
+      nyxPkgs.nyx-platform
+    ];
   };
 in
 {
@@ -664,14 +669,17 @@ in
       })
 
       # Settings asks polkit through the System Manager and cups-pk-helper. Its Sound page
-      # talks to PipeWire through pactl, and Sign-in & Security enrolls and reports through
-      # nyx-authctl (the ways to sign in stay off until chosen there, through nyx.biometrics).
+      # talks to PipeWire through pactl, Sign-in & Security enrolls and reports through
+      # nyx-authctl (the ways to sign in stay off until chosen there, through nyx.biometrics)
+      # and Wi-Fi draws the network's QR code with qrencode.
       (lib.mkIf cfg.settings.enable {
         security.polkit.enable = true;
         environment.systemPackages = [
           # Only the command: PulseAudio's own daemon and autostart entry stay out.
           (pkgs.runCommand "pactl" { } "mkdir -p $out/bin; ln -s ${pkgs.pulseaudio}/bin/pactl $out/bin/pactl")
           nyxPkgs.nyx-biometrics
+          # The QR code a phone scans to join the Wi-Fi network (Settings › Wi-Fi).
+          pkgs.qrencode
         ];
       })
 
