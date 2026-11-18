@@ -142,8 +142,13 @@ let
       wantedBy = [ target ];
       # People's sessions only, not the greeter's or another system account's.
       unitConfig.ConditionUser = "!@system";
+      # The person's own Nix profile (`nix profile`, where Welcome, the Store and `nyx
+      # install` put apps for them) too: GLib leaves out a launcher entry whose program
+      # isn't on PATH, so without it the dock and Glimpse didn't list those apps.
       path = [
         "/run/wrappers"
+        "%h/.nix-profile"
+        "%h/.local/state/nix/profile"
         "/etc/profiles/per-user/%u"
         "/run/current-system/sw"
       ];
