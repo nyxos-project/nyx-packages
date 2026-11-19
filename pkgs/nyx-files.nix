@@ -83,6 +83,14 @@ nyx.buildApp {
 
   dbusServices = [ "data/io.github.design_nexus.nyx.Files.FileManager1.service" ];
 
+  # The FileChooser portal: the module makes it every app's Open and Save dialog.
+  postInstall = ''
+    install -Dm644 data/portal/nyx_files.portal -t $out/share/xdg-desktop-portal/portals
+    service=$out/share/dbus-1/services/org.freedesktop.impl.portal.desktop.nyx_files.service
+    install -Dm644 data/portal/org.freedesktop.impl.portal.desktop.nyx_files.service.in "$service"
+    substituteInPlace "$service" --replace-fail @FILES_EXECUTABLE@ $out/bin/nyx-files
+  '';
+
   meta = {
     description = "File manager for the Nyx desktop";
     homepage = "https://github.com/design-nexus/nyx-files";

@@ -173,7 +173,10 @@ let
   };
 in
 {
-  imports = [ (import ./biometrics.nix self) ];
+  imports = [
+    (import ./biometrics.nix self)
+    ./nordvpn.nix
+  ];
 
   options.nyx = lib.mapAttrs (_: description: { enable = lib.mkEnableOption description; }) apps // {
     fastBuilds = lib.mkOption {
@@ -625,6 +628,23 @@ in
 
       (lib.mkIf cfg.maps.enable {
         services.geoclue2.enable = lib.mkDefault true;
+      })
+
+      # Files is every app's Open and Save dialog (its FileChooser portal); GTK's stays
+      # for the rest and as the fallback.
+      (lib.mkIf cfg.files.enable {
+        xdg.portal.extraPortals = [ nyxPkgs.nyx-files ];
+        xdg.portal.config.hyprland = {
+          default = lib.mkDefault [
+            "hyprland"
+            "gtk"
+          ];
+          "org.freedesktop.impl.portal.FileChooser" = [
+            "nyx_files"
+            "hyprland"
+            "gtk"
+          ];
+        };
       })
 
       # Pulse shares live locations through GeoClue and keeps its database key in the
