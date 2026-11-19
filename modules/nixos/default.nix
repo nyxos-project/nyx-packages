@@ -506,11 +506,11 @@ in
                     pkgs.coreutils
                   ]
                 }
-                nft list set inet nyx-trusted-net devices >/dev/null 2>&1 || exit 0
-                nft flush set inet nyx-trusted-net devices
+                nft list set inet nyx-trusted-net trusted_ifs >/dev/null 2>&1 || exit 0
+                nft flush set inet nyx-trusted-net trusted_ifs
                 ${trustedDevices}
                 trusted_devices | while read -r dev; do
-                  nft add element inet nyx-trusted-net devices "{ \"$dev\" }"
+                  nft add element inet nyx-trusted-net trusted_ifs "{ \"$dev\" }"
                 done
               ''
             else
@@ -569,17 +569,18 @@ in
           # nftables (Incus turns it on): a table of our own marks what arrives on a trusted
           # interface for these ports, and NixOS's firewall accepts what's marked. Its set
           # of interfaces is filled the same way, and again whenever the rules reload.
+          # `devices` and `mark` are nft keywords, so the set and chain can't use them.
           (lib.mkIf nftables {
             networking.nftables.tables.nyx-trusted-net = {
               family = "inet";
               content = ''
-                set devices {
+                set trusted_ifs {
                   type ifname
                 }
-                chain mark {
+                chain mark_trusted {
                   type filter hook input priority -10; policy accept;
-                  iifname @devices tcp dport { ${portList} } meta mark set meta mark | ${mark}
-                  iifname @devices udp dport { ${portList} } meta mark set meta mark | ${mark}
+                  iifname @trusted_ifs tcp dport { ${portList} } meta mark set meta mark | ${mark}
+                  iifname @trusted_ifs udp dport { ${portList} } meta mark set meta mark | ${mark}
                 }
               '';
             };
