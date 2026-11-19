@@ -614,11 +614,11 @@
     "nyx-biometrics": {
       "flake": false,
       "locked": {
-        "lastModified": 1795057842,
-        "narHash": "sha256-fnlHZ0gX0E4jjDCK50bL8XNnfIrZNbQQm467758M99U=",
+        "lastModified": 1795059307,
+        "narHash": "sha256-F9PsmD213fFUaNzdU+TkJZSCdVrAa8Ec77M4tu6eO3U=",
         "owner": "design-nexus",
         "repo": "nyx-biometrics",
-        "rev": "221871b654397c1cbe0c1a869f997d7b04f756f6",
+        "rev": "77a419e10c93dfa2a50fb94d5031ab750363ce10",
         "type": "github"
       },
       "original": {

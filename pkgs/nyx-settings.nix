@@ -8,6 +8,7 @@
   brightnessctl,
   bluez,
   git,
+  ffmpeg-headless,
 }:
 nyx.buildApp {
   pname = "nyx-settings";
@@ -29,6 +30,8 @@ nyx.buildApp {
     brightnessctl
     bluez
     git
+    # The camera's live picture (Sign-in & Security, webcam settings).
+    ffmpeg-headless
   ];
   postInstall = ''
     rm $out/bin/nyx-settings-helper
