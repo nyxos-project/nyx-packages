@@ -24,7 +24,7 @@ in
     networking.firewall.checkReversePath = lib.mkDefault "loose";
 
     systemd.tmpfiles.rules = [
-      "d /run/nordvpn 0755 root nordvpn -"
+      "d /run/nordvpn 0770 root nordvpn -"
       "d /var/lib/nordvpn 0750 root nordvpn -"
       # Countries, servers and the OpenVPN template, refreshed by the daemon later.
       "C /var/lib/nordvpn/data 0750 root nordvpn - ${nordvpn}/var/lib/nordvpn/data"
@@ -34,14 +34,13 @@ in
       description = "NordVPN Daemon Socket";
       wantedBy = [ "sockets.target" ];
       bindsTo = [ "nordvpnd.service" ];
-      # Open to every account: the daemon checks the caller's groups itself (getgrouplist
-      # on its uid), so someone just added to nordvpn can sign in without logging out,
-      # and anyone else is still turned away.
+      # Members of nordvpn only. The nordvpn command also checks the session's groups,
+      # so someone just added uses it after logging in again (Settings says so).
       socketConfig = {
         ListenStream = "/run/nordvpn/nordvpnd.sock";
         SocketGroup = "nordvpn";
-        SocketMode = "0666";
-        DirectoryMode = "0755";
+        SocketMode = "0660";
+        DirectoryMode = "0750";
         RemoveOnStop = true;
       };
     };
@@ -79,7 +78,7 @@ in
         RestartSec = 5;
         RestartKillSignal = "SIGUSR1";
         RuntimeDirectory = "nordvpn";
-        RuntimeDirectoryMode = "0755";
+        RuntimeDirectoryMode = "0750";
         RuntimeDirectoryPreserve = true;
         Group = "nordvpn";
       };
