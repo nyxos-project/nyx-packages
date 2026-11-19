@@ -54,7 +54,7 @@
       flake = false;
     };
     nyx-greeter = {
-      url = "github:nyxos-project/nyx-greeter";
+      url = "github:nyxos-project/nyx-greeter/dev/nocturne";
       flake = false;
     };
     nyx-accounts = {
@@ -234,11 +234,11 @@
       flake = false;
     };
     nyx-biometrics = {
-      url = "github:design-nexus/nyx-biometrics";
+      url = "github:design-nexus/nyx-biometrics/dev/nocturne";
       flake = false;
     };
     nyx-settings = {
-      url = "github:design-nexus/nyx-settings";
+      url = "github:design-nexus/nyx-settings/dev/nocturne";
       flake = false;
     };
     nyx-store = {

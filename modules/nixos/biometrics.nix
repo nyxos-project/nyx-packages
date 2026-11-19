@@ -162,6 +162,7 @@ let
 in
 {
   imports = [
+    ./biometrics-overlay.nix
     self.inputs.irlume.nixosModules.irlume
     self.inputs.gaze.nixosModules.gaze
   ];
@@ -306,6 +307,15 @@ in
     systemd.packages = [ bio ];
     systemd.sockets.nyx-auth-keyd.wantedBy = [ "sockets.target" ];
     security.polkit.enable = true;
+    # The polkit helper's ProtectHome sandbox hides /run/user. Keep these transient
+    # requests in private account directories outside it. Only the password PAM
+    # path remains when an account's fresh, owned marker is present.
+    systemd.tmpfiles.rules = lib.mkIf ((cfg.surfaces.polkit or [ ]) != [ ]) (
+      [ "d /run/nyx-auth/password-first 0755 root root -" ]
+      ++ lib.mapAttrsToList (
+        name: _: "d /run/nyx-auth/password-first/${name} 0700 ${name} - -"
+      ) (lib.filterAttrs (_: user: user.isNormalUser) config.users.users)
+    );
     security.tpm2.enable = lib.mkDefault true;
     environment.pathsToLink = [ "/lib/nyx-biometrics" ];
 
